@@ -14,6 +14,6 @@ app.use(express.json());
 const PORT = process.env.PORT ?? 3000;
 
 // Cette ligne lance le serveur express pour qu'il écoute les connexions entrantes
-server.listen(PORT, () => {
+app.listen(PORT, () => {
     console.log('http://localhost:' + PORT);
 });

@@ -68,101 +68,102 @@ CHECK(
 
 --Création de domain utilsant des REGEX pour les messages (1000 caracteres max)
 CREATE DOMAIN "messages" AS text
-CHECK(
-    value ~  '^[\w\sàáâãäåæçèéêëìíîïðñòóôõöøùúûüýÿ.,?!;:@%&*()_+-=€$£¥
-{}"\'\><#|^~`]{1,1000}$'
+CHECK (
+    value ~ '^[\\w\\s.,?!;:@%&*()\\[\\]{}\\''/\\\\><#|^~`+-=€$£¥]{1,1000}$'
 );
+
+
 
 
 ---------------------------------------------------------------------------------------------------
 
 
 CREATE TABLE therapists (
-    id int GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    email email TEXT NOT NULL UNIQUE, --REGEX
-    lastname firstnames_lastnames_cities TEXT NOT NULL, --REGEX
-    firstname firstnames_lastnames_cities TEXT NOT NULL, --REGEX
-    password passwords TEXT NOT NULL UNIQUE,
-    phonenumber phone_number TEXT NOT NULL UNIQUE, --REGEX
-    adelinumber adeli_number INTEGER NOT NULL UNIQUE, --REGEX
-    profilpicture TEXT NULL,
-    profilpresentation TEXT NULL, --REGEX
-    streetname streets TEXT NOT NULL, --REGEX
-    zipcode postal_code_fr TEXT NOT NULL, --REGEX
-    city firstnames_lastnames_cities TEXT NOT NULL, --REGEX
-    complement firstnames_lastnames_cities TEXT NULL, --REGEX
-    videosession BOOLEAN NULL,
-    audiosession BOOLEAN NULL,
-    chatsession BOOLEAN NULL,
-    sessionatoffice BOOLEAN NULL,
-    gender TEXT NOT NULL
+    "id" int GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    "email" email NOT NULL UNIQUE, --REGEX
+    "lastname" firstnames_lastnames_cities  NOT NULL, --REGEX
+    "firstname" firstnames_lastnames_cities  NOT NULL, --REGEX
+    "password" passwords NOT NULL UNIQUE,
+    "phonenumber" phone_number NOT NULL UNIQUE, --REGEX
+    "adelinumber" adeli_number  NOT NULL UNIQUE, --REGEX
+    "profilpicture" TEXT NULL,
+    "profilpresentation" profil_presentation NULL, --REGEX
+    "streetname" streets  NOT NULL, --REGEX
+    "zipcode" postal_code_fr NOT NULL, --REGEX
+    "city" firstnames_lastnames_cities NOT NULL, --REGEX
+    "complement" firstnames_lastnames_cities NULL, --REGEX
+    "videosession" BOOLEAN NULL,
+    "audiosession" BOOLEAN NULL,
+    "chatsession" BOOLEAN NULL,
+    "sessionatoffice" BOOLEAN NULL,
+    "gender" TEXT NOT NULL
 );
 
 CREATE TABLE quizz (
-    id int GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    quizzes TEXT NOT NULL,
-    answers BOOLEAN NOT NULL
+    "id" int GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    "quizzes" TEXT NOT NULL,
+    "answers" BOOLEAN NOT NULL
 );
 
 
 CREATE TABLE patients (
-    id int GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    email email TEXT NOT NULL UNIQUE, --REGEX
-    lastname firstnames_lastnames_cities TEXT NOT NULL, --REGEX
-    firstname firstnames_lastnames_cities TEXT NOT NULL, --REGEX
-    password passwords TEXT NOT NULL UNIQUE, --REGEX
-    phonenumber phone_number TEXT NOT NULL UNIQUE, --REGEX
-    profilpicture TEXT NULL,
-    streetname streets TEXT NOT NULL, --REGEX
-    zipcode postal_code_fr TEXT NOT NULL, --REGEX
-    city firstnames_lastnames_cities TEXT NOT NULL, --REGEX
-    complement firstnames_lastnames_cities TEXT NULL, --REGEX
-    quizz_id INTEGER REFERENCES quizz(id)
+    "id" int GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    "email" email  NOT NULL UNIQUE, --REGEX
+    "lastname" firstnames_lastnames_cities NOT NULL, --REGEX
+    "firstname" firstnames_lastnames_cities NOT NULL, --REGEX
+    "password" passwords NOT NULL UNIQUE, --REGEX
+    "phonenumber" phone_number NOT NULL UNIQUE, --REGEX
+    "profilpicture" TEXT NULL,
+    "streetname" streets NOT NULL, --REGEX
+    "zipcode" postal_code_fr NOT NULL, --REGEX
+    "city" firstnames_lastnames_cities NOT NULL, --REGEX
+    "complement" firstnames_lastnames_cities NULL, --REGEX
+    "quizz_id" INTEGER REFERENCES quizz(id)
 );
 
 CREATE TABLE reviews (
-    id int GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    messages messages TEXT NULL, --REGEX
-    negatifreviews INTEGER NULL,
-    positifreviews INTEGER NULL,
-    patients_id  INTEGER REFERENCES patients(id),
-    therapists_id INTEGER REFERENCES therapists(id)
+    "id" int GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    "messages" messages NULL, --REGEX
+    "negatifreviews" INTEGER NULL,
+    "positifreviews" INTEGER NULL,
+    "patients_id"  INTEGER REFERENCES patients(id),
+    "therapists_id" INTEGER REFERENCES therapists(id)
 );
 
 CREATE TABLE conversations (
-    id int GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    messages messages TEXT NULL, --REGEX
-    patients_id  INTEGER REFERENCES patients(id),
-    therapists_id INTEGER REFERENCES therapists(id),
-    created_at TIMESTAMPTZ DEFAULT NOW()
+    "id" int GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    "messages" messages NULL, --REGEX
+    "patients_id"  INTEGER REFERENCES patients(id),
+    "therapists_id" INTEGER REFERENCES therapists(id),
+    "created_at" TIMESTAMPTZ DEFAULT NOW()
 );
 
 CREATE TABLE appointments(
-    id int GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    beginninghour TIMESTAMPTZ NOT NULL,
-    endtime TIMESTAMPTZ NOT NULL,
-    patients_id  INTEGER REFERENCES patients(id),
-    therapists_id INTEGER REFERENCES therapists(id),
-    videosession BOOLEAN NULL,
-    audiosession BOOLEAN NULL,
-    chatsession BOOLEAN NULL,
-    sessionatoffice BOOLEAN NULL
+    "id" int GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    "beginninghour" TIMESTAMPTZ NOT NULL,
+    "endtime" TIMESTAMPTZ NOT NULL,
+    "patients_id"  INTEGER REFERENCES patients(id),
+    "therapists_id" INTEGER REFERENCES therapists(id),
+    "videosession" BOOLEAN NULL,
+    "audiosession" BOOLEAN NULL,
+    "chatsession" BOOLEAN NULL,
+    "sessionatoffice" BOOLEAN NULL
 
 );
 
 CREATE TABLE specialties(
-    id int GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    label TEXT NULL --REGEX
+    "id" int GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    "label" TEXT NULL --REGEX
 );
 
 CREATE TABLE therapists_has_patients(
-    patients_id  INTEGER REFERENCES patients(id),
-    therapists_id INTEGER REFERENCES therapists(id)
+    "patients_id"  INTEGER REFERENCES patients(id),
+    "therapists_id" INTEGER REFERENCES therapists(id)
 );
 
 CREATE TABLE therapists_own_specialties(
-    patients_id  INTEGER REFERENCES patients(id),
-    specialties_id INTEGER REFERENCES specialties(id)
+    "patients_id"  INTEGER REFERENCES patients(id),
+    "specialties_id" INTEGER REFERENCES specialties(id)
 );
 
 COMMIT;

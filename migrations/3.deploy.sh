@@ -1,5 +1,5 @@
 # Je prends l'identité admin_mytherapist
-export PGUSER=admin_mytherapist
-export PGPASSWORD= mytherapist
+export PGUSER=spedata
+export PGPASSWORD=spedata
 
 sqitch deploy

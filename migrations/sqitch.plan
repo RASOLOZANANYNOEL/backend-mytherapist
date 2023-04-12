@@ -1,4 +1,6 @@
 %syntax-version=1.0.0
 %project=mytherapist
 
-1.create_tables 2023-04-11T12:02:41Z Etudiant O'clock <student@teleporter> # création des tables
+1.create_tables 2023-04-12T12:39:29Z Etudiant O'clock <student@teleporter> # création des tables
+2.seeding 2023-04-12T12:39:30Z Etudiant O'clock <student@teleporter> # seeding des tables
+

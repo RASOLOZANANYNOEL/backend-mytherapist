@@ -1,5 +1,6 @@
 -- Deploy mytherapist:1.create_tables to pg
 
+
 BEGIN;
 
 --Les expressions régulières (REGEX) sont souvent utilisées pour valider les entrées utilisateur et protéger contre les injections SQL.
@@ -21,7 +22,7 @@ CHECK(
     
 );
 
--- Création de domain utilisant des REGEX pour les emails
+--Création de domain utilisant des REGEX pour les emails
 CREATE DOMAIN "email" AS text
 CHECK(
     value ~ '(?:[a-z0-9!#$%&''*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&''*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])'
@@ -29,47 +30,49 @@ CHECK(
 
 -- Création de domain utilisant des REGEX pour les nom & prenom + nom de la ville 
 
-CREATE DOMAIN "firstnames_lastnames_cities" AS text
+CREATE DOMAIN "firstnames_lastnames_cities" AS text --
 CHECK(
-    value ~ '/^[a-zA-ZÀ-ÿ-. ]*$/'
+    value ~ '^[a-zA-ZÀ-ÿ. -]*$'
 );
 
 -- Création de domain utilisant des REGEX pour les mdp (au minimim 8 caractères, un lettre, un numéro et un caractère spécial)
 CREATE DOMAIN "passwords" AS text
 CHECK(
-    value ~ '^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$'
+    value ~ '^[a-zA-Z0-9@$!%*#?&_]{8,}$'
 );
+
 
 -- Création de domain utilisant des REGEX pour les numéro de telephone 
 CREATE DOMAIN "phone_number" AS text
 CHECK(
-    value ~  '^(0|\+33)[1-9]([-. ]?[0-9]{2}){4}$'
+    value ~  '^[0-9]{10}$'
 
-    /* '^(?:(?:\+|00)33[\s.-]{0,3}(?:\(0\)[\s.-]{0,3})?|0)[1-9](?:(?:[\s.-]?\d{2}){4}|\d{2}(?:[\s.-]?\d{3}){2})$' */
 );
 
 -- Création de domain utilisant des REGEX pour les numéro adeli 
 CREATE DOMAIN "adeli_number" AS text
 CHECK(
-    value ~  '^\d{9}$'
+    value ~  '^[0-9]{9}$'
 );    
 
--- Création de domain utilisant des REGEX pour profil presentation(500 caractères MAX)
+--Création de domain utilisant des REGEX pour profil presentation(500 caractères MAX)
 CREATE DOMAIN "profil_presentation" AS text
 CHECK(
-    value ~  '^[a-zA-Z0-9À-ÿ\s''’‘“”.,;:!?\-\(\)]{1,500}$'
+    -- value ~ '^[a-zA-Z0-9À-ÿ\s''’‘".,;:()-]{1,500}$'
+    value ~ '^[a-zA-Z0-9À-ÿ\s''’‘".,;:()-]*$' 
+    AND length(value) < 1000
 );
 
 -- Création de domain utilisant REGEX pour les rues 
 CREATE DOMAIN "streets" AS text
 CHECK(
-    value ~  '^\d{1,4}\s[A-Za-zéèêëïîôöùüû\s]+$'
+    value ~  '^[a-zA-Z0-9À-ÿ\s''’‘]*$'
 ); 
 
 --Création de domain utilsant des REGEX pour les messages (1000 caracteres max)
 CREATE DOMAIN "messages" AS text
 CHECK (
-    value ~ '^[\\w\\s.,?!;:@%&*()\\[\\]{}\\''/\\\\><#|^~`+-=€$£¥]{1,1000}$'
+    value ~ '^[a-zA-Z0-9À-ÿ\s''’‘";.,$€&()-]{1,1000}$'
 );
 
 
@@ -88,10 +91,11 @@ CREATE TABLE therapists (
     "adelinumber" adeli_number  NOT NULL UNIQUE, --REGEX
     "profilpicture" TEXT NULL,
     "profilpresentation" profil_presentation NULL, --REGEX
+    -- "profilpresentation" TEXT NULL, --REGEX
     "streetname" streets  NOT NULL, --REGEX
     "zipcode" postal_code_fr NOT NULL, --REGEX
     "city" firstnames_lastnames_cities NOT NULL, --REGEX
-    "complement" firstnames_lastnames_cities NULL, --REGEX
+    "complement" TEXT NULL, --REGEX 
     "videosession" BOOLEAN NULL,
     "audiosession" BOOLEAN NULL,
     "chatsession" BOOLEAN NULL,
@@ -99,10 +103,46 @@ CREATE TABLE therapists (
     "gender" TEXT NOT NULL
 );
 
+----------
+
 CREATE TABLE quizz (
     "id" int GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    "quizzes" TEXT NOT NULL,
-    "answers" BOOLEAN NOT NULL
+    "quizz_1" TEXT NULL,
+    "answer_1" BOOLEAN NULL,
+    "quizz_2" TEXT NULL,
+    "answer_2" BOOLEAN NULL,
+    "quizz_3" TEXT NULL,
+    "answer_3" BOOLEAN NULL,
+    "quizz_4" TEXT NULL,
+    "answer_4" BOOLEAN NULL,
+    "quizz_5" TEXT NULL,
+    "answer_5" BOOLEAN NULL,
+    "quizz_6" TEXT NULL,
+    "answer_6" BOOLEAN NULL,
+    "quizz_7" TEXT NULL,
+    "answer_7" BOOLEAN NULL,
+    "quizz_8" TEXT NULL,
+    "answer_8" BOOLEAN NULL,
+    "quizz_9" TEXT NULL,
+    "answer_9" BOOLEAN NULL,
+    "quizz_10" TEXT NULL,
+    "answer_10" BOOLEAN NULL,
+    "quizz_11" TEXT NULL,
+    "answer_11" BOOLEAN NULL,
+    "quizz_12" TEXT NULL,
+    "answer_12" BOOLEAN NULL,
+    "quizz_13" TEXT NULL,
+    "answer_13" BOOLEAN NULL,
+    "quizz_14" TEXT NULL,
+    "answer_14" BOOLEAN NULL,
+    "quizz_15" TEXT NULL,
+    "answer_15" BOOLEAN NULL,
+    "quizz_16" TEXT NULL,
+    "answer_16" BOOLEAN NULL,
+    "quizz_17" TEXT NULL,
+    "answer_17" BOOLEAN NULL,
+    "quizz_18" TEXT NULL,
+    "answer_18" BOOLEAN NULL
 );
 
 
@@ -116,14 +156,15 @@ CREATE TABLE patients (
     "profilpicture" TEXT NULL,
     "streetname" streets NOT NULL, --REGEX
     "zipcode" postal_code_fr NOT NULL, --REGEX
-    "city" firstnames_lastnames_cities NOT NULL, --REGEX
-    "complement" firstnames_lastnames_cities NULL, --REGEX
+    "city" firstnames_lastnames_cities NOT NULL, --REGEX 
+    "complement" TEXT NULL, --REGEX
     "quizz_id" INTEGER REFERENCES quizz(id)
 );
 
 CREATE TABLE reviews (
     "id" int GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     "messages" messages NULL, --REGEX
+    -- "messages" TEXT NULL, --REGEX
     "negatifreviews" INTEGER NULL,
     "positifreviews" INTEGER NULL,
     "patients_id"  INTEGER REFERENCES patients(id),
@@ -133,6 +174,7 @@ CREATE TABLE reviews (
 CREATE TABLE conversations (
     "id" int GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     "messages" messages NULL, --REGEX
+    -- "messages" TEXT NULL, --REGEX
     "patients_id"  INTEGER REFERENCES patients(id),
     "therapists_id" INTEGER REFERENCES therapists(id),
     "created_at" TIMESTAMPTZ DEFAULT NOW()
@@ -153,7 +195,7 @@ CREATE TABLE appointments(
 
 CREATE TABLE specialties(
     "id" int GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    "label" TEXT NULL --REGEX
+    "label" TEXT NULL 
 );
 
 CREATE TABLE therapists_has_patients(
@@ -167,3 +209,6 @@ CREATE TABLE therapists_own_specialties(
 );
 
 COMMIT;
+
+
+

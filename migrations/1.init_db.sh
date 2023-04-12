@@ -21,5 +21,3 @@ rm sqitch.plan
 sqitch init mytherapist --target db:pg:mytherapist
 echo "Sqitch initialisé"
 
-# J'ajoute la version 1 (création des tables)
-sqitch add 1.create_tables -n "création des tables"

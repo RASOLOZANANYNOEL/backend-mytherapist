@@ -58,11 +58,24 @@ const therapistsController = {
         const findTherapistsWithSpecialities = await therapistsDatamapper.findTherapistsWithSpecialities(id);
         res.json(findTherapistsWithSpecialities)
     },
-
+    
     async findAllTherapistsWithSpecialities (req,res) {
-        console.log('Calling findAllTherapistsWithSpecialities');
         const findAllTherapistsWithSpecialities = await therapistsDatamapper.AllTherapistsWithSpecialities();
         res.json(findAllTherapistsWithSpecialities)
+    },
+
+    async addSpecialtiesToTherapist (req,res) {
+        const therapistId = req.params.therapistId
+        const specialityId = req.params.specialityId
+        const addSpecialtiesToTherapist = await therapistsDatamapper.addSpecialtiesToTherapist(therapistId, specialityId);
+        res.json(addSpecialtiesToTherapist)
+    },
+
+    async removeSpecialtiesFromTherapist (req,res) {
+        const therapistId = req.params.therapistId
+        const specialityId = req.params.specialityId
+        const removeSpecialtiesToTherapist = await therapistsDatamapper.removeSpecialtiesFromTherapist(therapistId, specialityId);
+        res.json(removeSpecialtiesToTherapist)
     }
 }
 

@@ -18,7 +18,7 @@ class Therapists extends CoreDatamapper {
 
         return result.rows;
     }
-
+    
     async AllTherapistsWithSpecialities() {
         const preparedQuery = {
             text: `SELECT t.lastname, t.firstname, s.label, t.id FROM therapists t
@@ -28,14 +28,35 @@ class Therapists extends CoreDatamapper {
 
         try {
             const result = await this.client.query(preparedQuery);
-            console.log('Result:', result.rows); // Ajoutez ce log pour afficher les résultats retournés
+            console.log('Result:', result.rows); 
             return result.rows;
         } catch (error) {
-            console.error('Error in AllTherapistsWithSpecialities:', error); // Ajoutez ce log pour afficher l'erreur
+            console.error('Error in AllTherapistsWithSpecialities:', error); 
             throw error;
         }
     }
+
+    async addSpecialtiesToTherapist(therapistId, specialityId) {
+        const preparedQuery = {
+            text: `INSERT INTO therapists_own_specialties (therapists_id, specialties_id) VALUES ($1, $2)`,
+            values: [therapistId, specialityId],
+        };
+
+        const result = await this.client.query(preparedQuery);
+
+        return result.rows;
+    }
     
+    async removeSpecialtiesFromTherapist(therapistId, specialityId) {
+        const preparedQuery = {
+            text: `DELETE FROM therapists_own_specialties WHERE therapists_id = $1 AND specialties_id = $2`,
+            values: [therapistId, specialityId],
+        };
+
+        const result = await this.client.query(preparedQuery);
+
+        return result.rows;
+    }
     
 }
 

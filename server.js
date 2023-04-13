@@ -9,6 +9,9 @@ const app = express();
 // Cette ligne configure l'analyseur de corps JSON pour l'application express
 app.use(express.json());
 
+const routerPatients = require("./app/router/patientsRouter");
+app.use('/patients',routerPatients);
+
 // Cette ligne définit le port sur lequel le serveur écoutera les connexions
 // Si la variable d'environnement PORT n'est pas définie, le port 3000 sera utilisé
 const PORT = process.env.PORT ?? 3000;

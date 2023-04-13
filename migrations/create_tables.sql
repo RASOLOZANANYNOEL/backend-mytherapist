@@ -1,5 +1,6 @@
 -- Deploy mytherapist:1.create_tables to pg
 
+
 BEGIN;
 
 --Les expressions régulières (REGEX) sont souvent utilisées pour valider les entrées utilisateur et protéger contre les injections SQL.
@@ -209,3 +210,5 @@ CREATE TABLE therapists_own_specialties(
 );
 
 COMMIT;
+
+

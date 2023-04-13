@@ -72,7 +72,8 @@ CHECK(
 --Création de domain utilsant des REGEX pour les messages (1000 caracteres max)
 CREATE DOMAIN "messages" AS text
 CHECK (
-    value ~ '^[a-zA-Z0-9À-ÿ\s''’‘";.,$€&()-]{1,1000}$'
+    value ~ '^[a-zA-Z0-9À-ÿ\s''’‘".,;:()!?-]*$' 
+    AND length(value) < 1000
 );
 
 
@@ -204,7 +205,7 @@ CREATE TABLE therapists_has_patients(
 );
 
 CREATE TABLE therapists_own_specialties(
-    "patients_id"  INTEGER REFERENCES patients(id),
+    "therapists_id"  INTEGER REFERENCES therapists(id),
     "specialties_id" INTEGER REFERENCES specialties(id)
 );
 

@@ -120,6 +120,12 @@ const therapistsController = {
         
         const createAppointmentOneTherapist = await therapistsDatamapper.creatAppointmentWithOnePatient({therapistId,patientId},appointment);
         res.json(createAppointmentOneTherapist);
+    },
+
+    async viewOneTherapistReviews(req,res) {
+        const id = req.params.id
+        const viewOneTherapistReviews = await therapistsDatamapper.viewOneTherapistReviews(id)
+        res.json(viewOneTherapistReviews)
     }
     
 }

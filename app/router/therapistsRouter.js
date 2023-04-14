@@ -18,6 +18,7 @@ router.get('/sexe/:gender', therapistsController.getAllTherapistsByGender);
 router.get('/:id/appointments', therapistsController.getAllAppointmentOfATherapist);
 router.get('/:therapistId/appointments/:appointmentId', therapistsController.getOneAppointmentOfATherapist);
 router.post('/:therapistId/appointment/patients/:patientId', therapistsController.creatAppointmentWithOnePatient);
+router.get('/:id/reviews', therapistsController.viewOneTherapistReviews);
 
 
 module.exports = router;

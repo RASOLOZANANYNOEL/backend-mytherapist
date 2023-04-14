@@ -59,7 +59,7 @@ const therapistsController = {
         res.json(findTherapistsWithSpecialities)
     },
     
-    async findAllTherapistsWithSpecialities (req,res) {
+    async findAllTherapistsWithSpecialities (_,res) {
         const findAllTherapistsWithSpecialities = await therapistsDatamapper.AllTherapistsWithSpecialities();
         res.json(findAllTherapistsWithSpecialities)
     },
@@ -76,7 +76,34 @@ const therapistsController = {
         const specialityId = req.params.specialityId
         const removeSpecialtiesToTherapist = await therapistsDatamapper.removeSpecialtiesFromTherapist(therapistId, specialityId);
         res.json(removeSpecialtiesToTherapist)
+    },
+
+    async getAllTherapistsByGenderWithSpecialities (req,res) {
+        const gender = req.params.gender
+        const getAllTherapistsByGender = await therapistsDatamapper.getAllTherapistsByGenderWithSpecialities(gender);
+        res.json(getAllTherapistsByGender)
+
+    },
+
+    async getAllTherapistsByGender (req,res) {
+        const gender = req.params.gender
+        const getAllTherapistsByGender = await therapistsDatamapper.getAllTherapistsByGender(gender);
+        res.json(getAllTherapistsByGender)
+
+    },
+    async getAllAppointmentOfATherapist (req,res) {
+        const id = req.params.id;
+        const getAllAppointmentOfATherapist = await therapistsDatamapper.getAllAppointmentOfATherapist(id);
+        res.json(getAllAppointmentOfATherapist)
+    },
+
+    async getOneAppointmentOfATherapist (req,res) {
+        const therapistId = req.params.therapistId
+        const appointmentId = req.params.appointmentId
+        const getOneAppointmentOfATherapist = await therapistsDatamapper.getOneAppointmentOfATherapist(therapistId,appointmentId);
+        res.json(getOneAppointmentOfATherapist)
     }
+    
 }
 
 module.exports = therapistsController;

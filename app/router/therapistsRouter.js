@@ -13,6 +13,10 @@ router.delete('/:id',therapistsController.deleteTherapist);
 router.get('/:id/specialities', therapistsController.findTherapistsWithSpecialities);
 router.post('/:therapistId/specialities/:specialityId',therapistsController.addSpecialtiesToTherapist);
 router.delete('/:therapistId/specialities/:specialityId',therapistsController.removeSpecialtiesFromTherapist);
+router.get('/sexe/:gender/specialities', therapistsController.getAllTherapistsByGenderWithSpecialities);
+router.get('/sexe/:gender', therapistsController.getAllTherapistsByGender);
+router.get('/:id/appointments', therapistsController.getAllAppointmentOfATherapist);
+router.get('/:therapistId/appointments/:appointmentId', therapistsController.getOneAppointmentOfATherapist);
 
 
 module.exports = router;

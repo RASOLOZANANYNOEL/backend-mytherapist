@@ -38,7 +38,7 @@ class Therapists extends CoreDatamapper {
 
     async addSpecialtiesToTherapist(therapistId, specialityId) {
         const preparedQuery = {
-            text: `INSERT INTO therapists_own_specialties (therapists_id, specialties_id) VALUES ($1, $2)`,
+            text: `INSERT INTO therapists_own_specialties (therapists_id, specialties_id) VALUES ($1, $2) RETURNING *`,
             values: [therapistId, specialityId],
         };
 
@@ -49,7 +49,7 @@ class Therapists extends CoreDatamapper {
     
     async removeSpecialtiesFromTherapist(therapistId, specialityId) {
         const preparedQuery = {
-            text: `DELETE FROM therapists_own_specialties WHERE therapists_id = $1 AND specialties_id = $2`,
+            text: `DELETE FROM therapists_own_specialties WHERE therapists_id = $1 AND specialties_id = $2 RETURNING *`,
             values: [therapistId, specialityId],
         };
 
@@ -111,6 +111,30 @@ class Therapists extends CoreDatamapper {
 
         const result = await this.client.query(preparedQuery);
 
+        return result.rows;
+    }
+
+    async creatAppointmentWithOnePatient ({patientId,therapistId},appointment){
+        const preparedQuery = {
+            text:`INSERT INTO appointments
+            (beginninghour, endtime, patients_id, therapists_id, videosession, audiosession, chatsession, sessionatoffice)
+            VALUES (
+                to_timestamp($1, 'DD-MM-YYYY HH24:MI')+ interval '1 hour',
+                to_timestamp($2, 'DD-MM-YYYY HH24:MI')+ interval '1 hour',
+                $3,
+                $4,
+                $5,
+                $6,
+                $7,
+                $8
+                
+            )RETURNING * ;`,
+        
+            values : [appointment.beginninghour, appointment.endtime, 
+                patientId,therapistId, appointment.videosession,
+                appointment.audiosession,appointment.chatsession, appointment.sessionatoffice ],
+        }
+        const result = await this.client.query(preparedQuery);
         return result.rows;
     }
 

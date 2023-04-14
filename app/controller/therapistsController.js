@@ -102,6 +102,24 @@ const therapistsController = {
         const appointmentId = req.params.appointmentId
         const getOneAppointmentOfATherapist = await therapistsDatamapper.getOneAppointmentOfATherapist(therapistId,appointmentId);
         res.json(getOneAppointmentOfATherapist)
+    },
+
+    async creatAppointmentWithOnePatient (req,res) {
+        const therapistId = req.params.therapistId
+        const patientId= req.params.patientId
+        const appointment = {
+            beginninghour: req.body.beginninghour,
+            endtime: req.body.endtime,
+            patients_id: patientId,
+            therapists_id:therapistId,
+            videosession: req.body.videosession,
+            audiosession : req.body.audiosession,
+            chatsession : req.body.chatsession,
+            sessionatoffice : req.body.sessionatoffice,
+        }
+        
+        const createAppointmentOneTherapist = await therapistsDatamapper.creatAppointmentWithOnePatient({therapistId,patientId},appointment);
+        res.json(createAppointmentOneTherapist);
     }
     
 }

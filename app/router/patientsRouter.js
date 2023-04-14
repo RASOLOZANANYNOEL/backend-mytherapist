@@ -24,6 +24,9 @@ router.post('/:patientId/appointment/therapists/:therapistId', patientsControlle
 /*--CREATE reviews patient-therapist --*/
 router.post('/:patientId/reviews/therapists/:therapistId',patientsController.createReviewsOneTherapist);
 
+/*--CREATE QUIZZ + RETURN Quizz_id  --*/
+router.post('/quizz',patientsController.answerPatientsQuizz);
+
 /*--modify one patient--*/
 router.put('/:id',patientsController.updatePatients); 
 

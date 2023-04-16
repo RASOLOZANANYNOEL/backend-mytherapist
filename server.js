@@ -10,8 +10,10 @@ const app = express();
 app.use(express.json());
 
 const routerTherapists =require('./app/router/therapistsRouter');
+const routerSpecialties =require('./app/router/specialtiesRouter');
 
 app.use('/therapists',routerTherapists);
+app.use('/specialties',routerSpecialties);
 
 
 // Cette ligne définit le port sur lequel le serveur écoutera les connexions

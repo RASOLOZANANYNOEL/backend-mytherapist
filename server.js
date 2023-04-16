@@ -10,7 +10,11 @@ const app = express();
 app.use(express.json());
 
 const routerPatients = require("./app/router/patientsRouter");
+const routerAdmin = require('./app/router/adminRouter');
+
+
 app.use('/patients',routerPatients);
+app.use('/admin',routerAdmin);
 
 // Cette ligne définit le port sur lequel le serveur écoutera les connexions
 // Si la variable d'environnement PORT n'est pas définie, le port 3000 sera utilisé

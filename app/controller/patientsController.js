@@ -115,6 +115,7 @@ const patientsController = {
     //quizz_id en not null 
     //voir controller createPatients pour la suite du raisonnement
     async answerPatientsQuizz(req,res) {
+        
         const patientId= req.params.patientId
 
         const answers = {
@@ -140,6 +141,7 @@ const patientsController = {
         }
         const answerPatientsQuizz = await patientsDatamapper.answerPatientsQuizz({patientId}, answers);
         res.json(answerPatientsQuizz);
+        console.log(answerPatientsQuizz);
     }
      
 

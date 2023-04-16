@@ -11,9 +11,12 @@ app.use(express.json());
 
 const routerTherapists =require('./app/router/therapistsRouter');
 const routerSpecialties =require('./app/router/specialtiesRouter');
+const routerAdmin =require('./app/router/adminRouter');
 
 app.use('/therapists',routerTherapists);
 app.use('/specialties',routerSpecialties);
+app.use('/admin',routerAdmin);
+
 
 
 // Cette ligne définit le port sur lequel le serveur écoutera les connexions

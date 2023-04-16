@@ -8,6 +8,4 @@ router.get('/:id', specialtiesController.getById);
 
 
 
-
-
 module.exports = router;

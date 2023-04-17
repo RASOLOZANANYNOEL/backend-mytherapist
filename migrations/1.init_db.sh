@@ -9,7 +9,7 @@ echo "admin_mytherapist supprimé"
 
 # Je crèe la BDD oblog et l'utilisateur admin_mytherapist
 createuser admin_mytherapist -P
-echo "admin_oblog créé"
+echo "admin_mytherapist créé"
 createdb mytherapist -O admin_mytherapist
 echo "BDD créée"
 

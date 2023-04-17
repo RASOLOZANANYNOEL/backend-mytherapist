@@ -5,6 +5,7 @@ class Admin extends CoreDatamapper {
     tableName = 'specialties';
     tableName = 'therapists';
     tableName = 'appointments';
+    tableName = 'patients';
 
     
 }

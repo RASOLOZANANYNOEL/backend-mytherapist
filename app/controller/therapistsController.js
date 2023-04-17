@@ -126,6 +126,12 @@ const therapistsController = {
         const id = req.params.id
         const viewOneTherapistReviews = await therapistsDatamapper.viewOneTherapistReviews(id)
         res.json(viewOneTherapistReviews)
+    },
+
+    async findAllTherapistBySpecialties (req,res) {
+        const id = req.params.id
+        findAllTherapistBySpecialties = await therapistsDatamapper.findAllTherapistBySpecialties(id)
+        res.json(findAllTherapistBySpecialties)
     }
     
 }

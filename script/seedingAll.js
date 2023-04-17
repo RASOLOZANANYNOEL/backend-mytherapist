@@ -483,7 +483,7 @@ for (let counter = 0; counter < 50; counter++) {
 
 
     };
-    console.log(appointments);
+    // console.log(appointments);
     appointments.push(appointment);
 
 }
@@ -526,6 +526,60 @@ async function importDataAppointments() {
 }
 
 
+/*********************************************/
+/******* therapists_has_patients seeding *******/
+/*********************************************/
+
+
+const therapists_has_patients = [];
+
+console.time("Ajout des utilisateurs");
+for (let counter = 0; counter < 50; counter++) {
+    const therapists_has_patient = {
+      patients_id: faker.datatype.number({min : 51, max: 100}),
+      therapists_id: counter + 1,
+     
+
+    };
+    console.log(therapists_has_patient);
+    therapists_has_patients.push(therapists_has_patient);
+
+}
+console.log("Nombre de therapists_has_patients : ", therapists_has_patients.length);
+console.timeEnd("Ajout des therapists_has_patients");
+
+async function importDataTherapistHasPatients() {
+    await pool.connect();
+
+    let values = [];
+    let parameters = [];
+    let parameterCounter = 1;
+    let requestCount = 0;
+
+    for (const therapists_has_patient of therapists_has_patients) {
+        // Ajouter l'utilisateur
+        values.push(therapists_has_patient.patients_id);
+        values.push(therapists_has_patient.therapists_id);
+
+        parameters.push(`($${parameterCounter},$${parameterCounter + 1})`);
+        parameterCounter += 2;
+    }
+
+    if (values.length > 0) {
+        const sqlQuery = `INSERT INTO "therapists_has_patients" ("patients_id","therapists_id") VALUES ${parameters.join()}`;
+        await pool.query(sqlQuery, values);
+        requestCount++;
+    }
+
+    console.timeEnd("Ajout des therapists_has_patients");
+    console.log("Nombre de requêtes : ", requestCount);
+
+    await pool.end();
+}
+
+
+
+
 // importDataTherapists();
 // importDataQuizzes();
 // importDataPatients();
@@ -533,3 +587,4 @@ async function importDataAppointments() {
 // importDataTherapistOwnSpecialties();
 // importDataReviews();
 // importDataAppointments();
+importDataTherapistHasPatients();

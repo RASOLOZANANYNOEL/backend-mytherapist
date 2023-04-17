@@ -106,7 +106,7 @@ const patientsController = {
     },
     // TODO Il faut que quiz_id dans la table patients soit en NOT NULL AUTOGENERATE, suite a ca , il faut une route qui permet de trouver l'id du quiz enfonction du patient id 
     // 1. une fois profil patient crée on va chercher son tout ses information via son ID/ou quizz_id SELECT * FROM patients p JOIN quizz q ON q.id = quizz_id WHERE q.id = 10
-    // 2. une fois quizz i_d trouver il faut mettre a jour les reponses via une route en PUT 
+    // 2. une fois quizz_id trouver il faut mettre a jour les reponses via une route en PUT 
 
     // le bon raisonnement : 
     //en realité il faut que le quizz soit crée avant le patient ou en meme temps, sinon erreur , la route quon a crée retourne l'id du quizz, cette id sera stocké niveau front

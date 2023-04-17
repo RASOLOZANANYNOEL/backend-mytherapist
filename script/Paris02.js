@@ -348,7 +348,7 @@ const adressesP2 =[
     "mot_directeur": "AIAD",
     "date_ajout": "2001-09-14",
     "id": "75102-0855",
-    "libelle_voie_complet": "PASSAGE BEN-AIAD",
+    "libelle_voie_complet": "PASSAGE BEN AIAD",
     "lieu_dit_bati": ""
   },
   {
@@ -1308,7 +1308,7 @@ const adressesP2 =[
     "mot_directeur": "GRAND",
     "date_ajout": "2001-09-14",
     "id": "75102-5792",
-    "libelle_voie_complet": "RUE LOUIS-LE-GRAND",
+    "libelle_voie_complet": "RUE LOUIS LE GRAND",
     "lieu_dit_bati": ""
   },
   {
@@ -1660,7 +1660,7 @@ const adressesP2 =[
     "mot_directeur": "NOUVELLE",
     "date_ajout": "2001-09-14",
     "id": "75102-6828",
-    "libelle_voie_complet": "RUE N-D DE BONNE NOUVELLE",
+    "libelle_voie_complet": "RUE ND DE BONNE NOUVELLE",
     "lieu_dit_bati": ""
   },
   {
@@ -1676,7 +1676,7 @@ const adressesP2 =[
     "mot_directeur": "RECOUVRA",
     "date_ajout": "2001-09-14",
     "id": "75102-6836",
-    "libelle_voie_complet": "RUE NOTRE-DAME DE RECOUVRANCE",
+    "libelle_voie_complet": "RUE NOTRE DAME DE RECOUVRANCE",
     "lieu_dit_bati": ""
   },
   {
@@ -1692,7 +1692,7 @@ const adressesP2 =[
     "mot_directeur": "VICTOIRE",
     "date_ajout": "2001-09-14",
     "id": "75102-6840",
-    "libelle_voie_complet": "RUE NOTRE-DAME DES VICTOIRES",
+    "libelle_voie_complet": "RUE NOTRE DAME DES VICTOIRES",
     "lieu_dit_bati": ""
   },
   {
@@ -2006,13 +2006,13 @@ const adressesP2 =[
     "code_commune": 75102,
     "code_rivoli": 7738,
     "cle_rivoli": "G",
-    "libelle_voie": "DE PORT-MAHON",
+    "libelle_voie": "DE PORT MAHON",
     "voie_privee": false,
     "code_majic": "00122",
     "mot_directeur": "MAHON",
     "date_ajout": "2001-09-14",
     "id": "75102-7738",
-    "libelle_voie_complet": "RUE DE PORT-MAHON",
+    "libelle_voie_complet": "RUE DE PORT MAHON",
     "lieu_dit_bati": ""
   },
   {
@@ -2118,13 +2118,13 @@ const adressesP2 =[
     "code_commune": 75102,
     "code_rivoli": 8493,
     "cle_rivoli": "C",
-    "libelle_voie": "SAINT-AUGUSTIN",
+    "libelle_voie": "SAINT AUGUSTIN",
     "voie_privee": false,
     "code_majic": "00129",
     "mot_directeur": "AUGUSTIN",
     "date_ajout": "2001-09-14",
     "id": "75102-8493",
-    "libelle_voie_complet": "RUE SAINT-AUGUSTIN",
+    "libelle_voie_complet": "RUE SAINT AUGUSTIN",
     "lieu_dit_bati": ""
   },
   {
@@ -2172,7 +2172,7 @@ const adressesP2 =[
     "mot_directeur": "DENIS",
     "date_ajout": "2001-09-14",
     "id": "75102-8524",
-    "libelle_voie_complet": "IMPASSE SAINT-DENIS",
+    "libelle_voie_complet": "IMPASSE SAINT DENIS",
     "lieu_dit_bati": ""
   },
   {
@@ -2188,7 +2188,7 @@ const adressesP2 =[
     "mot_directeur": "DENIS",
     "date_ajout": "2001-09-14",
     "id": "75102-8525",
-    "libelle_voie_complet": "RUE SAINT-DENIS",
+    "libelle_voie_complet": "RUE SAINT DENIS",
     "lieu_dit_bati": ""
   },
   {
@@ -2220,7 +2220,7 @@ const adressesP2 =[
     "mot_directeur": "ANNE",
     "date_ajout": "2001-09-14",
     "id": "75102-8534",
-    "libelle_voie_complet": "RUE SAINTE-ANNE",
+    "libelle_voie_complet": "RUE SAINTE ANNE",
     "lieu_dit_bati": ""
   },
   {
@@ -2316,7 +2316,7 @@ const adressesP2 =[
     "mot_directeur": "JOSEPH",
     "date_ajout": "2001-09-14",
     "id": "75102-8659",
-    "libelle_voie_complet": "RUE SAINT-JOSEPH",
+    "libelle_voie_complet": "RUE SAINT JOSEPH",
     "lieu_dit_bati": ""
   },
   {
@@ -2348,7 +2348,7 @@ const adressesP2 =[
     "mot_directeur": "MARC",
     "date_ajout": "2001-09-14",
     "id": "75102-8686",
-    "libelle_voie_complet": "RUE SAINT-MARC",
+    "libelle_voie_complet": "RUE SAINT MARC",
     "lieu_dit_bati": ""
   },
   {
@@ -2364,7 +2364,7 @@ const adressesP2 =[
     "mot_directeur": "PHILIPPE",
     "date_ajout": "2001-09-14",
     "id": "75102-8725",
-    "libelle_voie_complet": "RUE SAINT-PHILIPPE",
+    "libelle_voie_complet": "RUE SAINT PHILIPPE",
     "lieu_dit_bati": ""
   },
   {
@@ -2380,7 +2380,7 @@ const adressesP2 =[
     "mot_directeur": "SAUVEUR",
     "date_ajout": "2001-09-14",
     "id": "75102-8752",
-    "libelle_voie_complet": "RUE SAINT-SAUVEUR",
+    "libelle_voie_complet": "RUE SAINT SAUVEUR",
     "lieu_dit_bati": ""
   },
   {
@@ -2396,7 +2396,7 @@ const adressesP2 =[
     "mot_directeur": "SPIRE",
     "date_ajout": "2001-09-14",
     "id": "75102-8769",
-    "libelle_voie_complet": "RUE SAINT-SPIRE",
+    "libelle_voie_complet": "RUE SAINT SPIRE",
     "lieu_dit_bati": ""
   },
   {
@@ -2572,7 +2572,7 @@ const adressesP2 =[
     "mot_directeur": "GOUSSET",
     "date_ajout": "2001-09-14",
     "id": "75102-9779",
-    "libelle_voie_complet": "RUE VIDE-GOUSSET",
+    "libelle_voie_complet": "RUE VIDE GOUSSET",
     "lieu_dit_bati": ""
   },
   {

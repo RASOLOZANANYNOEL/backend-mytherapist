@@ -2,6 +2,7 @@
 
 BEGIN;
 
+
 DROP TABLE therapists,quizz,patients,reviews,conversations,appointments,specialties,therapists_has_patients,therapists_own_specialties;
 
 DROP DOMAIN "postal_code_fr";
@@ -13,6 +14,6 @@ DROP DOMAIN "adeli_number";
 DROP DOMAIN IF EXISTS "profil_presentation";
 DROP DOMAIN "streets";
 DROP DOMAIN IF EXISTS "messages";
-DROP TYPE "type_role";
+DROP TYPE type_role;
 
 COMMIT;

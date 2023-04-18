@@ -1,4 +1,4 @@
-const { getOnePatientWithQuizz, getReviewsOneTherapist, createAppointmentOneTherapist, createReviewsOneTherapist } = require('../model/patients');
+
 const patientsDatamapper= require('../model/patients');
 
 const patientsController = {

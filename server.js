@@ -13,11 +13,13 @@ const routerTherapists =require('./app/router/therapistsRouter');
 const routerSpecialties =require('./app/router/specialtiesRouter');
 const routerAdmin =require('./app/router/adminRouter');
 const routerPatients = require("./app/router/patientsRouter");
+const routerQuizz = require('./app/router/quizzRouter');
 
 app.use('/therapists',routerTherapists);
 app.use('/specialties',routerSpecialties);
 app.use('/admin',routerAdmin);
 app.use('/patients',routerPatients);
+app.use('/quizz',routerQuizz);
 
 
 

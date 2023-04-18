@@ -5,9 +5,46 @@ const express = require("express");
 
 // Cette ligne crée une instance d'application express
 const app = express();
+const cors = require('cors');
+
+/*********************************************/
+/********* swagger-jsdoc *********/
+/*********************************************/
+
+const swaggerJsdoc = require('swagger-jsdoc');
+const swaggerUi = require('swagger-ui-express');
+
+const options = {
+    definition: {
+      openapi: '3.0.0',
+      info: {
+        title: 'My Therapist API',
+        version: '1.0.0',
+        description: 'My Therapist API',
+      },
+      servers: [
+        {
+          url: 'http://localhost:3010',
+        },
+      ]
+    },
+    apis: ['./app/router/*.js'], // files containing annotations as above
+  };
+  
+const openapiSpecification = swaggerJsdoc(options);
+  
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(openapiSpecification));
+
+// on autorise les requêtes depuis d'autres domaines que celui de notre API
+// important => appeler ce middleware avant le routeur
+app.use(cors());
 
 // Cette ligne configure l'analyseur de corps JSON pour l'application express
 app.use(express.json());
+
+/*********************************************/
+/************** Config Express ***************/
+/*********************************************/
 
 const routerTherapists =require('./app/router/therapistsRouter');
 const routerSpecialties =require('./app/router/specialtiesRouter');

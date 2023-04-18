@@ -403,7 +403,7 @@ const reviews = [];
 console.time("Ajout des reviews");
 for (let counter = 0; counter < 50; counter++) {
     const review = {
-        message: oneReview[counter % oneReview.length].message,
+        messages: oneReview[counter % oneReview.length].message,
         negatifreviews: faker.random.numeric({
             'min': 0,
             'max': 1
@@ -585,6 +585,6 @@ async function importDataTherapistHasPatients() {
 // importDataPatients();
 // importDataSpecialties();
 // importDataTherapistOwnSpecialties();
-// importDataReviews();
+importDataReviews();
 // importDataAppointments();
-importDataTherapistHasPatients();
+// importDataTherapistHasPatients();

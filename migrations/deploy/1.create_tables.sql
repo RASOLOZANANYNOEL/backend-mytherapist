@@ -75,7 +75,7 @@ CHECK (
     AND length(value) < 1000
 );
 
-
+CREATE TYPE type_role AS ENUM ('admin', 'therapist','patient');
 
 
 ---------------------------------------------------------------------------------------------------
@@ -100,7 +100,9 @@ CREATE TABLE therapists (
     "audiosession" BOOLEAN NULL,
     "chatsession" BOOLEAN NULL,
     "sessionatoffice" BOOLEAN NULL,
-    "gender" TEXT NOT NULL
+    "gender" TEXT NOT NULL,
+    "updated_at" TIMESTAMPTZ DEFAULT NOW(),
+    "role" type_role
 );
 
 ----------
@@ -158,7 +160,9 @@ CREATE TABLE patients (
     "zipcode" postal_code_fr NOT NULL, --REGEX
     "city" firstnames_lastnames_cities NOT NULL, --REGEX 
     "complement" TEXT NULL, --REGEX
-    "quizz_id" INTEGER REFERENCES quizz(id)
+    "role" type_role,
+    "updated_at"  TIMESTAMPTZ DEFAULT NOW(),
+    "quizz_id" INTEGER NOT NULL REFERENCES quizz(id) UNIQUE
 );
 
 CREATE TABLE reviews (

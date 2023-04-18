@@ -412,7 +412,7 @@ for (let counter = 0; counter < 50; counter++) {
             'min': 0,
             'max': 1
         }),
-        patients_id: faker.datatype.number({min : 51, max: 100}),
+        patients_id: faker.datatype.number({min : 1, max: 50}),
         therapists_id: faker.random.numeric({
             'min': 1,
             'max': 50
@@ -471,7 +471,7 @@ for (let counter = 0; counter < 50; counter++) {
     const appointment = {
         beginninghour: oneAppointments[counter % oneAppointments.length].beginninghour,
         endtime: oneAppointments[counter % oneAppointments.length].endtime,
-        patients_id: faker.datatype.number({min : 51, max: 100}),
+        patients_id: faker.datatype.number({min : 1, max: 50}),
         therapists_id: faker.random.numeric({
             'min': 1,
             'max': 50
@@ -536,7 +536,7 @@ const therapists_has_patients = [];
 console.time("Ajout des utilisateurs");
 for (let counter = 0; counter < 50; counter++) {
     const therapists_has_patient = {
-      patients_id: faker.datatype.number({min : 51, max: 100}),
+      patients_id: faker.datatype.number({min : 1, max: 50}),
       therapists_id: counter + 1,
      
 
@@ -585,6 +585,6 @@ async function importDataTherapistHasPatients() {
 // importDataPatients();
 // importDataSpecialties();
 // importDataTherapistOwnSpecialties();
-// importDataReviews();
-// importDataAppointments();
-// importDataTherapistHasPatients();
+//  importDataReviews();
+//  importDataAppointments();
+importDataTherapistHasPatients();

@@ -45,7 +45,7 @@ router.get('/', patientsController.getAll);
  *   get:
  *     tags:
  *       - patients
- *     description: Returns all patients
+ *     description: Returns One patients
  *     parameters:
  *       - in: path
  *         name: id
@@ -82,13 +82,172 @@ router.get('/', patientsController.getAll);
  */
 router.get('/:id', patientsController.getById);
 
-/*--get appointments for one patient--*/
+/** get appointments for one patient
+ * @swagger
+ * /patients/{id}/appointments:
+ *   get:
+ *     tags:
+ *       - patients
+ *     description: Returns all appointments for one patient
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: integer
+ *         required: true
+ *         description: ID de l'utilisateur 
+ *     produces:
+ *       - application/json
+ *     responses:
+ *       '200':
+ *         description: Patient et rendez-vous récupérés avec succès
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 results:
+ *                   type: object
+ *                   items:
+ *                     type: string
+ *                   example: [{"id": 3,"email": "Gal16@yahoo.fr",
+ *		            "lastname": "Dumont",
+ *	                "firstname": "Albane",
+ *                  "phonenumber": "0613589167",
+ *	                "profilpicture": "NULL",
+ *	                "streetname": "METRO BOURSE",
+ *	                "zipcode": "75102",
+ *	                "city": "Paris",
+ *	                "complement": "ullam",
+ *	                "appointmentid": 89,
+ *	                "therapistid": 7,
+ *	                "therapistfirstname": "Céline",
+ *	                "therapistname": "Robert",
+ *	                "appointmentbegin": "2023-04-19T13:00:00.000Z",
+ *	                "appointmentend": "2023-04-19T14:00:00.000Z"
+ *                  }]             
+ */
 router.get('/:id/appointments', patientsController.getOnePatientWithAllAppointments);
 
-/*-- quizz for one patient--*/
+/** quizz for one patient
+ * @swagger
+ * /patients/{id}/quizz:
+ *   get:
+ *     tags:
+ *       - patients
+ *     description: Returns quizz for one patient
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: integer
+ *         required: true
+ *         description: ID de l'utilisateur 
+ *     produces:
+ *       - application/json
+ *     responses:
+ *       '200':
+ *         description: Patient et rendez-vous récupérés avec succès
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 results:
+ *                   type: object
+ *                   items:
+ *                     type: string
+ *                   example: [{"id": 5,
+ *		            "email": "Turold81@yahoo.fr",
+ *		            "lastname": "Baron",
+ *		            "firstname": "Aimé",
+ *		            "phonenumber": "0642748109",
+ *		            "profilpicture": "NULL",
+ *		            "streetname": "METRO QUATRE SEPTEMBRE",
+ *		            "zipcode": "75102",
+ *		            "city": "Paris",
+ *		            "complement": "aperiam",
+ *		            "quizz_id": 5,
+ *		            "quizz_1": "Vous-êtes un particulier ?",
+ *		            "answer_1": false,
+ *		            "quizz_2": "Souhaitez-vous faire intervenir un praticiens dans votre entreprise ?",
+ *		            "answer_2": true,
+ *	                "quizz_3": "Souhaitez-vous prendre rendez-vous pour vous ?",
+ *		            "answer_3": false,
+ *		            "quizz_4": "Souhaitez-vous prendre rendez-vous pour un de vos proches ?",
+ *		            "answer_4": true,
+ *		            "quizz_5": "Souhaitez-vous prendre rendez-vous pour un ou plusieurs de vos enfants ?",
+ *		            "answer_5": true,
+ *		            "quizz_6": "Avez-vous des problématiques à régler dans votre couple ?",
+ * 		            "answer_6": false,
+ *		            "quizz_7": "Sur quoi souhaitez-vous travailler, sur un Accident ?",
+ *		            "answer_7": false,
+ *		            "quizz_8": "Sur quoi souhaitez-vous travailler, sur une Agression ?",
+ *		            "answer_8": false,
+ *		            "quizz_9": "Sur quoi souhaitez-vous travailler, sur un Deuil ?",
+ *		            "answer_9": true,
+ *		            "quizz_10": "Sur quoi souhaitez-vous travailler, sur une Phobie ?",
+ *		            "answer_10": false,
+ *		            "quizz_11": "Sur quoi souhaitez-vous travailler, sur une Anxiété ?",
+ *		            "answer_11": false,
+ *		            "quizz_12": "Sur quoi souhaitez-vous travailler, sur une Depression ?",
+ *		            "answer_12": true,
+ *		            "quizz_13": "Sur quoi souhaitez-vous travailler, sur une Solitude ?",
+ *		            "answer_13": true,
+ *		            "quizz_14": "Sur quoi souhaitez-vous travailler, sur une Confiance/Estime de soi ?",
+ *		            "answer_14": true,
+ *		            "quizz_15": "'Sur quoi souhaitez-vous travailler, sur une Addictions ?",
+ *		            "answer_15": false,
+ *		            "quizz_16": "Sur quoi souhaitez-vous travailler, sur une Evalution/Bilan psychologique et/ou test psychométriques ?",
+ *		            "answer_16": false,
+ *		            "quizz_17": "Sur quoi souhaitez-vous travailler, sur une Vie profesionnel ?",
+ *		            "answer_17": true,
+ *		            "quizz_18": "Préférez-vous un praticien Femme ? ",
+ *		            "answer_18": false
+ *                  }]             
+ */
 router.get('/:id/quizz', patientsController.getOnePatientWithQuizz);
 
-/*--Reviews for one therapist --*/
+/** Get Reviews for one therapist 
+ * @swagger
+ * /patients/reviews/therapists/{id}:
+ *   get:
+ *     tags:
+ *       - patients
+ *     description: Returns reviews for one therapist
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: integer
+ *         required: true
+ *         description: ID de l'utilisateur 
+ *     produces:
+ *       - application/json
+ *     responses:
+ *       '200':
+ *         description: Recherche effectuée avec succès
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                results:
+ *                   type: object
+ *                   items:
+ *                     type: string
+ *                   example: [{"patients_id": 1,
+ *	                "patients_lastname": "Gauthier",
+ *		            "patients_firstname": "Angélique",
+ *		            "patients_profilpicture": "NULL",
+ *		            "therapistid": 9,
+ *		            "therapistfirstname": "Philémon",
+ *		            "therapistname": "Lecomte",
+ *		            "negatifreviews": 9,
+ *		            "positifreviews": 6,
+ *		            "messages": "La séance avec mon psychologue m'a aidé à trouver des moyens de gérer mes relations difficiles avec les membres de ma famille."
+ *                  }]
+ */
 router.get('/reviews/therapists/:id',patientsController.getReviewsOneTherapists);
 
 /*--Create patient--*/

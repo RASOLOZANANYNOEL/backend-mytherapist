@@ -65,7 +65,7 @@ CHECK(
 -- Création de domain utilisant REGEX pour les rues 
 CREATE DOMAIN "streets" AS text
 CHECK(
-    value ~  '^[a-zA-Z0-9À-ÿ\s''’‘]*$'
+    value ~  '^[a-zA-Z0-9À-ÿ\s''’‘-]*$'
 ); 
 
 --Création de domain utilsant des REGEX pour les messages (1000 caracteres max)
@@ -213,3 +213,4 @@ CREATE TABLE therapists_own_specialties(
 );
 
 COMMIT;
+

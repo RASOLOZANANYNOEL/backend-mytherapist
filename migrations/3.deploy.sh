@@ -2,5 +2,5 @@
 export PGUSER=spedata
 export PGPASSWORD=spedata
 
-# sqitch deploy
-sqitch deploy 1.create_tables
+sqitch deploy
+# sqitch deploy 1.create_tables

@@ -419,7 +419,7 @@ for (let counter = 0; counter < 50; counter++) {
         }),
 
     };
-    // console.log(review);
+    console.log(review);
     reviews.push(review);
 
 }
@@ -541,7 +541,7 @@ for (let counter = 0; counter < 50; counter++) {
      
 
     };
-    console.log(therapists_has_patient);
+    // console.log(therapists_has_patient);
     therapists_has_patients.push(therapists_has_patient);
 
 }

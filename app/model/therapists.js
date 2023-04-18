@@ -164,6 +164,20 @@ class Therapists extends CoreDatamapper {
         return result.rows;
     }
 
+    async findAllTherapistBySpecialtiesAndGender(id,gender) {
+        
+        const preparedQuery = {
+            text: `SELECT t.lastname, t.firstname, s.label, t.id, t.gender FROM therapists t
+            JOIN therapists_own_specialties ts ON ts.therapists_id = t.id
+			JOIN specialties s ON s.id = ts.specialties_id
+			WHERE s.id = $1 AND t.gender = $2`,
+            values: [id,gender],
+        };
+
+        const result = await this.client.query(preparedQuery);
+
+        return result.rows;
+    }
 
     
 }

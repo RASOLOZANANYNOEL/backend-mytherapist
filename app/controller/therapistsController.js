@@ -53,10 +53,10 @@ const therapistsController = {
         res.json(deleteTherapist)
     },
 
-    async findTherapistsWithSpecialities (req,res) {
+    async findTherapistsWithSpecialties (req,res) {
         const id = req.params.id
-        const findTherapistsWithSpecialities = await therapistsDatamapper.findTherapistsWithSpecialities(id);
-        res.json(findTherapistsWithSpecialities)
+        const findTherapistsWithSpecialties = await therapistsDatamapper.findTherapistsWithSpecialties(id);
+        res.json(findTherapistsWithSpecialties)
     },
     
     async findAllTherapistsWithSpecialities (_,res) {

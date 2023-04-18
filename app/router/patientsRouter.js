@@ -129,7 +129,7 @@ router.get('/:id', patientsController.getById);
  */
 router.get('/:id/appointments', patientsController.getOnePatientWithAllAppointments);
 
-/** quizz for one patient
+/** get quizz for one patient
  * @swagger
  * /patients/{id}/quizz:
  *   get:
@@ -250,7 +250,126 @@ router.get('/:id/quizz', patientsController.getOnePatientWithQuizz);
  */
 router.get('/reviews/therapists/:id',patientsController.getReviewsOneTherapists);
 
-/*--Create patient--*/
+/** Create patient
+ * @swagger
+ * /patients/:
+ *   post:
+ *     summary: Crée un nouveau patient
+ *     description: Cette route crée un nouveau patient avec les informations fournies.
+ *     tags:
+ *       - patients
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - email
+ *               - lastname
+ *               - firstname
+ *               - password
+ *               - phonenumber
+ *               - streetname
+ *               - zipcode
+ *               - city
+*             properties:
+ *               id:
+ *                 type: integer
+ *                 example: 
+ *               email:
+ *                 type: string
+ *                 example: ""
+ *               lastname:
+ *                 type: string
+ *                 example: ""
+ *               firstname:
+ *                 type: string
+ *                 example: "r"
+ *               password:
+ *                 type: string
+ *                 example: ""
+ *               phonenumber:
+ *                 type: string
+ *                 example: ""
+ *               profilpicture:
+ *                 type: string
+ *                 nullable: true
+ *               streetname:
+ *                 type: string
+ *                 example: ""
+ *               zipcode:
+ *                 type: string
+ *                 example: ""
+ *               city:
+ *                 type: string
+ *                 example: ""
+ *               complement:
+ *                 type: string
+ *                 nullable: true
+ *               role:
+ *                 type: string
+ *                 nullable: true
+ *               updated_at:
+ *                 type: string
+ *                 format: date-time
+ *                 example: "2023-04-18T14:52:20.939Z"
+ *               quizz_id:
+ *                 type: integer
+ *                 example: 52
+ *     responses:
+ *       200:
+ *         description: Patient créé avec succès
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 id:
+ *                   type: integer
+ *                   example: 57
+ *                 email:
+ *                   type: string
+ *                   example: ""
+ *                 lastname:
+ *                   type: string
+ *                   example: ""
+ *                 firstname:
+ *                   type: string
+ *                   example: ""
+ *                 password:
+ *                   type: string
+ *                   example: ""
+ *                 phonenumber:
+ *                   type: string
+ *                   example: ""
+ *                 profilpicture:
+ *                   type: string
+ *                   nullable: true
+ *                 streetname:
+ *                   type: string
+ *                   example: ""
+ *                 zipcode:
+ *                   type: string
+ *                   example: ""
+ *                 city:
+ *                   type: string
+ *                   example: ""
+ *                 complement:
+ *                   type: string
+ *                   nullable: true
+ *                 role:
+ *                   type: string
+ *                   nullable: true
+ *                 updated_at:
+ *                   type: string
+ *                   format: date-time
+ *                   example: "2023-04-18T14:52:20.939Z"
+ *                 quizz_id:
+ *                   type:
+ *       '400':
+ *         description: Requête incorrecte, données manquantes ou invalides
+ */
 router.post('/',patientsController.createPatients);
 
 /*--CREATE appointment patient-therapist --*/

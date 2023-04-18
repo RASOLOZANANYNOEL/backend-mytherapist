@@ -7,6 +7,9 @@ const express = require("express");
 const app = express();
 const cors = require('cors');
 
+const multer = require('multer');
+const bodyParser = multer();
+
 /*********************************************/
 /********* swagger-jsdoc *********/
 /*********************************************/
@@ -39,6 +42,8 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(openapiSpecification));
 // important => appeler ce middleware avant le routeur
 app.use(cors());
 
+app.use( bodyParser.none() )
+
 // Cette ligne configure l'analyseur de corps JSON pour l'application express
 app.use(express.json());
 
@@ -66,5 +71,5 @@ const PORT = process.env.PORT ?? 3000;
 
 // Cette ligne lance le serveur express pour qu'il écoute les connexions entrantes
 app.listen(PORT, () => {
-    console.log('http://localhost:' + PORT);
+    console.log('http://localhost:' + PORT +'/api-docs');
 });

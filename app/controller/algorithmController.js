@@ -44,6 +44,36 @@ const algorithmController = {
                 getCoachingTherapistMen = await therapistsDatamapper.findAllTherapistBySpecialtiesAndGender(5,gender)
                 result =getCoachingTherapistMen
                 gender = null
+            } else if (answer.answer_1 === true && answer.answer_2 === false && answer.answer_3 === true && answer.answer_6 === false && answer.answer_15 && answer.answer_18 === true) {
+                gender = 'Femme'
+                getAddictionTherapistWomen = await therapistsDatamapper.findAllTherapistBySpecialtiesAndGender(6,gender)
+                result =getAddictionTherapistWomen
+                gender = null
+            } else if (answer.answer_1 === true && answer.answer_2 === false && answer.answer_3 === true && answer.answer_6 === false && answer.answer_15 && answer.answer_18 === false) {
+                gender = 'Homme'
+                getAddictionTherapistMen= await therapistsDatamapper.findAllTherapistBySpecialtiesAndGender(6,gender)
+                result =getAddictionTherapistMen
+                gender = null
+            } else if (answer.answer_1 === true && answer.answer_2 === false && answer.answer_3 === true && answer.answer_6 === false && answer.answer_16 && answer.answer_18 === true) {
+                gender = 'Femme'
+                getClinicalTherapistWomen = await therapistsDatamapper.findAllTherapistBySpecialtiesAndGender(8,gender)
+                result =getClinicalTherapistWomen
+                gender = null
+            } else if (answer.answer_1 === true && answer.answer_2 === false && answer.answer_3 === true && answer.answer_6 === false && answer.answer_16 && answer.answer_18 === false) {
+                gender = 'Homme'
+                getClinicalTherapistMen = await therapistsDatamapper.findAllTherapistBySpecialtiesAndGender(8,gender)
+                result =getClinicalTherapistMen
+                gender = null
+            } else if (answer.answer_1 === true && answer.answer_2 === false && answer.answer_3 === true && answer.answer_6 === false && answer.answer_17 && answer.answer_18 === true) {
+                gender = 'Femme'
+                getWorkTherapistWomen = await therapistsDatamapper.findAllTherapistBySpecialtiesAndGender(1,gender)
+                result =getWorkTherapistWomen
+                gender = null
+            } else if (answer.answer_1 === true && answer.answer_2 === false && answer.answer_3 === true && answer.answer_6 === false && answer.answer_17 && answer.answer_18 === false) {
+                gender = 'Homme'
+                getWorkTherapistMen = await therapistsDatamapper.findAllTherapistBySpecialtiesAndGender(1,gender)
+                result =getWorkTherapistMen
+                gender = null
             }
         }
         res.json(result);

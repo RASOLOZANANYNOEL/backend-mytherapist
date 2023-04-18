@@ -75,6 +75,36 @@ const algorithmController = {
                 result =getWorkTherapistMen
                 gender = null
             }
+            // proches -> enfants
+            else if (answer.answer_1 === true && answer.answer_2 === false && answer.answer_3 === false && answer.answer_4 === true && answer.answer_5 === true && answer.answer_18 === true) {
+                gender = 'Femme'
+                getChildrenTherapistWomen = await therapistsDatamapper.findAllTherapistBySpecialtiesAndGender(7,gender)
+                result =getChildrenTherapistWomen
+                gender = null
+            } else if (answer.answer_1 === true && answer.answer_2 === false && answer.answer_3 === false && answer.answer_4 === true && answer.answer_5 === true && answer.answer_18 === false) {
+                gender = 'Homme'
+                getChildrenTherapistMen = await therapistsDatamapper.findAllTherapistBySpecialtiesAndGender(7,gender)
+                result =getChildrenTherapistMen
+                gender = null
+            }
+            // proches 
+            else if (answer.answer_1 === true && answer.answer_2 === false && answer.answer_3 === false && answer.answer_4 === true && answer.answer_5 === false && (answer.answer_7 === true ||  answer.answer_8 === true ||  answer.answer_9 === true) && answer.answer_18 === true) {
+                gender = 'Femme'
+                getTraumaTherapistWomenButNotForME = await therapistsDatamapper.findAllTherapistBySpecialtiesAndGender(3,gender)
+                result =getTraumaTherapistWomenButNotForME
+                gender = null
+            } else if (answer.answer_1 === true && answer.answer_2 === false && answer.answer_3 === false && answer.answer_4 === true && answer.answer_5 === false && (answer.answer_7 === true ||  answer.answer_8 === true ||  answer.answer_9 === true) && answer.answer_18 === false) {
+                gender = 'Homme'
+                getTraumaTherapistMenButNotForME = await therapistsDatamapper.findAllTherapistBySpecialtiesAndGender(3,gender)
+                result =getTraumaTherapistMenButNotForME
+                gender = null
+            } else if (answer.answer_1 === true && answer.answer_2 === false && answer.answer_3 === false && answer.answer_4 === true && answer.answer_5 === false && (answer.answer_10 === true ||  answer.answer_11 === true ||  answer.answer_12 === true) && answer.answer_18 === true) {
+                gender = 'Femme'
+                getTCCTherapistWomenButNotForME = await therapistsDatamapper.findAllTherapistBySpecialtiesAndGender(4,gender)
+                result =getTCCTherapistWomenButNotForME
+                gender = null
+            }
+
         }
         res.json(result);
     },

@@ -275,7 +275,7 @@ router.get('/:id/quizz', patientsController.getOnePatientWithQuizz);
  *         schema:
  *           type: integer
  *         required: true
- *         description: ID de l'utilisateur 
+ *         description: ID therapist
  *     produces:
  *       - application/json
  *     responses:
@@ -306,10 +306,11 @@ router.get('/reviews/therapists/:id',patientsController.getReviewsOneTherapists)
 
 /**Create patient
  * @swagger
- * /patients/:
+ * /patients:
  *   post:
  *     summary: Ajout d'un Patient
  *     tags : 
+ *      - patients
  *     requestBody:
  *       content:
  *         application/json:
@@ -321,9 +322,7 @@ router.get('/reviews/therapists/:id',patientsController.getReviewsOneTherapists)
  *         content:
  *           application/json:
  *             schema:
- *               type: object
- *               items:
- *                 $ref: '#/components/schemas/patients'
+ *                $ref: '#/components/schemas/patients'
  */
 router.post('/',patientsController.createPatients);
 

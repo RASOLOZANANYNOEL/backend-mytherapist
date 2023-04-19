@@ -240,13 +240,127 @@ router.delete('/:id',therapistsController.deleteTherapist);
 router.get('/:id/specialties', therapistsController.findTherapistsWithSpecialties);
 
 router.post('/:therapistId/specialities/:specialityId',therapistsController.addSpecialtiesToTherapist);
+
 router.delete('/:therapistId/specialities/:specialityId',therapistsController.removeSpecialtiesFromTherapist);
+
 router.get('/sexe/:gender/specialities', therapistsController.getAllTherapistsByGenderWithSpecialities);
+
 router.get('/sexe/:gender', therapistsController.getAllTherapistsByGender);
+
+/** get One therapists with appointments
+ * @swagger
+ * /therapists/{id}/appointments:
+ *   get:
+ *     tags:
+ *       - therapists
+ *     description: Returns One therapists with appointments
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: integer
+ *         required: true
+ *         description: ID de l'utilisateur 
+ *     produces:
+ *       - application/json
+ *     responses:
+ *       '200':
+ *         description: Recherche effectuée avec succès
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                results:
+ *                   type: object
+ *                   items:
+ *                     type: string
+ *                   example: [{"beginninghour": "2020-04-20T16:00:00.000Z",
+ *		            "endtime": "2020-04-20T17:00:00.000Z",
+ *		            "patients_id": 17,
+ *		            "videosession": true,
+ *		            "audiosession": false,
+ *		            "chatsession": true,
+ *		            "sessionatoffice": false,
+ *		            "therapist_email": "Alpinien40@hotmail.fr",
+ *		            "therapist_lastname": "Lopez",
+ *		            "therapist_firstname": "Xavier",
+ *		            "therapist_phonenumber": "0671945421",
+ *		            "patient_profilepicture": "NULL",
+ *		            "therapist_adress": "PORTE DU LOUVRE 1",
+ *		            "therapist_zipcode": "75101",
+ *		            "therapist_city": "Paris",
+ *		            "therapist_adresscomplement": "id commodi voluptatibus",
+ *		            "patient_email": "Germaine_Robert90@hotmail.fr",
+ *		            "patient_phonenumber": "0601781224",
+ *		            "patient_lastname": "Durand",
+ *		            "patient_firstname": "Agapet",
+ *		            "appointment_id": 96}]
+ */
 router.get('/:id/appointments', therapistsController.getAllAppointmentOfATherapist);
+
+/** get One therapists with One appointments
+ * @swagger
+ * /therapists/{therapistId}/appointments/{appointmentId}:
+ *   get:
+ *     tags:
+ *       - therapists
+ *     description: Returns One therapists with One appointments
+ *     parameters:
+ *       - in: path
+ *         name: therapistId
+ *         schema:
+ *           type: integer
+ *         required: true
+ *         description: ID  therapist 
+ *       - in: path
+ *         name: appointmentId
+ *         schema:
+ *           type: integer
+ *         required: true
+ *         description: ID appointment
+ *     produces:
+ *       - application/json
+ *     responses:
+ *       '200':
+ *         description: Recherche effectuée avec succès
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                results:
+ *                   type: object
+ *                   items:
+ *                     type: string
+ *                   example: [{"beginninghour": "2020-04-20T16:00:00.000Z",
+ *		            "endtime": "2020-04-20T17:00:00.000Z",
+ *		            "patients_id": 17,
+ *		            "videosession": true,
+ *		            "audiosession": false,
+ *		            "chatsession": true,
+ *		            "sessionatoffice": false,
+ *		            "therapist_email": "Alpinien40@hotmail.fr",
+ *		            "therapist_lastname": "Lopez",
+ *		            "therapist_firstname": "Xavier",
+ *		            "therapist_phonenumber": "0671945421",
+ *		            "patient_profilepicture": "NULL",
+ *		            "therapist_adress": "PORTE DU LOUVRE 1",
+ *		            "therapist_zipcode": "75101",
+ *		            "therapist_city": "Paris",
+ *		            "therapist_adresscomplement": "id commodi voluptatibus",
+ *		            "patient_email": "Germaine_Robert90@hotmail.fr",
+ *		            "patient_phonenumber": "0601781224",
+ *		            "patient_lastname": "Durand",
+ *		            "patient_firstname": "Agapet",
+ *		            "appointment_id": 96}]
+ */
 router.get('/:therapistId/appointments/:appointmentId', therapistsController.getOneAppointmentOfATherapist);
+
 router.post('/:therapistId/appointment/patients/:patientId', therapistsController.creatAppointmentWithOnePatient);
+
 router.get('/:id/reviews', therapistsController.viewOneTherapistReviews);
+
 router.get('/specialties/:id', therapistsController.findAllTherapistBySpecialties);
 
 

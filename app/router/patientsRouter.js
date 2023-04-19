@@ -3,6 +3,7 @@ const patientsController = require('../controller/patientsController');
 const router = express.Router();
 
 
+
 /** get all patients
  * @swagger
  * /patients/:
@@ -273,25 +274,25 @@ router.get('/reviews/therapists/:id',patientsController.getReviewsOneTherapists)
  *               - streetname
  *               - zipcode
  *               - city
-*             properties:
+ *             properties:
  *               id:
  *                 type: integer
- *                 example: 
+ *                 example: 10
  *               email:
  *                 type: string
- *                 example: ""
+ *                 example: "john@gmail.com"
  *               lastname:
  *                 type: string
- *                 example: ""
+ *                 example: "James"
  *               firstname:
  *                 type: string
- *                 example: "r"
+ *                 example: "John"
  *               password:
  *                 type: string
- *                 example: ""
+ *                 example: "iuiyohjbnnkb4ou"
  *               phonenumber:
  *                 type: string
- *                 example: ""
+ *                 example: "0601020304"
  *               profilpicture:
  *                 type: string
  *                 nullable: true
@@ -300,7 +301,7 @@ router.get('/reviews/therapists/:id',patientsController.getReviewsOneTherapists)
  *                 example: ""
  *               zipcode:
  *                 type: string
- *                 example: ""
+ *                 example: "75012"
  *               city:
  *                 type: string
  *                 example: ""
@@ -316,7 +317,7 @@ router.get('/reviews/therapists/:id',patientsController.getReviewsOneTherapists)
  *                 example: "2023-04-18T14:52:20.939Z"
  *               quizz_id:
  *                 type: integer
- *                 example: 52
+ *                 example: 54
  *     responses:
  *       200:
  *         description: Patient créé avec succès

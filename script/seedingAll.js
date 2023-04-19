@@ -588,3 +588,4 @@ await importDataTherapistOwnSpecialties();
 await importDataReviews();
 await importDataAppointments();
 await importDataTherapistHasPatients();
+process.exit();

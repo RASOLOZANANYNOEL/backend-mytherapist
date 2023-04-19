@@ -2,7 +2,60 @@ const express = require("express");
 const patientsController = require('../controller/patientsController');
 const router = express.Router();
 
-
+/**schéma patients
+ * @swagger
+ * components:
+ *   schemas:
+ *     patients:
+ *       tags :
+ *        - patients
+ *       Form:
+ *       type: object
+ *       properties:
+ *               id:
+ *                 type: integer
+ *                 example: 
+ *               email:
+ *                 type: string
+ *                 example: "john@gmail.com"
+ *               lastname:
+ *                 type: string
+ *                 example: "James"
+ *               firstname:
+ *                 type: string
+ *                 example: "John"
+ *               password:
+ *                 type: string
+ *                 example: "iuiyohjbnnkb4ou"
+ *               phonenumber:
+ *                 type: string
+ *                 example: "0601020304"
+ *               profilpicture:
+ *                 type: string
+ *                 nullable: true
+ *               streetname:
+ *                 type: string
+ *                 example: ""
+ *               zipcode:
+ *                 type: string
+ *                 example: "75012"
+ *               city:
+ *                 type: string
+ *                 example: ""
+ *               complement:
+ *                 type: string
+ *                 nullable: true
+ *               role:
+ *                 type: string
+ *                 nullable: true
+ *               updated_at:
+ *                 type: string
+ *                 format: date-time
+ *                 example: "2023-04-18T14:52:20.939Z"
+ *               quizz_id:
+ *                 type: integer
+ *                 example: 54
+ */
 
 /** get all patients
  * @swagger
@@ -251,125 +304,26 @@ router.get('/:id/quizz', patientsController.getOnePatientWithQuizz);
  */
 router.get('/reviews/therapists/:id',patientsController.getReviewsOneTherapists);
 
-/** Create patient
+/**Create patient
  * @swagger
  * /patients/:
  *   post:
- *     summary: Crée un nouveau patient
- *     description: Cette route crée un nouveau patient avec les informations fournies.
- *     tags:
- *       - patients
+ *     summary: Ajout d'un Patient
+ *     tags : 
  *     requestBody:
- *       required: true
  *       content:
  *         application/json:
  *           schema:
- *             type: object
- *             required:
- *               - email
- *               - lastname
- *               - firstname
- *               - password
- *               - phonenumber
- *               - streetname
- *               - zipcode
- *               - city
- *             properties:
- *               id:
- *                 type: integer
- *                 example: 10
- *               email:
- *                 type: string
- *                 example: "john@gmail.com"
- *               lastname:
- *                 type: string
- *                 example: "James"
- *               firstname:
- *                 type: string
- *                 example: "John"
- *               password:
- *                 type: string
- *                 example: "iuiyohjbnnkb4ou"
- *               phonenumber:
- *                 type: string
- *                 example: "0601020304"
- *               profilpicture:
- *                 type: string
- *                 nullable: true
- *               streetname:
- *                 type: string
- *                 example: ""
- *               zipcode:
- *                 type: string
- *                 example: "75012"
- *               city:
- *                 type: string
- *                 example: ""
- *               complement:
- *                 type: string
- *                 nullable: true
- *               role:
- *                 type: string
- *                 nullable: true
- *               updated_at:
- *                 type: string
- *                 format: date-time
- *                 example: "2023-04-18T14:52:20.939Z"
- *               quizz_id:
- *                 type: integer
- *                 example: 54
+ *             $ref: '#/components/schemas/patients'
  *     responses:
  *       200:
- *         description: Patient créé avec succès
+ *         description: OK
  *         content:
  *           application/json:
  *             schema:
  *               type: object
- *               properties:
- *                 id:
- *                   type: integer
- *                   example: 57
- *                 email:
- *                   type: string
- *                   example: ""
- *                 lastname:
- *                   type: string
- *                   example: ""
- *                 firstname:
- *                   type: string
- *                   example: ""
- *                 password:
- *                   type: string
- *                   example: ""
- *                 phonenumber:
- *                   type: string
- *                   example: ""
- *                 profilpicture:
- *                   type: string
- *                   nullable: true
- *                 streetname:
- *                   type: string
- *                   example: ""
- *                 zipcode:
- *                   type: string
- *                   example: ""
- *                 city:
- *                   type: string
- *                   example: ""
- *                 complement:
- *                   type: string
- *                   nullable: true
- *                 role:
- *                   type: string
- *                   nullable: true
- *                 updated_at:
- *                   type: string
- *                   format: date-time
- *                   example: "2023-04-18T14:52:20.939Z"
- *                 quizz_id:
- *                   type:
- *       '400':
- *         description: Requête incorrecte, données manquantes ou invalides
+ *               items:
+ *                 $ref: '#/components/schemas/patients'
  */
 router.post('/',patientsController.createPatients);
 

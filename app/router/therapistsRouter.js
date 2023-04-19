@@ -2,6 +2,79 @@ const express = require("express");
 const therapistsController = require("../controller/therapistsController");
 const router = express.Router();
 
+/**schéma therapists
+ * @swagger
+ * components:
+ *   schemas:
+ *     therapists:
+ *       tags :
+ *        - therapists
+ *       Form:
+ *       type: object
+ *       properties:
+ *               id:
+ *                 type: integer
+ *                 example: 
+ *               email:
+ *                 type: string
+ *                 example: "john@gmail.com"
+ *               lastname:
+ *                 type: string
+ *                 example: "James"
+ *               firstname:
+ *                 type: string
+ *                 example: "John"
+ *               password:
+ *                 type: string
+ *                 example: "iuiyohjbnnkb4ou"
+ *               phonenumber:
+ *                 type: string
+ *                 example: "0601020304"
+ *               adelinumber:
+ *                  type: string
+ *                  example: ""
+ *               profilpicture:
+ *                 type: string
+ *                 nullable: true
+ *               profilpresentation:
+ *                  type: string
+ *                  example: ""
+ *               streetname:
+ *                 type: string
+ *                 example: ""
+ *               zipcode:
+ *                 type: string
+ *                 example: "75012"
+ *               city:
+ *                 type: string
+ *                 example: ""
+ *               complement:
+ *                 type: string
+ *                 nullable: true
+ *               videosession:
+ *                  type: boolean
+ *                  example: true
+ *               audiosession:
+ *                  type: boolean
+ *                  example: true
+ *               chatsession:
+ *                  type: boolean
+ *                  example: true
+ *               sessionatoffice:
+ *                  type: boolean
+ *                  example: true
+ *               gender:
+ *                  type: string
+ *                  example: ""
+ *               updated_at:
+ *                 type: string
+ *                 format: date-time
+ *                 example: "2023-04-18T14:52:20.939Z"
+ *               role:
+ *                 type: string
+ *                 nullable: true
+ */
+
 /** get all therapists
  * @swagger
  * /therapists/:

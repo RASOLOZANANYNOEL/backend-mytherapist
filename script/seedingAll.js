@@ -580,11 +580,11 @@ async function importDataTherapistHasPatients() {
 
 
 
-// importDataTherapists();
-// importDataQuizzes();
-// importDataPatients();
-// importDataSpecialties();
-// importDataTherapistOwnSpecialties();
-importDataReviews();
-// importDataAppointments();
-// importDataTherapistHasPatients();
+await importDataTherapists();
+await importDataQuizzes();
+await importDataPatients();
+await importDataSpecialties();
+await importDataTherapistOwnSpecialties();
+await importDataReviews();
+await importDataAppointments();
+await importDataTherapistHasPatients();

@@ -4161,4 +4161,4 @@ const adresses = [
   }
 ]
 
-export default adresses;
+module.exports = adresses;

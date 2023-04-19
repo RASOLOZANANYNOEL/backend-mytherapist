@@ -106,5 +106,4 @@ const allAppointments = [{
 
 
 ]
-
-export default allAppointments;
+module.exports = allAppointments;

@@ -16,7 +16,7 @@
     "url": "https://github.com/O-clock-Ohm/projet-07-my-therapist-back/issues"
   },
   "homepage": "https://github.com/O-clock-Ohm/projet-07-my-therapist-back#readme",
-  "type":"module",
+  
   "dependencies": {
     "@faker-js/faker": "^7.6.0",
     "axios": "^1.3.5",

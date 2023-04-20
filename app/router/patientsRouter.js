@@ -183,7 +183,6 @@ router.get('/:id', patientsController.getById);
  *	                "appointmentend": "2023-04-19T14:00:00.000Z"
  *                  }]             
  */
-
 router.get('/:id/appointments',authMiddleware,patientsController.getOnePatientWithAllAppointments);
 
 /** get quizz for one patient

@@ -150,7 +150,7 @@ class Therapists extends CoreDatamapper {
 
     async viewOneTherapistReviews(id) {
         const preparedQuery = {
-            text:`SELECT r.messages AS patient_messages, r.negatifreviews AS badscore, r.positifreviews AS godscore, p.firstname AS patient_firstname, p.lastname AS patient_lastname, p.id AS patient_id, p.profilpicture AS patient_profilpicture, t.lastname AS therapist_lastname, t.firstname AS therapist_firstname FROM reviews r
+            text:`SELECT r.messages AS patient_messages, r.negatifreviews AS badscore, r.positifreviews AS goodscore, p.firstname AS patient_firstname, p.lastname AS patient_lastname, p.id AS patient_id, p.profilpicture AS patient_profilpicture, t.lastname AS therapist_lastname, t.firstname AS therapist_firstname FROM reviews r
             JOIN therapists t  ON t.id = therapists_id
             JOIN patients p ON p.id = patients_id
             WHERE t.id = $1;`,

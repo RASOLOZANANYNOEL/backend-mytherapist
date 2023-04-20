@@ -119,7 +119,6 @@ const { isTherapistMiddleware } = require('../middlewares')
  *		            "role": "therapist"
  *                  }]
  */
-
 router.get('/', authMiddleware,isTherapistMiddleware,therapistsController.getAll);
 
 /** get all therapists with specialties
@@ -458,28 +457,52 @@ router.post('/:therapistId/appointment/patients/:patientId', therapistsControlle
  *                   type: object
  *                   items:
  *                     type: string
- *                   example: [{"id": 5,"email": "Flix.Lopez@gmail.com",
- *	                "lastname": "Cousin",
- *	                "firstname": "Philippe",
- *	                "password": "MYknB4McqbzeXSM",
- *	                "phonenumber": "0631933655",
- *	                "adelinumber": "402331811",
- *	                "profilpicture": "NULL",
- *	                "profilpresentation": "Adipisci consequuntur ipsum repudiandae tempore explicabo. Quidem saepe eum magni voluptate. Quisquam corrupti amet nostrum. Ut nesciunt corporis. Molestias sapiente fugit magni autem facilis. Doloremque ullam tempore pariatur sapiente nam reprehenderit occaecati aut.",
- *	                "streetname": "PORT DU LOUVRE",
- *	                "zipcode": "75101",
- *	                "city": "Paris",
- *	                "complement": "Sunt unde ipsum.",
- *	                "videosession": true,
- *	                "audiosession": true,
- *	                "chatsession": false,
- *	                "sessionatoffice": false,
- *	                "gender": "Homme",
- *	                "updated_at": "2020-04-20T18:00:00.000Z",
- *	                "role": "therapist"}]
+ *                   example: [{"patient_messages": "Mon psychologue a été très attentif et compréhensif pendant la séance.",
+ *		            "badscore": 3,
+ *		            "godscore": 1,
+ *		            "patient_firstname": "Agapet",
+ *		            "patient_lastname": "Richard",
+ *		            "patient_id": 20,
+ *		            "patient_profilpicture": "NULL",
+ *		            "therapist_lastname": "Robert",
+ *		            "therapist_firstname": "Céline",
+ *		            "appointment_id": 96}]
  */
 router.get('/:id/reviews', therapistsController.viewOneTherapistReviews);
 
+/** get therapists with One specialties
+ * @swagger
+ * /therapists/specialties/{id}:
+ *   get:
+ *     tags:
+ *       - therapists
+ *     description: Returns therapists with one specialties
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: integer
+ *         required: true
+ *         description: specialties ID
+ *     produces:
+ *       - application/json
+ *     responses:
+ *       '200':
+ *         description: Recherche effectuée avec succès
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                results:
+ *                   type: object
+ *                   items:
+ *                     type: string
+ *                   example: [{"lastname": "Giraud",
+ *	                "firstname": "Alexandrine",
+ *		            "label": "Psychologue thérapie de couple",
+ *		            "gender": "Homme"}]
+ */
 router.get('/specialties/:id', therapistsController.findAllTherapistBySpecialties);
 
 

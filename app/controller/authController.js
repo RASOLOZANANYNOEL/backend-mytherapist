@@ -96,7 +96,7 @@ const authController = {
     } = req.body;
 
     let user = await therapistsDatamapper.findByEmail(email);
-
+   
     // Si on a pas trouvé de therapiste, on regarde dans les users
     if(!user) {
       user = await patientsDatamapper.findByEmail(email);

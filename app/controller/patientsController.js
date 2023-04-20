@@ -42,6 +42,7 @@ const patientsController = {
             streetname : req.body.streetname,
             zipcode : req.body.zipcode,
             city : req.body.city,
+            role : req.body.role
         }
         const updatePatients = await patientsDatamapper.update({id},patientsInfo);
         res.json(updatePatients);

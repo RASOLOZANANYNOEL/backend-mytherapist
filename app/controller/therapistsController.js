@@ -41,6 +41,7 @@ const therapistsController = {
             email:req.body.email,
             city:req.body.city,
             gender:req.body.gender,
+            role: req.body.role
         }
         
         const updateTherapist = await therapistsDatamapper.update({id},therapistInfo)

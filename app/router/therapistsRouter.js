@@ -1,8 +1,10 @@
 const express = require("express");
 const therapistsController = require("../controller/therapistsController");
 const router = express.Router();
+const { authMiddleware } = require('../middlewares');
+const { isTherapistMiddleware } = require('../middlewares')
 
-router.get('/',therapistsController.getAll);
+router.get('/', authMiddleware,isTherapistMiddleware,therapistsController.getAll);
 router.get('/specialities', therapistsController.findAllTherapistsWithSpecialities);
 
 router.post('/',therapistsController.creatTherapist);

@@ -1,27 +1,38 @@
-import * as dotenv from "dotenv";
+const dotenv = require('dotenv');
 dotenv.config();
-import pkg from 'pg';
 const {
     Pool
-} = pkg;
+} = require('pg');
 const pool = new Pool();
 
-
-import {
+const {
     faker
-} from '@faker-js/faker';
+} = require('@faker-js/faker');
 faker.locale = 'fr';
+
+/*********************************************/
+/************** Data Reset Before Seed ***************/
+/*********************************************/
+
+async function resetDB() {
+    console.log('Start DB Reset')
+
+    const sqlQuery = `TRUNCATE TABLE "therapists", "patients", "appointments", "specialties", "quizz", "reviews", "therapists_has_patients", "therapists_own_specialties" RESTART IDENTITY CASCADE;`;
+
+    await pool.query(sqlQuery);
+
+    console.log('End DB Reset')
+}
 
 /*********************************************/
 /************** therapists seeding ***************/
 /*********************************************/
 
-import adresses from './Paris01.js';
+const adresses = require('./Paris01.js');
 const adresse = adresses
 const therapists = [];
 
 //therapist seeding
-console.time("Ajout des utilisateurs");
 for (let counter = 0; counter < 50; counter++) {
     const therapist = {
         email: faker.internet.email(),
@@ -49,14 +60,10 @@ for (let counter = 0; counter < 50; counter++) {
 
     therapists.push(therapist);
 }
-console.log("Nombre de therapistes : ", therapists.length);
-console.time("Ajout des therapistes");
-
-
 
 
 async function importDataTherapists() {
-    await pool.connect();
+    console.time("Ajout des thérapistes");
 
     let values = [];
     let parameters = [];
@@ -95,10 +102,10 @@ async function importDataTherapists() {
         requestCount++;
     }
 
-    console.timeEnd("Ajout des therapistes");
+    console.log("Nombre de therapistes : ", therapists.length);
     console.log("Nombre de requêtes : ", requestCount);
+    console.timeEnd("Ajout des thérapistes");
 
-    await pool.end();
 }
 
 /*********************************************/
@@ -106,7 +113,6 @@ async function importDataTherapists() {
 /*********************************************/
 //quizz seeding
 const quizzes = [];
-console.time("Ajout des utilisateurs");
 for (let counter = 0; counter < 50; counter++) {
     const quizz = {
         quizz_1: "Vous-êtes un particulier ?",
@@ -151,12 +157,10 @@ for (let counter = 0; counter < 50; counter++) {
 
     quizzes.push(quizz);
 }
-console.log("Nombre de quizz : ", quizzes.length);
-console.time("Ajout des quizz");
 
 
 async function importDataQuizzes() {
-    await pool.connect();
+    console.time("Ajout des quizz");
 
     let values = [];
     let parameters = [];
@@ -214,21 +218,20 @@ async function importDataQuizzes() {
         requestCount++;
     }
 
-    console.timeEnd("Ajout des quizz");
+    console.log("Nombre de quizz : ", quizzes.length);
     console.log("Nombre de requêtes : ", requestCount);
+    console.timeEnd("Ajout des quizz");
 
-    await pool.end();
 }
 
 /*********************************************/
 /************** patients seeding ***************/
 /*********************************************/
-import adressesP2 from './Paris02.js';
+const adressesP2 = require('./Paris02.js');
 const adresseParisDeux = adressesP2
 const patients = [];
 
 //patient seeding
-console.time("Ajout des utilisateurs");
 for (let counter = 0; counter < 50; counter++) {
     const patient = {
         email: faker.internet.email(),
@@ -242,18 +245,16 @@ for (let counter = 0; counter < 50; counter++) {
         city: "Paris",
         complement: faker.lorem.text(100),
         role: "patient",
-        updated_at : "2020-04-20 15:00:00-04",
+        updated_at: "2020-04-20 15:00:00-04",
         quizz_id: counter + 1,
     };
     // console.log(patient);
     patients.push(patient);
 
 }
-console.log("Nombre de patients : ", patients.length);
-console.timeEnd("Ajout des patients");
 
 async function importDataPatients() {
-    await pool.connect();
+    console.time("Ajout des patients");
 
     let values = [];
     let parameters = [];
@@ -286,22 +287,22 @@ async function importDataPatients() {
         requestCount++;
     }
 
-    console.timeEnd("Ajout des patients");
-    console.log("Nombre de requêtes : ", requestCount);
 
-    await pool.end();
+    console.log("Nombre de patients : ", patients.length);
+    console.log("Nombre de requêtes : ", requestCount);
+    console.timeEnd("Ajout des patients");
+
 }
 
 /*********************************************/
 /************** specialties seeding ***************/
 /*********************************************/
 
-import allSpecialties from './specialties.js';
+const allSpecialties = require('./specialties.js');
 const oneSpecialties = allSpecialties
 const specialties = [];
 
 
-console.time("Ajout des specialties");
 for (let counter = 0; counter < allSpecialties.length; counter++) {
     const specialty = {
         label: allSpecialties[counter].label,
@@ -311,11 +312,10 @@ for (let counter = 0; counter < allSpecialties.length; counter++) {
     specialties.push(specialty);
 
 }
-console.log("Nombre de specialties : ", specialties.length);
-console.timeEnd("Ajout des specialties");
 
 async function importDataSpecialties() {
-    await pool.connect();
+    console.time("Ajout des specialties");
+
 
     let values = [];
     let parameters = [];
@@ -336,10 +336,10 @@ async function importDataSpecialties() {
         requestCount++;
     }
 
-    console.timeEnd("Ajout des specialties");
+    console.log("Nombre de specialties : ", specialties.length);
     console.log("Nombre de requêtes : ", requestCount);
+    console.timeEnd("Ajout des specialties");
 
-    await pool.end();
 }
 
 /*********************************************/
@@ -348,22 +348,21 @@ async function importDataSpecialties() {
 
 const therapist_own_specialties = [];
 
-console.time("Ajout des utilisateurs");
 for (let counter = 0; counter < 50; counter++) {
     const therapist_own_specialty = {
         therapists_id: counter + 1,
-        specialties_id: faker.random.numeric(1,{ bannedDigits: ['9'] }),
+        specialties_id: faker.random.numeric(1, {
+            bannedDigits: ['9']
+        }),
 
     };
     // console.log(therapist_own_specialty);
     therapist_own_specialties.push(therapist_own_specialty);
 
 }
-console.log("Nombre de therapist_own_specialties : ", therapist_own_specialties.length);
-console.timeEnd("Ajout des therapist_own_specialties");
 
 async function importDataTherapistOwnSpecialties() {
-    await pool.connect();
+    console.time("Ajout des spécialités des thérapistes");
 
     let values = [];
     let parameters = [];
@@ -385,22 +384,20 @@ async function importDataTherapistOwnSpecialties() {
         requestCount++;
     }
 
-    console.timeEnd("Ajout des therapists_own_specialties");
+    console.log("Nombre de therapist_own_specialties : ", therapist_own_specialties.length);
     console.log("Nombre de requêtes : ", requestCount);
+    console.timeEnd("Ajout des spécialités des thérapistes");
 
-    await pool.end();
 }
 
 /*********************************************/
 /*************** review seeding *************/
 /*********************************************/
 
-import allreviews from './reviews.js';
+const allreviews = require('./reviews.js');
 const oneReview = allreviews
 const reviews = [];
 
-
-console.time("Ajout des reviews");
 for (let counter = 0; counter < 50; counter++) {
     const review = {
         messages: oneReview[counter % oneReview.length].message,
@@ -412,22 +409,27 @@ for (let counter = 0; counter < 50; counter++) {
             'min': 0,
             'max': 1
         }),
-        patients_id: faker.datatype.number({min : 51, max: 100}),
+        patients_id: faker.datatype.number({
+            min: 1,
+            max: 50
+        }),
         therapists_id: faker.random.numeric({
             'min': 1,
             'max': 50
         }),
 
     };
-    console.log(review);
+    //console.log(review);
     reviews.push(review);
 
+
 }
-console.log("Nombre de reviews : ", reviews.length);
-console.timeEnd("Ajout des review");
+
+console.log('coucou');
 
 async function importDataReviews() {
-    await pool.connect();
+    console.time("Ajout des reviews");
+
 
     let values = [];
     let parameters = [];
@@ -452,26 +454,27 @@ async function importDataReviews() {
         requestCount++;
     }
 
-    console.timeEnd("Ajout des reviews");
+    console.log("Nombre de reviews : ", reviews.length);
     console.log("Nombre de requêtes : ", requestCount);
+    console.timeEnd("Ajout des review");
 
-    await pool.end();
 }
 /*********************************************/
 /*************** appointment seeding *************/
 /*********************************************/
 
-import allAppointments from './appointments.js';
+const allAppointments = require('./appointments.js');
 const oneAppointments = allAppointments
 const appointments = [];
 
-
-console.time("Ajout des allAppointments");
 for (let counter = 0; counter < 50; counter++) {
     const appointment = {
         beginninghour: oneAppointments[counter % oneAppointments.length].beginninghour,
         endtime: oneAppointments[counter % oneAppointments.length].endtime,
-        patients_id: faker.datatype.number({min : 51, max: 100}),
+        patients_id: faker.datatype.number({
+            min: 1,
+            max: 50
+        }),
         therapists_id: faker.random.numeric({
             'min': 1,
             'max': 50
@@ -487,11 +490,10 @@ for (let counter = 0; counter < 50; counter++) {
     appointments.push(appointment);
 
 }
-console.log("Nombre de allAppointments : ", appointments.length);
-console.timeEnd("Ajout des allAppointments");
 
 async function importDataAppointments() {
-    await pool.connect();
+    console.time("Ajout des rendez-vous");
+
 
     let values = [];
     let parameters = [];
@@ -519,10 +521,10 @@ async function importDataAppointments() {
         requestCount++;
     }
 
-    console.timeEnd("Ajout des allAppointments");
+    console.log("Nombre de rendez-vous : ", appointments.length);
     console.log("Nombre de requêtes : ", requestCount);
+    console.timeEnd("Ajout des rendez-vous");
 
-    await pool.end();
 }
 
 
@@ -533,23 +535,24 @@ async function importDataAppointments() {
 
 const therapists_has_patients = [];
 
-console.time("Ajout des utilisateurs");
 for (let counter = 0; counter < 50; counter++) {
     const therapists_has_patient = {
-      patients_id: faker.datatype.number({min : 51, max: 100}),
-      therapists_id: counter + 1,
-     
+        patients_id: faker.datatype.number({
+            min: 1,
+            max: 50
+        }),
+        therapists_id: counter + 1,
+
 
     };
     // console.log(therapists_has_patient);
     therapists_has_patients.push(therapists_has_patient);
 
 }
-console.log("Nombre de therapists_has_patients : ", therapists_has_patients.length);
-console.timeEnd("Ajout des therapists_has_patients");
 
 async function importDataTherapistHasPatients() {
-    await pool.connect();
+    console.time("Ajout des thérapistes des patients");
+
 
     let values = [];
     let parameters = [];
@@ -571,20 +574,23 @@ async function importDataTherapistHasPatients() {
         requestCount++;
     }
 
-    console.timeEnd("Ajout des therapists_has_patients");
+    console.log("Nombre de thérapistes des patients : ", therapists_has_patients.length);
     console.log("Nombre de requêtes : ", requestCount);
+    console.timeEnd("Ajout des thérapistes des patients");
 
-    await pool.end();
 }
 
+(async () => {
+    await resetDB();
+    await importDataTherapists();
+    await importDataQuizzes();
+    await importDataPatients();
+    await importDataSpecialties();
+    await importDataTherapistOwnSpecialties();
+    await importDataReviews();
+    await importDataAppointments();
+    await importDataTherapistHasPatients();
 
-
-
-// importDataTherapists();
-// importDataQuizzes();
-// importDataPatients();
-// importDataSpecialties();
-// importDataTherapistOwnSpecialties();
-// importDataReviews();
-// importDataAppointments();
-// importDataTherapistHasPatients();
+    await pool.end();
+    console.log('Script over');
+})();

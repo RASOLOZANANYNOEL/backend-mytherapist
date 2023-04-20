@@ -2641,4 +2641,4 @@ const adressesP2 =[
   }
 ]
 
-export default adressesP2;
+module.exports = adressesP2;

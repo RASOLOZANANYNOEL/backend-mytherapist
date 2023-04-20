@@ -1,9 +1,9 @@
 
 
-therapistsDatamapper = require('../model/therapists')
+const therapistsDatamapper = require('../model/therapists')
 
 const therapistsController = {
-    async getAll(_,res) {
+    async getAll(req,res) {
         const allTherapists = await therapistsDatamapper.findAll();
         res.json(allTherapists)
     },
@@ -41,6 +41,7 @@ const therapistsController = {
             email:req.body.email,
             city:req.body.city,
             gender:req.body.gender,
+            role: req.body.role
         }
         
         const updateTherapist = await therapistsDatamapper.update({id},therapistInfo)

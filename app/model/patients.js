@@ -18,6 +18,17 @@ class Patients extends CoreDatamapper {
         return result.rows;
     }
 
+    async findByEmail(email) {
+        const preparedQuery = {
+            text: `SELECT * FROM patients t WHERE t.email = $1`,
+            values: [email],
+        };
+
+        const result = await this.client.query(preparedQuery);
+
+        return result.rows[0];
+    }
+
     async getOnePatientWithQuizz (id){
         const preparedQuery = {
             text: `SELECT p.email, p.lastname,p.firstname, p.phonenumber,p.profilpicture, p.streetname,p.zipcode,p.city,p.complement, p.quizz_id ,

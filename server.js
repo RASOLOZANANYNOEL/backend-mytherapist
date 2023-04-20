@@ -1,5 +1,6 @@
 // Cette ligne charge les variables d'environnement depuis le fichier .env
 require("dotenv").config();
+const cors = require('cors');
 // Cette ligne importe le module express
 const express = require("express");
 
@@ -7,6 +8,7 @@ const express = require("express");
 const app = express();
 
 // Cette ligne configure l'analyseur de corps JSON pour l'application express
+app.use(cors());
 app.use(express.json());
 
 const routerTherapists =require('./app/router/therapistsRouter');
@@ -14,7 +16,9 @@ const routerSpecialties =require('./app/router/specialtiesRouter');
 const routerAdmin =require('./app/router/adminRouter');
 const routerPatients = require("./app/router/patientsRouter");
 const routerAlgorithm = require("./app/router/algorithmRouter");
+const routerAuth = require("./app/router/authRouter");
 
+app.use('/auth', routerAuth);
 app.use('/therapists',routerTherapists);
 app.use('/specialties',routerSpecialties);
 app.use('/admin',routerAdmin);

@@ -153,4 +153,4 @@ const allReviews = [
     }
 ]
 
-export default allReviews;
+module.exports = allReviews;

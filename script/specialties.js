@@ -26,4 +26,4 @@ const allSpecialties = [
 ]
 
 
-export default allSpecialties;
+module.exports =  allSpecialties;

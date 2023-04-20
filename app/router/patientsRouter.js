@@ -1,13 +1,15 @@
 const express = require("express");
 const patientsController = require('../controller/patientsController');
 const router = express.Router();
+const { authMiddleware } = require('../middlewares');
+const { isPatientMiddleware } = require('../middlewares')
 
 /*--get all patients--*/
-router.get('/', patientsController.getAll);
+router.get('/', authMiddleware, isPatientMiddleware,patientsController.getAll);
 /*--get one patient --*/
 router.get('/:id', patientsController.getById);
 /*--get appointments for one patient--*/
-router.get('/:id/appointments', patientsController.getOnePatientWithAllAppointments);
+router.get('/:id/appointments',authMiddleware,patientsController.getOnePatientWithAllAppointments);
 
 /*-- quizz for one patient--*/
 router.get('/:id/quizz', patientsController.getOnePatientWithQuizz);

@@ -3,7 +3,7 @@
 const therapistsDatamapper = require('../model/therapists')
 
 const therapistsController = {
-    async getAll(_,res) {
+    async getAll(req,res) {
         const allTherapists = await therapistsDatamapper.findAll();
         res.json(allTherapists)
     },

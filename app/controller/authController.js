@@ -18,21 +18,19 @@ const authController = {
         streetname,
         zipcode,
         city,
-        gender
+        gender,
       } = req.body;
     
 
 
     // vérifier que les deux mdps sont similaires
     if (password !== confirmPassword) {
-      res.status(400).json({
+      return res.status(400).json({
         error: "Les mots de passe ne sont pas identiques"
       });
     }
     // crypter le mdp
     const passwordCrypted = await bcrypt.hash(password, 10);
-
-    console.log(passwordCrypted);
 
     // ajouter le therapist en bdd
     const therapistInfo = {
@@ -45,14 +43,51 @@ const authController = {
       streetname,
       zipcode,
       city,
-      gender
+      gender,
+      role: 'therapist'
     }
     const createTherapist = await therapistsDatamapper.create(therapistInfo);
-    res.status(201).json(createTherapist)
+    return res.status(201).json(createTherapist)
   },
   async registerPatient(req, res) {
     // TODO register comme therapist
+    // récupérer les données du body
+    const {
+        email,
+        lastname,
+        firstname,
+        password,
+        confirmPassword,
+        phonenumber,
+        streetname,
+        zipcode,
+        city,
+        quizz_id,
+      } = req.body;
 
+     // vérifier que les deux mdps sont similaires
+     if (password !== confirmPassword) {
+        return res.status(400).json({
+          error: "Les mots de passe ne sont pas identiques"
+        });
+      }
+    // crypter le mdp
+    const passwordCrypted = await bcrypt.hash(password, 10);
+    // ajouter le patient en bdd
+    const patientInfo = {
+        email,
+        lastname,
+        firstname,
+        password: passwordCrypted,
+        phonenumber,
+        streetname,
+        zipcode,
+        city,
+        quizz_id,
+        role: 'patient'
+      }
+      const createPatient = await patientsDatamapper.create(patientInfo);
+      return res.status(201).json(createPatient)
   },
   async login(req, res) {
     const {
@@ -62,20 +97,19 @@ const authController = {
 
     let user = await therapistsDatamapper.findByEmail(email);
 
-    // TODO
-    // Si pas de therapist trouvé, chercher dans la table patients
+    // Si on a pas trouvé de therapiste, on regarde dans les users
     if(!user) {
       user = await patientsDatamapper.findByEmail(email);
     }
 
     if(!user) {
-      res.status(400).json({error: "L'email ou le mot de passe n'est pas correct."})
+      return res.status(400).json({error: "L'email ou le mot de passe n'est pas correct."})
     }
 
     const passwordIsOk = await bcrypt.compare(password, user.password);
 
     if(!passwordIsOk) {
-      res.status(400).json({error: "L'email ou le mot de passe n'est pas correct."});
+      return res.status(400).json({error: "L'email ou le mot de passe n'est pas correct."});
     }
 
     delete user.password;
@@ -87,10 +121,10 @@ const authController = {
     try {
       jwt.verify(token, 'therapist-secret')
     } catch(e) {
-      res.status(400).json({error: "L'authentification a échoué"})
+      return res.status(400).json({error: "L'authentification a échoué"})
     }
 
-    res.status(200).json({token});
+    return res.status(200).json({token});
   }
 }
 

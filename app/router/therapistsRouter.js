@@ -119,7 +119,7 @@ const { isTherapistMiddleware } = require('../middlewares')
  *		            "role": "therapist"
  *                  }]
  */
-router.get('/',therapistsController.getAll);
+router.get('/', authMiddleware,isTherapistMiddleware,therapistsController.getAll);
 
 /** get all therapists with specialties
  * @swagger
@@ -149,8 +149,6 @@ router.get('/',therapistsController.getAll);
  *		            "id": 3}]
  */
 router.get('/specialties', therapistsController.findAllTherapistsWithSpecialities);
-router.get('/', authMiddleware,isTherapistMiddleware,therapistsController.getAll);
-router.get('/specialities', therapistsController.findAllTherapistsWithSpecialities);
 
 router.post('/',therapistsController.creatTherapist);
 
@@ -246,6 +244,7 @@ router.get('/:id/specialties', therapistsController.findTherapistsWithSpecialtie
 router.post('/:therapistId/specialities/:specialityId',therapistsController.addSpecialtiesToTherapist);
 
 router.delete('/:therapistId/specialities/:specialityId',therapistsController.removeSpecialtiesFromTherapist);
+
 
 router.get('/sexe/:gender/specialities', therapistsController.getAllTherapistsByGenderWithSpecialities);
 
@@ -363,8 +362,80 @@ router.get('/:therapistId/appointments/:appointmentId', therapistsController.get
 
 router.post('/:therapistId/appointment/patients/:patientId', therapistsController.creatAppointmentWithOnePatient);
 
+/** get One therapists with reviews
+ * @swagger
+ * /therapists/{id}/reviews:
+ *   get:
+ *     tags:
+ *       - therapists
+ *     description: Returns One therapists with reviews
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: integer
+ *         required: true
+ *         description: ID de l'utilisateur 
+ *     produces:
+ *       - application/json
+ *     responses:
+ *       '200':
+ *         description: Recherche effectuée avec succès
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                results:
+ *                   type: object
+ *                   items:
+ *                     type: string
+ *                   example: [{"patient_messages": "Mon psychologue a été très attentif et compréhensif pendant la séance.",
+ *		            "badscore": 3,
+ *		            "godscore": 1,
+ *		            "patient_firstname": "Agapet",
+ *		            "patient_lastname": "Richard",
+ *		            "patient_id": 20,
+ *		            "patient_profilpicture": "NULL",
+ *		            "therapist_lastname": "Robert",
+ *		            "therapist_firstname": "Céline",
+ *		            "appointment_id": 96}]
+ */
 router.get('/:id/reviews', therapistsController.viewOneTherapistReviews);
 
+/** get therapists with One specialties
+ * @swagger
+ * /therapists/specialties/{id}:
+ *   get:
+ *     tags:
+ *       - therapists
+ *     description: Returns therapists with one specialties
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: integer
+ *         required: true
+ *         description: specialties ID
+ *     produces:
+ *       - application/json
+ *     responses:
+ *       '200':
+ *         description: Recherche effectuée avec succès
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                results:
+ *                   type: object
+ *                   items:
+ *                     type: string
+ *                   example: [{"lastname": "Giraud",
+ *	                "firstname": "Alexandrine",
+ *		            "label": "Psychologue thérapie de couple",
+ *		            "gender": "Homme"}]
+ */
 router.get('/specialties/:id', therapistsController.findAllTherapistBySpecialties);
 
 

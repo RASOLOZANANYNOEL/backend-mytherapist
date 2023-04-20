@@ -6,7 +6,7 @@ const express = require("express");
 
 // Cette ligne crée une instance d'application express
 const app = express();
-const cors = require('cors');
+
 
 const multer = require('multer');
 const bodyParser = multer();
@@ -41,7 +41,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(openapiSpecification));
 
 // on autorise les requêtes depuis d'autres domaines que celui de notre API
 // important => appeler ce middleware avant le routeur
-app.use(cors());
+
 
 app.use( bodyParser.none() )
 
@@ -76,5 +76,5 @@ const PORT = process.env.PORT ?? 3000;
 
 // Cette ligne lance le serveur express pour qu'il écoute les connexions entrantes
 app.listen(PORT, () => {
-    console.log('http://localhost:' + PORT +'/api-docs');
+    console.log('http://localhost:' + PORT +'/api-docs')
 });

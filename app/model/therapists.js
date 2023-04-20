@@ -39,7 +39,6 @@ class Therapists extends CoreDatamapper {
 
         try {
             const result = await this.client.query(preparedQuery);
-            console.log('Result:', result.rows); 
             return result.rows;
         } catch (error) {
             console.error('Error in AllTherapistsWithSpecialities:', error); 

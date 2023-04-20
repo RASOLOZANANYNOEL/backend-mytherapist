@@ -1,5 +1,6 @@
 // Cette ligne charge les variables d'environnement depuis le fichier .env
 require("dotenv").config();
+const cors = require('cors');
 // Cette ligne importe le module express
 const express = require("express");
 
@@ -45,6 +46,7 @@ app.use(cors());
 app.use( bodyParser.none() )
 
 // Cette ligne configure l'analyseur de corps JSON pour l'application express
+app.use(cors());
 app.use(express.json());
 
 /*********************************************/
@@ -56,14 +58,14 @@ const routerSpecialties =require('./app/router/specialtiesRouter');
 const routerAdmin =require('./app/router/adminRouter');
 const routerPatients = require("./app/router/patientsRouter");
 const routerQuizz = require('./app/router/quizzRouter');
+const routerAuth = require("./app/router/authRouter");
 
+app.use('/auth', routerAuth);
 app.use('/therapists',routerTherapists);
 app.use('/specialties',routerSpecialties);
 app.use('/admin',routerAdmin);
 app.use('/patients',routerPatients);
 app.use('/quizz',routerQuizz);
-
-
 
 // Cette ligne définit le port sur lequel le serveur écoutera les connexions
 // Si la variable d'environnement PORT n'est pas définie, le port 3000 sera utilisé

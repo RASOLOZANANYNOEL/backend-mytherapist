@@ -18,6 +18,17 @@ class Therapists extends CoreDatamapper {
 
         return result.rows;
     }
+
+    async findByEmail(email) {
+        const preparedQuery = {
+            text: `SELECT * FROM therapists t WHERE t.email = $1`,
+            values: [email],
+        };
+
+        const result = await this.client.query(preparedQuery);
+
+        return result.rows[0];
+    }
     
     async AllTherapistsWithSpecialities() {
         const preparedQuery = {

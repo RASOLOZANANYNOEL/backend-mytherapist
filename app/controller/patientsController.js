@@ -31,7 +31,6 @@ const patientsController = {
         res.json(createPatients)
 
     },
-
     async updatePatients(req,res){
         const id = req.params.id
         const patientsInfo = {

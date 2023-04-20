@@ -1,4 +1,4 @@
-const { getOnePatientWithQuizz, getReviewsOneTherapist, createAppointmentOneTherapist, createReviewsOneTherapist } = require('../model/patients');
+
 const patientsDatamapper= require('../model/patients');
 
 const patientsController = {
@@ -24,8 +24,7 @@ const patientsController = {
             streetname : req.body.streetname,
             zipcode : req.body.zipcode,
             city : req.body.city,
-            quizz_id : req.body.quizz_id
-        
+            quizz_id : req.body.quizz_id     
         }
         const createPatients = await patientsDatamapper.create(patientsInfo);
         res.json(createPatients)

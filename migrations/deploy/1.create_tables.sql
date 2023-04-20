@@ -37,9 +37,8 @@ CHECK(
 -- Création de domain utilisant des REGEX pour les mdp (au minimim 8 caractères, un lettre, un numéro et un caractère spécial)
 CREATE DOMAIN "passwords" AS text
 CHECK(
-    value ~ '^[a-zA-Z0-9@$!%*#?&_]{8,}$'
+    value ~ '^[a-zA-Z0-9@$.!%*#?&_]{8,}$'
 );
-
 
 -- Création de domain utilisant des REGEX pour les numéro de telephone 
 CREATE DOMAIN "phone_number" AS text
@@ -86,7 +85,7 @@ CREATE TABLE therapists (
     "email" email NOT NULL UNIQUE, --REGEX
     "lastname" firstnames_lastnames_cities  NOT NULL, --REGEX
     "firstname" firstnames_lastnames_cities  NOT NULL, --REGEX
-    "password" passwords NOT NULL UNIQUE,
+    "password" passwords NOT NULL,
     "phonenumber" phone_number NOT NULL UNIQUE, --REGEX
     "adelinumber" adeli_number  NOT NULL UNIQUE, --REGEX
     "profilpicture" TEXT NULL,
@@ -153,7 +152,7 @@ CREATE TABLE patients (
     "email" email  NOT NULL UNIQUE, --REGEX
     "lastname" firstnames_lastnames_cities NOT NULL, --REGEX
     "firstname" firstnames_lastnames_cities NOT NULL, --REGEX
-    "password" passwords NOT NULL UNIQUE, --REGEX
+    "password" passwords NOT NULL, --REGEX
     "phonenumber" phone_number NOT NULL UNIQUE, --REGEX
     "profilpicture" TEXT NULL,
     "streetname" streets NOT NULL, --REGEX

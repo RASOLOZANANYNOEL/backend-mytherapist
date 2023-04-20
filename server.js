@@ -15,13 +15,13 @@ const routerTherapists =require('./app/router/therapistsRouter');
 const routerSpecialties =require('./app/router/specialtiesRouter');
 const routerAdmin =require('./app/router/adminRouter');
 const routerPatients = require("./app/router/patientsRouter");
+const routerAuth = require("./app/router/authRouter");
 
+app.use('/auth', routerAuth);
 app.use('/therapists',routerTherapists);
 app.use('/specialties',routerSpecialties);
 app.use('/admin',routerAdmin);
 app.use('/patients',routerPatients);
-
-
 
 // Cette ligne définit le port sur lequel le serveur écoutera les connexions
 // Si la variable d'environnement PORT n'est pas définie, le port 3000 sera utilisé

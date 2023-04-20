@@ -8,4 +8,4 @@ router.get('/',quizzController.getAll);
 /*--get one quizz --*/
 router.get('/:id',quizzController.getById);
 
-module.exports = router;
+module.exports = router; 

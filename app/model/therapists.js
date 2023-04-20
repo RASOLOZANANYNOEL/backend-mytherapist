@@ -5,7 +5,7 @@ class Therapists extends CoreDatamapper {
     tableName = 'therapists';
 
     
-    async findTherapistsWithSpecialities(id) {
+    async findTherapistsWithSpecialties(id) {
         const preparedQuery = {
             text: `SELECT t.lastname, t.firstname, s.label, t.gender FROM therapists t
             JOIN therapists_own_specialties ts ON ts.therapists_id = t.id

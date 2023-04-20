@@ -29,9 +29,10 @@ const authController = {
         error: "Les mots de passe ne sont pas identiques"
       });
     }
-
     // crypter le mdp
     const passwordCrypted = await bcrypt.hash(password, 10);
+
+    console.log(passwordCrypted);
 
     // ajouter le therapist en bdd
     const therapistInfo = {
@@ -51,7 +52,7 @@ const authController = {
   },
   async registerPatient(req, res) {
     // TODO register comme therapist
-    
+
   },
   async login(req, res) {
     const {

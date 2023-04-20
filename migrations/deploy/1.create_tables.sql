@@ -37,7 +37,7 @@ CHECK(
 -- Création de domain utilisant des REGEX pour les mdp (au minimim 8 caractères, un lettre, un numéro et un caractère spécial)
 CREATE DOMAIN "passwords" AS text
 CHECK(
-    value ~ '^[a-zA-Z0-9@$.!%*#?&_]{8,}$'
+    value ~ '^[a-zA-Z0-9@$.!/%*#?&_]{8,}$'
 );
 
 -- Création de domain utilisant des REGEX pour les numéro de telephone 

@@ -52,7 +52,7 @@ class Patients extends CoreDatamapper {
            JOIN therapists t ON t.id = therapists_id
 		   JOIN patients p ON p.id = patients_id
            WHERE t.id = $1` ,
-           values: [id]
+           values: [id],
         }
         const result =await this.client.query(preparedQuery);
         return result.rows;
@@ -138,7 +138,7 @@ class Patients extends CoreDatamapper {
                 'Sur quoi souhaitez-vous travailler, sur une Vie profesionnel ?',$17,
                 'Préférez-vous un praticien Femme ou Homme ? ',$18
                
-            )RETURNING id;`,
+            )RETURNING *;`,
             values :[
                 answers.answer_1,answers.answer_2,
                 answers.answer_3,answers.answer_4,
@@ -150,6 +150,19 @@ class Patients extends CoreDatamapper {
                 answers.answer_15,answers.answer_16,
                 answers.answer_17,answers.answer_18,
             ],
+        }
+        const result = await this.client.query(preparedQuery);
+        return result.rows;
+    }
+
+    async getSurveyAnswer(id){
+        const preparedQuery = {
+            text:`SELECT  answer_1,answer_2,answer_3,answer_4,answer_5,answer_6,answer_7,answer_8,answer_9,answer_10,answer_11,answer_12,answer_13,answer_14,answer_15,answer_16,answer_17,answer_18
+            FROM patients p 
+            JOIN quizz q ON q.id = quizz_id 
+            WHERE p.id = $1`,
+        
+            values: [id],
         }
         const result = await this.client.query(preparedQuery);
         return result.rows;

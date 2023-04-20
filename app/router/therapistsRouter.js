@@ -119,7 +119,8 @@ const { isTherapistMiddleware } = require('../middlewares')
  *		            "role": "therapist"
  *                  }]
  */
-router.get('/',therapistsController.getAll);
+
+router.get('/', authMiddleware,isTherapistMiddleware,therapistsController.getAll);
 
 /** get all therapists with specialties
  * @swagger
@@ -149,8 +150,6 @@ router.get('/',therapistsController.getAll);
  *		            "id": 3}]
  */
 router.get('/specialties', therapistsController.findAllTherapistsWithSpecialities);
-router.get('/', authMiddleware,isTherapistMiddleware,therapistsController.getAll);
-router.get('/specialities', therapistsController.findAllTherapistsWithSpecialities);
 
 router.post('/',therapistsController.creatTherapist);
 
@@ -247,8 +246,76 @@ router.post('/:therapistId/specialities/:specialityId',therapistsController.addS
 
 router.delete('/:therapistId/specialities/:specialityId',therapistsController.removeSpecialtiesFromTherapist);
 
+/** get all therapists with sexe with all specialties
+ * @swagger
+ * /therapists/sexe/{gender}/specialties:
+ *   get:
+ *     tags:
+ *       - therapists
+ *     description: Returns all therapists with gender and with all specialties
+ *     parameters:
+ *       - in: path
+ *         name: sexe gender
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: genre homme ou femme 
+ *     produces:
+ *       - application/json
+ *     responses:
+ *       '200':
+ *         description: Recherche effectuée avec succès
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                results:
+ *                   type: object
+ *                   items:
+ *                     type: string
+ *                   example: [{"lastname": "Noel",
+ *                     "firstname": "Marianne",
+ *                     "label": "Psychologue spécialisé en traumatologie",
+ *                      "id": 1,
+ *                      "gender": "Homme"}]
+ */
 router.get('/sexe/:gender/specialities', therapistsController.getAllTherapistsByGenderWithSpecialities);
 
+/** get all therapists with gender
+ * @swagger
+ * /therapists/sexe/{gender}:
+ *   get:
+ *     tags:
+ *       - therapists
+ *     description: Returns therapists with gender 
+ *     parameters:
+ *       - in: path
+ *         name: sexe gender
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: genre homme ou femme 
+ *     produces:
+ *       - application/json
+ *     responses:
+ *       '200':
+ *         description: Recherche effectuée avec succès
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                results:
+ *                   type: object
+ *                   items:
+ *                     type: string
+ *                   example: [{"lastname": "Noel",
+ *                     "firstname": "Marianne",
+ *                     "label": "Psychologue spécialisé en traumatologie",
+ *                      "id": 1,
+ *                      "gender": "Homme"}]
+ */
 router.get('/sexe/:gender', therapistsController.getAllTherapistsByGender);
 
 /** get One therapists with appointments
@@ -363,6 +430,54 @@ router.get('/:therapistId/appointments/:appointmentId', therapistsController.get
 
 router.post('/:therapistId/appointment/patients/:patientId', therapistsController.creatAppointmentWithOnePatient);
 
+/** get One therapists with reviews
+ * @swagger
+ * /therapists/{id}/reviews:
+ *   get:
+ *     tags:
+ *       - therapists
+ *     description: Returns One therapists with reviews
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: integer
+ *         required: true
+ *         description: ID therapist 
+ *     produces:
+ *       - application/json
+ *     responses:
+ *       '200':
+ *         description: Recherche effectuée avec succès
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                results:
+ *                   type: object
+ *                   items:
+ *                     type: string
+ *                   example: [{"id": 5,"email": "Flix.Lopez@gmail.com",
+ *	                "lastname": "Cousin",
+ *	                "firstname": "Philippe",
+ *	                "password": "MYknB4McqbzeXSM",
+ *	                "phonenumber": "0631933655",
+ *	                "adelinumber": "402331811",
+ *	                "profilpicture": "NULL",
+ *	                "profilpresentation": "Adipisci consequuntur ipsum repudiandae tempore explicabo. Quidem saepe eum magni voluptate. Quisquam corrupti amet nostrum. Ut nesciunt corporis. Molestias sapiente fugit magni autem facilis. Doloremque ullam tempore pariatur sapiente nam reprehenderit occaecati aut.",
+ *	                "streetname": "PORT DU LOUVRE",
+ *	                "zipcode": "75101",
+ *	                "city": "Paris",
+ *	                "complement": "Sunt unde ipsum.",
+ *	                "videosession": true,
+ *	                "audiosession": true,
+ *	                "chatsession": false,
+ *	                "sessionatoffice": false,
+ *	                "gender": "Homme",
+ *	                "updated_at": "2020-04-20T18:00:00.000Z",
+ *	                "role": "therapist"}]
+ */
 router.get('/:id/reviews', therapistsController.viewOneTherapistReviews);
 
 router.get('/specialties/:id', therapistsController.findAllTherapistBySpecialties);

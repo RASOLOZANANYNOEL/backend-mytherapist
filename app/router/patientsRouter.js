@@ -93,7 +93,7 @@ const { isPatientMiddleware } = require('../middlewares')
  *		             "updated_at": "2020-04-20T19:00:00.000Z",
  *		             "quizz_id": 1}]
  */
-router.get('/', patientsController.getAll);
+router.get('/', authMiddleware, isPatientMiddleware,patientsController.getAll);
 
 /** get One patients
  * @swagger
@@ -183,12 +183,7 @@ router.get('/:id', patientsController.getById);
  *	                "appointmentend": "2023-04-19T14:00:00.000Z"
  *                  }]             
  */
-router.get('/:id/appointments', patientsController.getOnePatientWithAllAppointments);
-/*--get all patients--*/
-router.get('/', authMiddleware, isPatientMiddleware,patientsController.getAll);
-/*--get one patient --*/
-router.get('/:id', patientsController.getById);
-/*--get appointments for one patient--*/
+
 router.get('/:id/appointments',authMiddleware,patientsController.getOnePatientWithAllAppointments);
 
 /** get quizz for one patient
@@ -334,19 +329,197 @@ router.get('/reviews/therapists/:id',patientsController.getReviewsOneTherapists)
  */
 router.post('/',patientsController.createPatients);
 
-/*--CREATE appointment patient-therapist --*/
+/**CREATE appointment patient->therapist
+ * @swagger
+ * /patients/{id}/appointment/therapists/{id}:
+ *   post:
+ *     summary: Crée un rendez-vous avec un practicien
+ *     parameters:
+ *       - in: path
+ *         name: TherapistId
+ *         description: The therapist ID
+ *         required: true
+ *       - in: path
+ *         name : PatientId
+ *         description: The patient ID
+ *         required: true
+ *       - in: path
+ *         name : beginninghour
+ *         description: When the appointement starts (date and hour)
+ *         required: true
+ *       - in: path
+ *         name : endtime
+ *         description: When the appointement finish (date and hour)
+ *         required: true
+ *       - in: path
+ *         name : videosession
+ *         description: type of appointement
+ *         schema: 
+ *           type:  boolean
+ *       - in: path
+ *         name : audiosession
+ *         description: type of appointement
+ *         schema: 
+ *           type:  boolean
+ *       - in: path
+ *         name : chatsession
+ *         description: type of appointement
+ *         schema: 
+ *           type:  boolean
+ *       - in: path
+ *         name : sessionatoffice
+ *         description: type of appointement
+ *         schema: 
+ *           type:  boolean
+ *     tags : 
+ *      - patients
+ *     responses:
+ *       200:
+ *         description: OK
+ *         content:
+ *           application/json:
+ *             schema:
+ *                $ref: 
+ *                example: [{
+ *		            "id": 52,
+ *		            "beginninghour": "2002-02-02T22:00:00.000Z",
+ *		            "endtime": "2002-02-02T23:00:00.000Z",
+ *		            "patients_id": 3,
+ *		            "therapists_id": 2,
+ *		            "videosession": true,
+ *		            "audiosession": true,
+ *		            "chatsession": true,
+ *		            "sessionatoffice": true}]
+ */
 router.post('/:patientId/appointment/therapists/:therapistId', patientsController.createAppointmentOneTherapist);
 
-/*--CREATE reviews patient-therapist --*/
+/**CREATE reviews patient-therapist --*/
 router.post('/:patientId/reviews/therapists/:therapistId',patientsController.createReviewsOneTherapist);
 
-/*--CREATE QUIZZ + RETURN Quizz_id  --*/
+/**CREATE QUIZZ + RETURN Quizz_id
+ * @swagger
+ * /quizz:
+ *   post:
+ *     summary: Creat a quizz
+ *     parameters:
+ *       - in: path
+ *         name : answer_1
+ *         description: Answer to question 1
+ *         schema: 
+ *           type:  boolean
+ *       - in: path
+ *         name : answer_2
+ *         description: Answer to question 2
+ *         schema: 
+ *           type:  boolean
+ *       - in: path
+ *         name : answer_3
+ *         description: Answer to question 2
+ *         schema: 
+ *           type:  boolean
+ *       - in: path
+ *         name : answer_4
+ *         description: Answer to question 2
+ *         schema: 
+ *           type:  boolean
+ *     tags : 
+ *      - patients
+ *     responses:
+ *       200:
+ *         description: OK
+ *         content:
+ *           application/json:
+ *             schema:
+ *                $ref: 
+ *                example: [{
+ *		"id": 56,
+ *		"quizz_1": "Vous-êtes un particulier ?",
+ *		"answer_1": false,
+ *		"quizz_2": "Souhaitez-vous faire intervenir un praticiens dans votre entreprise ?",
+ *		"answer_2": true,
+ *		"quizz_3": "Souhaitez-vous prendre rendez-vous pour vous ?",
+ *		"answer_3": false,
+ *		"quizz_4": "Souhaitez-vous prendre rendez-vous pour un de vos proches ?",
+ *		"answer_4": true,
+ *		"quizz_5": "Souhaitez-vous prendre rendez-vous pour un ou plusieurs de vos enfants ?",
+ *		"answer_5": false,
+ *		"quizz_6": "Avez-vous des problématiques à régler dans votre couple ?",
+ *		"answer_6": false,
+ *		"quizz_7": "Sur quoi souhaitez-vous travailler, sur un Accident ?",
+ *		"answer_7": false,
+ *		"quizz_8": "Sur quoi souhaitez-vous travailler, sur une Agression ?",
+ *		"answer_8": false,
+ *		"quizz_9": "Sur quoi souhaitez-vous travailler, sur un Deuil ?",
+ *		"answer_9": false,
+ *		"quizz_10": "Sur quoi souhaitez-vous travailler, sur une Phobie ?",
+ *		"answer_10": false,
+ *		"quizz_11": "Sur quoi souhaitez-vous travailler, sur une Anxiété ?",
+ *		"answer_11": false,
+ *		"quizz_12": "Sur quoi souhaitez-vous travailler, sur une Depression ?",
+ *		"answer_12": false,
+ *		"quizz_13": "Sur quoi souhaitez-vous travailler, sur une Solitude ?",
+ *		"answer_13": false,
+ *		"quizz_14": "Sur quoi souhaitez-vous travailler, sur une Confiance/Estime de soi ?",
+ *		"answer_14": false,
+ *		"quizz_15": "Sur quoi souhaitez-vous travailler, sur une Addictions ?",
+ *		"answer_15": false,
+ *		"quizz_16": "Sur quoi souhaitez-vous travailler, sur une Evalution/Bilan psychologique et/ou test psychométriques ?",
+ *		"answer_16": false,
+ *		"quizz_17": "Sur quoi souhaitez-vous travailler, sur une Vie profesionnel ?",
+ *		"answer_17": true,
+ *		"quizz_18": "Préférez-vous un praticien Femme ou Homme ? ",
+ *		"answer_18": false}]
+ */
 router.post('/quizz',patientsController.answerPatientsQuizz);
 
-/*--modify one patient--*/
+/**modify one patient
+ * @swagger
+ * /patients/{id}:
+ *   put:
+ *     summary: modify a patient
+ *     parameters:
+ *       - in: path
+ *         name : patient ID
+ *         description: The id of the patient that you want to modify
+ *         schema: 
+ *           type:  integer
+ *           required: true
+ *     tags : 
+ *      - patients
+ *     responses:
+ *       200:
+ *         description: OK
+ *         content:
+ *           application/json:
+ *             schema:
+ *                $ref: 
+ *                example: 
+ */
 router.put('/:id',patientsController.updatePatients); 
 
-/*--Delete one patient--*/
+/**Delete one patient
+ * @swagger
+ * /patients/{id}:
+ *   delete:
+ *     summary: delete a patient
+ *     parameters:
+ *       - in: path
+ *         name : patient ID
+ *         description: The id of the patient that you want to delete
+ *         schema: 
+ *           type:  integer
+ *           required: true
+ *     tags : 
+ *      - patients
+ *     responses:
+ *       200:
+ *         description: OK
+ *         content:
+ *           application/json:
+ *             schema:
+ *                $ref: 
+ *                example: 
+ */
 router.delete('/:id',patientsController.deletePatients);
 
 

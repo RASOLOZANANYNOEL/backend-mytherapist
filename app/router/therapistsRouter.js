@@ -247,7 +247,7 @@ router.delete('/:therapistId/specialities/:specialityId',therapistsController.re
 
 /** get all therapists with sexe with all specialties
  * @swagger
- * /therapists/sexe/{gender}/specialties:
+ * /therapists/sexe/{gender}/specialities:
  *   get:
  *     tags:
  *       - therapists
@@ -258,7 +258,7 @@ router.delete('/:therapistId/specialities/:specialityId',therapistsController.re
  *         schema:
  *           type: string
  *         required: true
- *         description: genre homme ou femme 
+ *         description: genre Homme ou Femme 
  *     produces:
  *       - application/json
  *     responses:
@@ -294,7 +294,7 @@ router.get('/sexe/:gender/specialities', therapistsController.getAllTherapistsBy
  *         schema:
  *           type: string
  *         required: true
- *         description: genre homme ou femme 
+ *         description: genre Homme ou Femme 
  *     produces:
  *       - application/json
  *     responses:
@@ -309,11 +309,20 @@ router.get('/sexe/:gender/specialities', therapistsController.getAllTherapistsBy
  *                   type: object
  *                   items:
  *                     type: string
- *                   example: [{"lastname": "Noel",
- *                     "firstname": "Marianne",
- *                     "label": "Psychologue spécialisé en traumatologie",
- *                      "id": 1,
- *                      "gender": "Homme"}]
+ *                   example: [{"lastname": "Pierre",
+ *                   "firstname": "Taurin",
+ *             	     "id": 31,
+ *		            "gender": "Homme",
+ *		            "phonenumber": "0650888079",
+ *		            "email": "Oriane_Guillot46@hotmail.fr",
+ *		            "streetname": "PONT DES ARTS",
+ *		            "city": "Paris",
+ *		            "complement": "enim reprehenderit quia",
+ *		            "profilpresentation": "veniam",
+ *		            "audiosession": true,
+ *		            "videosession": false,
+ *		            "chatsession": true,
+ *		            "sessionatoffice": true}]
  */
 router.get('/sexe/:gender', therapistsController.getAllTherapistsByGender);
 

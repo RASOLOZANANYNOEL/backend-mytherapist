@@ -63,37 +63,6 @@ const errorModule = {
             console.log(error);
         }
 
-
-        // le nom du fichier va être en rapport avec son contenu
-        // par exemple, on va partir sur un nouveau fichier par jour
-        // nous choisissons de partir sur un nom de fichier qui contienne la date : YYYY-MM-DD.log
-        // const actualDate = new Date();
-        // let monthNumber = actualDate.getUTCMonth()+1;
-        // if(monthNumber<10){
-        //     monthNumber = "0"+monthNumber;
-        // }
-        // let dayNumber = actualDate.getUTCDate();
-        // if(dayNumber<10){
-        //     dayNumber = "0"+dayNumber;
-        // }
-        // const fileName = `${actualDate.getUTCFullYear()}-${monthNumber}-${dayNumber}.log`; 
-
-
-
-        // appendFile peut engendrer des problèmes de mémoire (besoin de refermer la connexion au fichier)
-        // fs.appendFile(filePath + "/" + fileName, fileBody, function (err) {
-        //     if (err) {
-        //         console.log("##################"+ err);
-        //     }
-        //     else {
-        //         debug('Saved!');
-        //     }
-        // });
-
-        // 1- je vérifie si le fichier existe et je le crèe sinon
-        //  1-1 s'il n'existe pas, je lui ajoute les headers
-        // 2- j'écris l'erreur
-     
     }
 };
 

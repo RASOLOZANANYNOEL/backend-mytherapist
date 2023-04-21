@@ -1,20 +1,48 @@
 
 const patientsDatamapper= require('../model/patients');
+const APIError = require("../service/error/APIError");
+const debug = require("debug")("controller");
 
 const patientsController = {
+    /**
+     * Récupération de tous les patients
+     * @param {*}_ requête Express
+     * @param {*} res réponse Express
+     * @returns {json} liste des patients
+     */
     async getAll(_,res) {
+        try {
         const allPatients= await patientsDatamapper.findAll();
-        res.json(allPatients);
+        res.json(allPatients)
+        } catch {
+            next(new APIError("Erreur lors de la récupération des patients", 500));
+        }
     },
-
+    /**
+     * Récupération d'un patient par son id
+     * @param {*}req requête Express
+     * @param {*} res réponse Express
+     * @returns {json} un patient
+     */
     async getById(req,res) {
         const id = req.params.id
+        try {
         const onePatientsById = await patientsDatamapper.findByPk(id);
-        res.json(onePatientsById);
+        res.json(onePatientsById)
+        } catch {
+            next(new APIError("Erreur lors de la récupération du patient", 500));
+        }
     },
     // dans le patientsInfo il y aura quizz_id
     //et le quizz id sera recupéré soit via le body ou params
+    /**
+     * Création d'un patient
+     * @param {*} req requête Express
+     * @param {*} res réponse Express
+     * @returns {json} créer un patient 
+     */
     async createPatients(req,res) {
+        try {
         const patientsInfo = {
             email : req.body.email,
             lastname: req.body.lastname,
@@ -28,10 +56,19 @@ const patientsController = {
         }
         const createPatients = await patientsDatamapper.create(patientsInfo);
         res.json(createPatients)
-
+        } catch {
+        next(new APIError("Erreur lors de la création du patient", 500));
+        }
     },
+    /**
+     * Mise à jour d'un patient
+     * @param {*} req requête Express
+     * @param {*} res réponse Express
+     * @returns {json} mettre à jour un patient
+     */
     async updatePatients(req,res){
         const id = req.params.id
+        try {
         const patientsInfo = {
             email : req.body.email,
             lastname: req.body.lastname,
@@ -44,36 +81,82 @@ const patientsController = {
             role : req.body.role
         }
         const updatePatients = await patientsDatamapper.update({id},patientsInfo);
-        res.json(updatePatients);
+        res.json(updatePatients)
+        } catch {
+            next(new APIError("Erreur lors de la mise à jour du patient", 500));
+        }
     },
-
+    /**
+     * Suppression d'un patient
+     * @param {*} req requête Express
+     * @param {*} res réponse Express
+     * @returns {json} supprimer un patient
+     */
     async deletePatients(req,res){
         const id = req.params.id
+        try {
         const deletePatients = await patientsDatamapper.delete(id);
-        res.json(deletePatients);
+        res.json(deletePatients)
+        } catch {
+            next(new APIError("Erreur lors de la suppression du patient", 500));
+        }
     },
-
+    /**
+     * Récupération d'un patient avec ses rendez-vous
+     * @param {*} req requête Express
+     * @param {*} res réponse Express
+     * @returns {json} un patient avec ses rendez-vous
+     */
     async getOnePatientWithAllAppointments (req,res) {
         const id = req.params.id
+        try {
         const getOnePatientsWithAllAppointments = await patientsDatamapper.getOnePatientWithAllAppointments(id);
-        res.json(getOnePatientsWithAllAppointments);
+        res.json(getOnePatientsWithAllAppointments)
+        } catch {
+            next(new APIError("Erreur lors de la récupération du patient avec ses rendez-vous", 500));
+        }
     },
-
+    /**
+     * Récupération d'un patient avec ses quizz
+     * @param {*} req requête Express
+     * @param {*} res réponse Express
+     * @returns {json} un patient avec ses quizz
+     */
     async getOnePatientWithQuizz (req,res) {
         const id= req.params.id
+        try {
         const getOnePatientWithQuizz = await patientsDatamapper.getOnePatientWithQuizz(id);
-        res.json(getOnePatientWithQuizz);
+        res.json(getOnePatientWithQuizz)
+        } catch {
+            next(new APIError("Erreur lors de la récupération du patient avec ses quizz", 500));
+        }
     },
-
+    /**
+     * Récupération l'avis des patients sur un therapist
+     * @param {*} req requête Express
+     * @param {*} res réponse Express
+     * @returns {json} avis des patients sur un therapist
+     */
     async getReviewsOneTherapists (req,res){
         const id= req.params.id
+        try {
         const getReviewsOneTherapists = await patientsDatamapper.getReviewsOneTherapists(id);
-        res.json(getReviewsOneTherapists);
+        res.json(getReviewsOneTherapists)
+        } catch {
+            next(new APIError("Erreur lors de la récupération des avis des patients sur un therapist", 500));
+        }
     },
-
+    /**
+     * création d'un rendez-vous entre un patient et un therapist
+     * @param {*} req requête Express
+     * @param {*} res réponse Express
+     * @returns {json} créer un rendez-vous entre un patient et un therapist
+     */
     async createAppointmentOneTherapist (req,res) {
+        
         const therapistId = req.params.therapistId
         const patientId= req.params.patientId
+        try {
         
         const appointment = {
             beginninghour: req.body.beginninghour,
@@ -87,12 +170,21 @@ const patientsController = {
         }
         
         const createAppointmentOneTherapist = await patientsDatamapper.createAppointmentOneTherapist({therapistId,patientId},appointment);
-        res.json(createAppointmentOneTherapist);
+        res.json(createAppointmentOneTherapist)
+        } catch {
+            next(new APIError("Erreur lors de la création du rendez-vous entre un patient et un therapist", 500));
+        }
     },
-
+    /**
+     * création d'un avis sur un therapist
+     * @param {*} req requête Express
+     * @param {*} res réponse Express
+     * @returns {json} créer un avis sur un therapist
+     */
     async createReviewsOneTherapist (req,res){
         const patientId= req.params.patientId
         const therapistId = req.params.therapistId
+        try {
         
         const review = {
             messages: req.body.messages,
@@ -102,21 +194,20 @@ const patientsController = {
             therapists_id:therapistId,
         }
         const createReviewsOneTherapist = await patientsDatamapper.createReviewsOneTherapist({patientId,therapistId},review);
-        res.json(createReviewsOneTherapist);
-    },
-    // TODO Il faut que quiz_id dans la table patients soit en NOT NULL AUTOGENERATE, suite a ca , il faut une route qui permet de trouver l'id du quiz enfonction du patient id 
-    // 1. une fois profil patient crée on va chercher son tout ses information via son ID/ou quizz_id SELECT * FROM patients p JOIN quizz q ON q.id = quizz_id WHERE q.id = 10
-    // 2. une fois quizz_id trouver il faut mettre a jour les reponses via une route en PUT 
-
-    // le bon raisonnement : 
-    //en realité il faut que le quizz soit crée avant le patient ou en meme temps, sinon erreur , la route quon a crée retourne l'id du quizz, cette id sera stocké niveau front
-    //cette id la sera nessesaire pour la création complet du profil du patient lors de l'inscription car pour associer le quizz a un patient il faut l'id
-    // donc il faut modifié la route permetant de crée un patient de facon dynamique afin de recuperer l'id du quizz (req.params.quizzId) ou via req.body mais req.params semble le mieux (pour le moment)
-    //quizz_id en not null 
-    //voir controller createPatients pour la suite du raisonnement
+        res.json(createReviewsOneTherapist)
+        } catch {
+            next(new APIError("Erreur lors de la création d'un avis sur un therapist", 500));
+        }
+    },  
+    /**
+     * Répondre au quizz pour récupérer le quizz_id
+     * @param {*} req requête Express
+     * @param {*} res réponse Express
+     * @returns {json} répondre au quizz pour récupérer le quizz_id
+     */
     async answerPatientsQuizz(req,res) {
         
-        
+        try {
 
         const answers = {
             answer_1 : req.body.answer_1,
@@ -140,8 +231,11 @@ const patientsController = {
 
         }
         const answerPatientsQuizz = await patientsDatamapper.answerPatientsQuizz(answers);
-        res.json(answerPatientsQuizz);
+        res.json(answerPatientsQuizz)
+        } catch {
+             next(new APIError("Erreur lors de la réponse au quizz", 500));
         
+        }
     }
      
 

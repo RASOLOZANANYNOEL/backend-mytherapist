@@ -93,7 +93,7 @@ const { isPatientMiddleware } = require('../middlewares')
  *		             "updated_at": "2020-04-20T19:00:00.000Z",
  *		             "quizz_id": 1}]
  */
-router.get('/', authMiddleware, isPatientMiddleware,patientsController.getAll);
+router.get('/',patientsController.getAll);
 
 /** get One patients
  * @swagger
@@ -183,7 +183,7 @@ router.get('/:id', patientsController.getById);
  *	                "appointmentend": "2023-04-19T14:00:00.000Z"
  *                  }]             
  */
-router.get('/:id/appointments',authMiddleware,patientsController.getOnePatientWithAllAppointments);
+router.get('/:id/appointments',patientsController.getOnePatientWithAllAppointments);
 
 /** get quizz for one patient
  * @swagger

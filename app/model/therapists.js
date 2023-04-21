@@ -5,7 +5,7 @@ class Therapists extends CoreDatamapper {
     tableName = 'therapists';
 
     
-    async findTherapistsWithSpecialities(id) {
+    async findTherapistsWithSpecialties(id) {
         const preparedQuery = {
             text: `SELECT t.lastname, t.firstname, s.label, t.gender FROM therapists t
             JOIN therapists_own_specialties ts ON ts.therapists_id = t.id
@@ -39,7 +39,6 @@ class Therapists extends CoreDatamapper {
 
         try {
             const result = await this.client.query(preparedQuery);
-            console.log('Result:', result.rows); 
             return result.rows;
         } catch (error) {
             console.error('Error in AllTherapistsWithSpecialities:', error); 
@@ -151,7 +150,7 @@ class Therapists extends CoreDatamapper {
 
     async viewOneTherapistReviews(id) {
         const preparedQuery = {
-            text:`SELECT r.messages AS patient_messages, r.negatifreviews AS badscore, r.positifreviews AS godscore, p.firstname AS patient_firstname, p.lastname AS patient_lastname, p.id AS patient_id, p.profilpicture AS patient_profilpicture, t.lastname AS therapist_lastname, t.firstname AS therapist_firstname FROM reviews r
+            text:`SELECT r.messages AS patient_messages, r.negatifreviews AS badscore, r.positifreviews AS goodscore, p.firstname AS patient_firstname, p.lastname AS patient_lastname, p.id AS patient_id, p.profilpicture AS patient_profilpicture, t.lastname AS therapist_lastname, t.firstname AS therapist_firstname FROM reviews r
             JOIN therapists t  ON t.id = therapists_id
             JOIN patients p ON p.id = patients_id
             WHERE t.id = $1;`,
@@ -175,6 +174,20 @@ class Therapists extends CoreDatamapper {
         return result.rows;
     }
 
+    async findAllTherapistBySpecialtiesAndGender(id,gender) {
+        
+        const preparedQuery = {
+            text: `SELECT t.lastname, t.firstname, s.label, t.id, t.gender FROM therapists t
+            JOIN therapists_own_specialties ts ON ts.therapists_id = t.id
+			JOIN specialties s ON s.id = ts.specialties_id
+			WHERE s.id = $1 AND t.gender = $2`,
+            values: [id,gender],
+        };
+
+        const result = await this.client.query(preparedQuery);
+
+        return result.rows;
+    }
 
     
 }

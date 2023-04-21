@@ -1,4 +1,4 @@
-const { getOnePatientWithQuizz, getReviewsOneTherapist, createAppointmentOneTherapist, createReviewsOneTherapist } = require('../model/patients');
+
 const patientsDatamapper= require('../model/patients');
 
 const patientsController = {
@@ -24,13 +24,12 @@ const patientsController = {
             streetname : req.body.streetname,
             zipcode : req.body.zipcode,
             city : req.body.city,
-        
+            quizz_id : req.body.quizz_id     
         }
         const createPatients = await patientsDatamapper.create(patientsInfo);
         res.json(createPatients)
 
     },
-
     async updatePatients(req,res){
         const id = req.params.id
         const patientsInfo = {
@@ -117,7 +116,7 @@ const patientsController = {
     //voir controller createPatients pour la suite du raisonnement
     async answerPatientsQuizz(req,res) {
         
-        const patientId= req.params.patientId
+        
 
         const answers = {
             answer_1 : req.body.answer_1,
@@ -140,9 +139,9 @@ const patientsController = {
             answer_18 : req.body.answer_18,
 
         }
-        const answerPatientsQuizz = await patientsDatamapper.answerPatientsQuizz({patientId}, answers);
+        const answerPatientsQuizz = await patientsDatamapper.answerPatientsQuizz(answers);
         res.json(answerPatientsQuizz);
-        console.log(answerPatientsQuizz);
+        
     }
      
 

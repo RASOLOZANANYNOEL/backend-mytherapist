@@ -6,7 +6,7 @@ class Patients extends CoreDatamapper {
 
     async getOnePatientWithAllAppointments(id){
         const preparedQuery ={
-            text: `SELECT p.email, p.lastname,p.firstname, p.phonenumber,p.profilpicture, p.streetname,p.zipcode,p.city,p.complement ,a.id AS appointmentId,t.id AS therapistId,t.firstname AS therapistFirstname,
+            text: `SELECT p.id, p.email, p.lastname,p.firstname, p.phonenumber,p.profilpicture, p.streetname,p.zipcode,p.city,p.complement ,a.id AS appointmentId,t.id AS therapistId,t.firstname AS therapistFirstname,
             t.lastname AS therapistName,a.beginninghour AS appointmentBegin, a.endtime AS appointmentEnd
             FROM patients p
             JOIN appointments a ON p.id = patients_id
@@ -31,7 +31,7 @@ class Patients extends CoreDatamapper {
 
     async getOnePatientWithQuizz (id){
         const preparedQuery = {
-            text: `SELECT p.email, p.lastname,p.firstname, p.phonenumber,p.profilpicture, p.streetname,p.zipcode,p.city,p.complement, p.quizz_id ,
+            text: `SELECT p.id, p.email, p.lastname,p.firstname, p.phonenumber,p.profilpicture, p.streetname,p.zipcode,p.city,p.complement, p.quizz_id ,
             q.quizz_1, q.answer_1, q.quizz_2, q.answer_2,q.quizz_3, q.answer_3,q.quizz_4, q.answer_4,q.quizz_5, q.answer_5,q.quizz_6, q.answer_6,q.quizz_7, q.answer_7,
             q.quizz_8, q.answer_8,q.quizz_9, q.answer_9,q.quizz_10, q.answer_10,q.quizz_11, q.answer_11,q.quizz_12, q.answer_12,q.quizz_13, q.answer_13,
             q.quizz_14, q.answer_14,q.quizz_15, q.answer_15,q.quizz_16, q.answer_16,q.quizz_17, q.answer_17,q.quizz_18, q.answer_18
@@ -46,13 +46,13 @@ class Patients extends CoreDatamapper {
 
     async getReviewsOneTherapists(id){
         const preparedQuery = {
-           text: `SELECT p.lastname,p.firstname,p.profilpicture, t.id AS therapistId,t.firstname AS therapistFirstname,
+           text: `SELECT p.id AS patients_id, p.lastname AS patients_lastname,p.firstname AS patients_firstname,p.profilpicture AS patients_profilpicture, t.id AS therapistId,t.firstname AS therapistFirstname,
            t.lastname AS therapistName, r.negatifreviews , r.positifreviews, r.messages
-           FROM patients p
-           JOIN reviews r  ON r.id = patients_id
+           FROM reviews r
            JOIN therapists t ON t.id = therapists_id
+		   JOIN patients p ON p.id = patients_id
            WHERE t.id = $1` ,
-           values: [id]
+           values: [id],
         }
         const result =await this.client.query(preparedQuery);
         return result.rows;
@@ -138,7 +138,7 @@ class Patients extends CoreDatamapper {
                 'Sur quoi souhaitez-vous travailler, sur une Vie profesionnel ?',$17,
                 'Préférez-vous un praticien Femme ou Homme ? ',$18
                
-            )RETURNING id;`,
+            )RETURNING *;`,
             values :[
                 answers.answer_1,answers.answer_2,
                 answers.answer_3,answers.answer_4,
@@ -150,6 +150,19 @@ class Patients extends CoreDatamapper {
                 answers.answer_15,answers.answer_16,
                 answers.answer_17,answers.answer_18,
             ],
+        }
+        const result = await this.client.query(preparedQuery);
+        return result.rows;
+    }
+
+    async getSurveyAnswer(id){
+        const preparedQuery = {
+            text:`SELECT  answer_1,answer_2,answer_3,answer_4,answer_5,answer_6,answer_7,answer_8,answer_9,answer_10,answer_11,answer_12,answer_13,answer_14,answer_15,answer_16,answer_17,answer_18
+            FROM patients p 
+            JOIN quizz q ON q.id = quizz_id 
+            WHERE p.id = $1`,
+        
+            values: [id],
         }
         const result = await this.client.query(preparedQuery);
         return result.rows;

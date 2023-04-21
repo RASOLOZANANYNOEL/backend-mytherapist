@@ -1,11 +1,17 @@
 
 
 const therapistsDatamapper = require('../model/therapists')
+const APIError = require("../service/error/APIError");
+const debug = require("debug")("controller")
 
 const therapistsController = {
-    async getAll(req,res) {
-        const allTherapists = await therapistsDatamapper.findAll();
-        res.json(allTherapists)
+    async getAll(_,res,next) {
+        try {
+            const allTherapists = await therapistsDatamapper.findAll();
+            res.json(allTherapists)
+        } catch { 
+            next(new APIError("Erreur lors de la récupération des therapists",500))
+        }
     },
     async getById(req,res) {
         const id = req.params.id

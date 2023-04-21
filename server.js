@@ -3,6 +3,7 @@ require("dotenv").config();
 const cors = require('cors');
 // Cette ligne importe le module express
 const express = require("express");
+const debug = require("debug")("express");
 
 // Cette ligne crée une instance d'application express
 const app = express();
@@ -69,6 +70,13 @@ app.use('/patients',routerPatients);
 app.use('/algorithm',routerAlgorithm);
 app.use('/quizz',routerQuizz);
 
+
+// gestion d'erreur
+const errorModule = require("./app/service/error/errorHandling");
+// gestion de l'erreur 404
+app.use(errorModule._404);
+// gestion des erreurs globales
+app.use(errorModule.manage);
 
 // Cette ligne définit le port sur lequel le serveur écoutera les connexions
 // Si la variable d'environnement PORT n'est pas définie, le port 3000 sera utilisé

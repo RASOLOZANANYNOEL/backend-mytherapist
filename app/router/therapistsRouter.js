@@ -119,7 +119,7 @@ const { isTherapistMiddleware } = require('../middlewares')
  *		            "role": "therapist"
  *                  }]
  */
-router.get('/', authMiddleware,isTherapistMiddleware,therapistsController.getAll);
+router.get('/',therapistsController.getAll);
 
 /** get all therapists with specialties
  * @swagger
@@ -150,6 +150,138 @@ router.get('/', authMiddleware,isTherapistMiddleware,therapistsController.getAll
  */
 router.get('/specialties', therapistsController.findAllTherapistsWithSpecialities);
 
+/**CREATE THERAPIST
+ * @swagger
+ * /therapists/:
+ *     post:
+ *      summary: Create therapist
+ *      parameters:
+ *          - in: path
+ *            name : email
+ *            description: email
+ *            schema: 
+ *              type: string
+ *          - in: path
+ *            name : lastname
+ *            description: lastname
+ *            schema: 
+ *              type: string
+ *          - in: path
+ *            name : firstname
+ *            description: firstname
+ *            schema: 
+ *              type: string
+ *          - in: path
+ *            name : password
+ *            description: password
+ *            schema: 
+ *              type: string
+ *          - in: path
+ *            name : phonenumber
+ *            description: phonenumber
+ *            schema: 
+ *              type: string
+ *          - in: path
+ *            name : adelinumber
+ *            description: adelinumber
+ *            schema: 
+ *              type: integer
+ *          - in: path
+ *            name : profilpicture
+ *            description: profilpicture
+ *            schema: 
+ *              type: null
+ *          - in: path
+ *            name : profilpresentation
+ *            description: profilpresentation
+ *            schema: 
+ *              type: string
+ *          - in: path
+ *            name : streetname
+ *            description: streetname
+ *            schema: 
+ *              type: string
+ *          - in: path
+ *            name : zipcode
+ *            description: zipcode
+ *            schema: 
+ *              type:  integer
+ *          - in: path
+ *            name : city
+ *            description: city
+ *            schema: 
+ *              type: string
+ *          - in: path
+ *            name : complement
+ *            description: complement
+ *            schema: 
+ *              type: string
+ *          - in: path
+ *            name : videosession
+ *            description: videosession
+ *            schema: 
+ *              type: boolean
+ *          - in: path
+ *            name : audiosession
+ *            description: audiosession
+ *            schema: 
+ *              type: boolean
+ *          - in: path
+ *            name : chatsession
+ *            description: chatsession
+ *            schema: 
+ *              type: boolean
+ *          - in: path
+ *            name : sessionatoffice
+ *            description: sessionatoffice
+ *            schema: 
+ *              type: boolean
+ *          - in: path
+ *            name : gender
+ *            description: Homme ou Femme
+ *            schema:
+ *              type: string
+ *          - in: path
+ *            name : updated_at
+ *            description: Date de mise à jour
+ *            schema:
+ *              type: string
+ *          - in: path
+ *            name : role
+ *            description: role
+ *            schema:
+ *              type: string
+ *      tags : 
+ *      - therapists
+ *      produces:
+ *       - application/json
+ *     responses:
+ *       200:
+ *         description: therapist created
+ *         content:
+ *           application/json:
+ *             schema:
+ *              $ref: 
+ *              example: [{"email": "Thophraste.Berger3@hotmail.fr",
+ *		"lastname": "Dupuy",
+ *		"firstname": "Monique",
+ *		"password": "X77o_X6f3fUYyK1",
+ *		"phonenumber": "0682068951",
+ *		"adelinumber": "381454987",
+ *		"profilpicture": "NULL",
+ *		"profilpresentation": "Maxime eveniet inventore blanditiis quis voluptas. Nesciunt magni earum ipsum eaque iure debitis dolor. Laboriosam expedita mollitia asperiores quis ex. A cupiditate rem ea eaque quae nesciunt odit aut quam. Eos quis unde ex repellat asperiores assumenda aliquam. Quae explicabo ut.",
+ *		"streetname": "PONT NEUF 1",
+ *		"zipcode": "75101",
+ *		"city": "Paris",
+ *		"complement": "Eos explicabo eos voluptate adipisci nisi optio.",
+ *		"videosession": false,
+ *		"audiosession": true,
+ *		"chatsession": false,
+ *		"sessionatoffice": true,
+ *		"gender": "Femme",
+ *		"updated_at": "2020-04-20T18:00:00.000Z",
+ *		"role": "therapist"}]
+ */
 router.post('/',therapistsController.creatTherapist);
 
 /** get One therapists
@@ -241,6 +373,144 @@ router.delete('/:id',therapistsController.deleteTherapist);
  */
 router.get('/:id/specialties', therapistsController.findTherapistsWithSpecialties);
 
+/**CREATE One therapists with one specialty
+ * @swagger
+ * /therapists/therapistId/specialties/specialtyId:
+ *     post:
+ *      summary: Create One therapists with one specialty
+ *      parameters:
+ *          - in: path
+ *            name: id
+ *            schema:
+ *              type: integer
+ *            required: true
+ *            description: ID therapist
+ *          - in: path
+ *            name : email
+ *            description: email
+ *            schema: 
+ *              type: string
+ *          - in: path
+ *            name : lastname
+ *            description: lastname
+ *            schema: 
+ *              type: string
+ *          - in: path
+ *            name : firstname
+ *            description: firstname
+ *            schema: 
+ *              type: string
+ *          - in: path
+ *            name : password
+ *            description: password
+ *            schema: 
+ *              type: string
+ *          - in: path
+ *            name : phonenumber
+ *            description: phonenumber
+ *            schema: 
+ *              type: string
+ *          - in: path
+ *            name : adelinumber
+ *            description: adelinumber
+ *            schema: 
+ *              type: integer
+ *          - in: path
+ *            name : profilpicture
+ *            description: profilpicture
+ *            schema: 
+ *              type: null
+ *          - in: path
+ *            name : profilpresentation
+ *            description: profilpresentation
+ *            schema: 
+ *              type: string
+ *          - in: path
+ *            name : streetname
+ *            description: streetname
+ *            schema: 
+ *              type: string
+ *          - in: path
+ *            name : zipcode
+ *            description: zipcode
+ *            schema: 
+ *              type:  integer
+ *          - in: path
+ *            name : city
+ *            description: city
+ *            schema: 
+ *              type: string
+ *          - in: path
+ *            name : complement
+ *            description: complement
+ *            schema: 
+ *              type: string
+ *          - in: path
+ *            name : videosession
+ *            description: videosession
+ *            schema: 
+ *              type: boolean
+ *          - in: path
+ *            name : audiosession
+ *            description: audiosession
+ *            schema: 
+ *              type: boolean
+ *          - in: path
+ *            name : chatsession
+ *            description: chatsession
+ *            schema: 
+ *              type: boolean
+ *          - in: path
+ *            name : sessionatoffice
+ *            description: sessionatoffice
+ *            schema: 
+ *              type: boolean
+ *          - in: path
+ *            name : gender
+ *            description: Homme ou Femme
+ *            schema:
+ *              type: string
+ *          - in: path
+ *            name : updated_at
+ *            description: Date de mise à jour
+ *            schema:
+ *              type: string
+ *          - in: path
+ *            name : role
+ *            description: role
+ *            schema:
+ *              type: string
+ *      tags : 
+ *      - therapists
+ *      produces:
+ *       - application/json
+ *     responses:
+ *       200:
+ *         description: therapist created
+ *         content:
+ *           application/json:
+ *             schema:
+ *              $ref: 
+ *              example: [{"email": "Thophraste.Berger3@hotmail.fr",
+ *		"lastname": "Dupuy",
+ *		"firstname": "Monique",
+ *		"password": "X77o_X6f3fUYyK1",
+ *		"phonenumber": "0682068951",
+ *		"adelinumber": "381454987",
+ *		"profilpicture": "NULL",
+ *		"profilpresentation": "Maxime eveniet inventore blanditiis quis voluptas. Nesciunt magni earum ipsum eaque iure debitis dolor. Laboriosam expedita mollitia asperiores quis ex. A cupiditate rem ea eaque quae nesciunt odit aut quam. Eos quis unde ex repellat asperiores assumenda aliquam. Quae explicabo ut.",
+ *		"streetname": "PONT NEUF 1",
+ *		"zipcode": "75101",
+ *		"city": "Paris",
+ *		"complement": "Eos explicabo eos voluptate adipisci nisi optio.",
+ *		"videosession": false,
+ *		"audiosession": true,
+ *		"chatsession": false,
+ *		"sessionatoffice": true,
+ *		"gender": "Femme",
+ *		"updated_at": "2020-04-20T18:00:00.000Z",
+ *		"role": "therapist"}]
+ */
 router.post('/:therapistId/specialities/:specialityId',therapistsController.addSpecialtiesToTherapist);
 
 router.delete('/:therapistId/specialities/:specialityId',therapistsController.removeSpecialtiesFromTherapist);

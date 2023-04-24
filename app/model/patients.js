@@ -133,55 +133,21 @@ class Patients extends CoreDatamapper {
     async answerPatientsQuizz (answers){
         const preparedQuery = {
             text: `INSERT INTO quizz
-            (quizz_1, answer_1,
-            quizz_2, answer_2,
-            quizz_3, answer_3,
-            quizz_4, answer_4,
-            quizz_5, answer_5,
-            quizz_6, answer_6,
-            quizz_7, answer_7,
-            quizz_8, answer_8,
-            quizz_9, answer_9,
-            quizz_10, answer_10,
-            quizz_11, answer_11,
-            quizz_12, answer_12,
-            quizz_13, answer_13,
-            quizz_14, answer_14,
-            quizz_15, answer_15,
-            quizz_16, answer_16,
-            quizz_17, answer_17,
-            quizz_18, answer_18)
+            (question_1, answer_1,
+            question_2, answer_2,
+            question_3, answer_3,
+            question_4, answer_4)
             VALUES(
                 'Vous-êtes un particulier ?',$1,
-                'Souhaitez-vous faire intervenir un praticiens dans votre entreprise ?',$2,
-                'Souhaitez-vous prendre rendez-vous pour vous ?',$3,
-                'Souhaitez-vous prendre rendez-vous pour un de vos proches ?',$4,
-                'Souhaitez-vous prendre rendez-vous pour un ou plusieurs de vos enfants ?',$5,
-                'Avez-vous des problématiques à régler dans votre couple ?',$6,
-                'Sur quoi souhaitez-vous travailler, sur un Accident ?',$7,
-                'Sur quoi souhaitez-vous travailler, sur une Agression ?',$8,
-                'Sur quoi souhaitez-vous travailler, sur un Deuil ?',$9,
-                'Sur quoi souhaitez-vous travailler, sur une Phobie ?',$10,
-                'Sur quoi souhaitez-vous travailler, sur une Anxiété ?',$11,
-                'Sur quoi souhaitez-vous travailler, sur une Depression ?',$12,
-                'Sur quoi souhaitez-vous travailler, sur une Solitude ?',$13,
-                'Sur quoi souhaitez-vous travailler, sur une Confiance/Estime de soi ?',$14,
-                'Sur quoi souhaitez-vous travailler, sur une Addictions ?',$15,
-                'Sur quoi souhaitez-vous travailler, sur une Evalution/Bilan psychologique et/ou test psychométriques ?',$16,
-                'Sur quoi souhaitez-vous travailler, sur une Vie profesionnel ?',$17,
-                'Préférez-vous un praticien Femme ou Homme ? ',$18
+                'Pour qui voulez vous prendre rendez-vous ?',$2,
+                'Sur quoi voulez vous travailler ?',$3,
+                'Préférez-vous un practicien homme ou femme ?',$4,
+                
                
             )RETURNING *;`,
             values :[
                 answers.answer_1,answers.answer_2,
-                answers.answer_3,answers.answer_4,
-                answers.answer_5,answers.answer_6,
-                answers.answer_7,answers.answer_8,
-                answers.answer_9,answers.answer_10,
-                answers.answer_11,answers.answer_12,
-                answers.answer_13,answers.answer_14,
-                answers.answer_15,answers.answer_16,
-                answers.answer_17,answers.answer_18,
+                answers.answer_3,answers.answer_4
             ],
         }
         try {

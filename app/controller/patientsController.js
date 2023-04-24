@@ -336,20 +336,6 @@ const patientsController = {
             answer_2 : req.body.answer_2,
             answer_3 : req.body.answer_3,
             answer_4 : req.body.answer_4,
-            answer_5 : req.body.answer_5,
-            answer_6 : req.body.answer_6,
-            answer_7 : req.body.answer_7,
-            answer_8 : req.body.answer_8,
-            answer_9 : req.body.answer_9,
-            answer_10 : req.body.answer_10,
-            answer_11 : req.body.answer_11,
-            answer_12 : req.body.answer_12,
-            answer_13 : req.body.answer_13,
-            answer_14 : req.body.answer_14,
-            answer_15 : req.body.answer_15,
-            answer_16 : req.body.answer_16,
-            answer_17 : req.body.answer_17,
-            answer_18 : req.body.answer_18,
 
         }
 

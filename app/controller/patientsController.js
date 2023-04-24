@@ -1,20 +1,61 @@
 
 const patientsDatamapper= require('../model/patients');
+const APIError = require("../service/error/APIError");
+const debug = require("debug")("controller");
 
 const patientsController = {
-    async getAll(_,res) {
-        const allPatients= await patientsDatamapper.findAll();
-        res.json(allPatients);
+    /**
+     * Récupération de tous les patients
+     * @param {*}_ requête Express
+     * @param {*} res réponse Express
+     * @returns {json} liste des patients
+     */
+    async getAll(_,res,next) {
+        try {
+            const allPatients= await patientsDatamapper.findAll();
+                
+            if (allPatients.length === 0) {
+                next(new APIError("La route n'a pas été trouvé", 404));
+            } else {
+                res.json(allPatients);  
+            }
+            } catch {
+                next(new APIError("Erreur lors de la récupération des patients", 500));
+        }
     },
 
-    async getById(req,res) {
+    /**
+     * Récupération d'un patient par son id
+     * @param {*}req requête Express
+     * @param {*} res réponse Express
+     * @returns {json} un patient
+     */
+    async getById(req,res,next) {
         const id = req.params.id
-        const onePatientsById = await patientsDatamapper.findByPk(id);
-        res.json(onePatientsById);
+        try {
+            const onePatientsById = await patientsDatamapper.findByPk(id);
+            
+            if (onePatientsById.length === 0) {
+                next(new APIError("La route n'a pas été trouvé", 404));
+
+            } else {
+                res.json(onePatientsById)
+            }
+            } catch {
+                    next(new APIError("Erreur lors de la récupération du patient", 500));
+        }
     },
+    
     // dans le patientsInfo il y aura quizz_id
     //et le quizz id sera recupéré soit via le body ou params
-    async createPatients(req,res) {
+    /**
+     * Création d'un patient
+     * @param {*} req requête Express
+     * @param {*} res réponse Express
+     * @returns {json} créer un patient 
+     */
+    async createPatients(req,res,next) {
+        
         const patientsInfo = {
             email : req.body.email,
             lastname: req.body.lastname,
@@ -26,12 +67,35 @@ const patientsController = {
             city : req.body.city,
             quizz_id : req.body.quizz_id     
         }
-        const createPatients = await patientsDatamapper.create(patientsInfo);
-        res.json(createPatients)
 
+        if (!patientsInfo){
+            next(new APIError("Paramètres manquants", 400));
+        }
+        try {
+            const createPatients = await patientsDatamapper.create(patientsInfo);
+            
+            if (createPatients.length === 0) {
+                next(new APIError("La route n'a pas été trouvé", 404));
+            } else {
+                res.json(createPatients)
+            }
+            } catch {
+            next(new APIError("Erreur lors de la création du patient", 500));
+        }
     },
-    async updatePatients(req,res){
+    /**
+     * Mise à jour d'un patient
+     * @param {*} req requête Express
+     * @param {*} res réponse Express
+     * @returns {json} mettre à jour un patient
+     */
+    async updatePatients(req,res,next){
         const id = req.params.id
+        
+        if (!id){
+            next(new APIError("Paramètres manquants", 400));
+        }
+
         const patientsInfo = {
             email : req.body.email,
             lastname: req.body.lastname,
@@ -43,38 +107,149 @@ const patientsController = {
             city : req.body.city,
             role : req.body.role
         }
-        const updatePatients = await patientsDatamapper.update({id},patientsInfo);
-        res.json(updatePatients);
+        
+        if (!patientsInfo){
+            next(new APIError("Paramètres manquants", 400));
+        }
+        
+        try {
+            const updatePatients = await patientsDatamapper.update({id},patientsInfo);
+            
+            if (updatePatients.length === 0) {
+                next(new APIError("La route n'a pas été trouvé", 404));
+            } else {
+                res.json(updatePatients)
+            }
+            } catch {
+                next(new APIError("Erreur lors de la mise à jour du patient", 500));
+            }
     },
-
-    async deletePatients(req,res){
+    /**
+     * Suppression d'un patient
+     * @param {*} req requête Express
+     * @param {*} res réponse Express
+     * @returns {json} supprimer un patient
+     */
+    async deletePatients(req,res,next){
         const id = req.params.id
-        const deletePatients = await patientsDatamapper.delete(id);
-        res.json(deletePatients);
-    },
 
-    async getOnePatientWithAllAppointments (req,res) {
+        if (!id){
+            next(new APIError("Paramètres manquants", 400));
+            return;
+        }
+        try {
+            const deletePatients = await patientsDatamapper.delete(id);
+            
+        if (deletePatients.length === 0) {
+            next(new APIError("La route n'a pas été trouvé", 404));
+
+        } else {
+            res.json(deletePatients)
+        }
+        }catch {
+                next(new APIError("Erreur lors de la suppression du patient", 500));
+            }
+    },
+    /**
+     * Récupération d'un patient avec ses rendez-vous
+     * @param {*} req requête Express
+     * @param {*} res réponse Express
+     * @returns {json} un patient avec ses rendez-vous
+     */
+    async getOnePatientWithAllAppointments (req,res,next) {
         const id = req.params.id
-        const getOnePatientsWithAllAppointments = await patientsDatamapper.getOnePatientWithAllAppointments(id);
-        res.json(getOnePatientsWithAllAppointments);
-    },
 
-    async getOnePatientWithQuizz (req,res) {
+        if (!id){
+            next(new APIError("Paramètres manquants", 400));
+            return;
+        }
+
+        try {
+            const getOnePatientsWithAllAppointments = await patientsDatamapper.getOnePatientWithAllAppointments(id);
+            
+            if (getOnePatientsWithAllAppointments.length === 0) {
+                next(new APIError("La route n'a pas été trouvé", 404));
+
+            } else {
+                res.json(getOnePatientsWithAllAppointments)
+            }
+            } catch {
+                next(new APIError("Erreur lors de la récupération du patient avec ses rendez-vous", 500));
+            }
+    },
+    /**
+     * Récupération d'un patient avec ses quizz
+     * @param {*} req requête Express
+     * @param {*} res réponse Express
+     * @returns {json} un patient avec ses quizz
+     */
+    async getOnePatientWithQuizz (req,res,next) {
         const id= req.params.id
-        const getOnePatientWithQuizz = await patientsDatamapper.getOnePatientWithQuizz(id);
-        res.json(getOnePatientWithQuizz);
-    },
 
-    async getReviewsOneTherapists (req,res){
+        if (!id){
+            next(new APIError("Paramètres manquants", 400));
+            return;
+        }
+
+        try {
+            const getOnePatientWithQuizz = await patientsDatamapper.getOnePatientWithQuizz(id);
+            
+            if (getOnePatientWithQuizz.length === 0) {
+                next(new APIError("La route n'a pas été trouvé", 404));
+
+            } else {
+                res.json(getOnePatientWithQuizz)
+            }
+            } catch {
+                next(new APIError("Erreur lors de la récupération du patient avec ses quizz", 500));
+            }
+    },
+    /**
+     * Récupération l'avis des patients sur un therapist
+     * @param {*} req requête Express
+     * @param {*} res réponse Express
+     * @returns {json} avis des patients sur un therapist
+     */
+    async getReviewsOneTherapists (req,res,next){
         const id= req.params.id
-        const getReviewsOneTherapists = await patientsDatamapper.getReviewsOneTherapists(id);
-        res.json(getReviewsOneTherapists);
-    },
 
-    async createAppointmentOneTherapist (req,res) {
+        if (!id){
+            next(new APIError("Paramètres manquants", 400));
+            return;
+        }
+        try {
+            const getReviewsOneTherapists = await patientsDatamapper.getReviewsOneTherapists(id);
+            
+            if (getReviewsOneTherapists.length === 0) {
+                next(new APIError("La route n'a pas été trouvé", 404));
+
+            }else {
+                res.json(getReviewsOneTherapists)
+            }
+            } catch {
+                next(new APIError("Erreur lors de la récupération des avis des patients sur un therapist", 500));
+            }
+    },
+    /**
+     * création d'un rendez-vous entre un patient et un therapist
+     * @param {*} req requête Express
+     * @param {*} res réponse Express
+     * @returns {json} créer un rendez-vous entre un patient et un therapist
+     */
+    async createAppointmentOneTherapist (req,res,next) {
+        
         const therapistId = req.params.therapistId
         const patientId= req.params.patientId
         
+        if (!therapistId){
+            next(new APIError("Paramètres manquants", 400));
+            return;
+        }
+         if (!patientId){
+            next(new APIError("Paramètres manquants", 400));
+            return;
+        }
+
         const appointment = {
             beginninghour: req.body.beginninghour,
             endtime: req.body.endtime,
@@ -85,14 +260,43 @@ const patientsController = {
             chatsession : req.body.chatsession,
             sessionatoffice : req.body.sessionatoffice,
         }
-        
-        const createAppointmentOneTherapist = await patientsDatamapper.createAppointmentOneTherapist({therapistId,patientId},appointment);
-        res.json(createAppointmentOneTherapist);
-    },
 
-    async createReviewsOneTherapist (req,res){
+        if (!appointment){
+            next(new APIError("Paramètres manquants", 400));
+            return;
+        }
+        try {
+            const createAppointmentOneTherapist = await patientsDatamapper.createAppointmentOneTherapist({therapistId,patientId},appointment);
+            
+            if (createAppointmentOneTherapist.length === 0) {
+                next(new APIError("La route n'a pas été trouvé", 404));
+
+            } else {
+                res.json(createAppointmentOneTherapist)
+            }
+            } catch {
+                next(new APIError("Erreur lors de la création du rendez-vous entre un patient et un therapist", 500));
+        }
+    },
+    /**
+     * création d'un avis sur un therapist
+     * @param {*} req requête Express
+     * @param {*} res réponse Express
+     * @returns {json} créer un avis sur un therapist
+     */
+    async createReviewsOneTherapist (req,res,next){
         const patientId= req.params.patientId
         const therapistId = req.params.therapistId
+        
+        if (!patientId){
+            next(new APIError("Paramètres manquants", 400));
+            return;
+        }
+
+        if (!therapistId){
+            next(new APIError("Paramètres manquants", 400));
+            return;
+        }
         
         const review = {
             messages: req.body.messages,
@@ -101,24 +305,33 @@ const patientsController = {
             patients_id:patientId,
             therapists_id:therapistId,
         }
-        const createReviewsOneTherapist = await patientsDatamapper.createReviewsOneTherapist({patientId,therapistId},review);
-        res.json(createReviewsOneTherapist);
-    },
-    // TODO Il faut que quiz_id dans la table patients soit en NOT NULL AUTOGENERATE, suite a ca , il faut une route qui permet de trouver l'id du quiz enfonction du patient id 
-    // 1. une fois profil patient crée on va chercher son tout ses information via son ID/ou quizz_id SELECT * FROM patients p JOIN quizz q ON q.id = quizz_id WHERE q.id = 10
-    // 2. une fois quizz_id trouver il faut mettre a jour les reponses via une route en PUT 
 
-    // le bon raisonnement : 
-    //en realité il faut que le quizz soit crée avant le patient ou en meme temps, sinon erreur , la route quon a crée retourne l'id du quizz, cette id sera stocké niveau front
-    //cette id la sera nessesaire pour la création complet du profil du patient lors de l'inscription car pour associer le quizz a un patient il faut l'id
-    // donc il faut modifié la route permetant de crée un patient de facon dynamique afin de recuperer l'id du quizz (req.params.quizzId) ou via req.body mais req.params semble le mieux (pour le moment)
-    //quizz_id en not null 
-    //voir controller createPatients pour la suite du raisonnement
-    async answerPatientsQuizz(req,res) {
-        
-        
+        if (!review){
+            next(new APIError("Paramètres manquants", 400));
+            return;
+        }
+        try {
+            const createReviewsOneTherapist = await patientsDatamapper.createReviewsOneTherapist({patientId,therapistId},review);
+            
+            if (createReviewsOneTherapist.length === 0) {
+                next(new APIError("La route n'a pas été trouvé", 404));
 
-        const answers = {
+            }else {
+                res.json(createReviewsOneTherapist)
+            }
+            } catch {
+                next(new APIError("Erreur lors de la création d'un avis sur un therapist", 500));
+            }
+    },  
+    /**
+     * Répondre au quizz pour récupérer le quizz_id
+     * @param {*} req requête Express
+     * @param {*} res réponse Express
+     * @returns {json} répondre au quizz pour récupérer le quizz_id
+     */
+    async answerPatientsQuizz(req,res,next) {
+        
+            const answers = {
             answer_1 : req.body.answer_1,
             answer_2 : req.body.answer_2,
             answer_3 : req.body.answer_3,
@@ -139,9 +352,24 @@ const patientsController = {
             answer_18 : req.body.answer_18,
 
         }
-        const answerPatientsQuizz = await patientsDatamapper.answerPatientsQuizz(answers);
-        res.json(answerPatientsQuizz);
-        
+
+        if (!answers){
+            next(new APIError("Paramètres manquants", 400));
+            return;
+        }
+
+        try {
+            const answerPatientsQuizz = await patientsDatamapper.answerPatientsQuizz(answers);
+            
+            if (answerPatientsQuizz.length === 0) {
+                next(new APIError("La route n'a pas été trouvé", 404));
+            }else {
+                res.json(answerPatientsQuizz)
+            }
+            } catch {
+                next(new APIError("Erreur lors de la réponse au quizz", 500));
+            
+            }
     }
      
 

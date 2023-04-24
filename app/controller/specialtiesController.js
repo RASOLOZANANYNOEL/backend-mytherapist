@@ -1,14 +1,53 @@
-specialtiesDatamapper = require('../model/specialties')
+const specialtiesDatamapper = require('../model/specialties')
+const APIError = require("../service/error/APIError");
+const debug = require("debug")("controller");
+
 
 const specialtiesController = {
-    async getAll(_,res) {
-        const allSpecialties = await specialtiesDatamapper.findAll();
-        res.json(allSpecialties);
+    /**
+     * Récupérer toutes les spécialités
+     * @param {*} _ requête express
+     * @param {*} res réponse express
+     * @returns {JSON} liste des spécialités
+     */
+    async getAll(_,res,next) {
+        try {
+            const allSpecialties = await specialtiesDatamapper.findAll();
+        
+            if (allSpecialties.length === 0) {
+                next(new APIError("Aucune spécialité n'a été trouvée", 404))
+
+            } else {
+                res.json(allSpecialties)
+            }
+            } catch {
+                next(new APIError("Erreur lors de la récupération des spécialités", 500))
+            }
     },
-    async getById(req,res) {
+    /**
+     * Récupérer une spécialité par son id
+     * @param {*} req requête express
+     * @param {*} res réponse express
+     * @returns {JSON} une spécialité
+     */
+    async getById(req,res,next) {
         const id = req.params.id
-        const getSpecialtyById = await specialtiesDatamapper.findByPk(id);
-        res.json(getSpecialtyById)
+
+        if (!id) {
+            next(new APIError("Paramètres manquants",400))
+        }
+        try {
+            const getSpecialtyById = await specialtiesDatamapper.findByPk(id);
+            
+            if (getSpecialtyById.length === 0) {
+                next(new APIError("Aucune spécialité n'a été trouvée", 404))
+                
+            } else {
+                res.json(getSpecialtyById)
+            }
+        } catch {
+            next(new APIError("Erreur lors de la récupération de la spécialité", 500))
+        }
     },
 
 }

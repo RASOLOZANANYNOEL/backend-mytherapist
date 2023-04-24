@@ -338,6 +338,7 @@ const patientsController = {
             answer_4 : req.body.answer_4,
 
         }
+        console.log(answers)
 
         if (!answers){
             next(new APIError("Paramètres manquants", 400));

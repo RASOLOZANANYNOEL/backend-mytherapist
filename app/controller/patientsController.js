@@ -332,9 +332,13 @@ const patientsController = {
     async answerPatientsQuizz(req,res,next) {
         
             const answers = {
+            // question_1 : req.body.question_1,
             answer_1 : req.body.answer_1,
+            // question_2 : req.body.question_2,
             answer_2 : req.body.answer_2,
+            // question_3 : req.body.question_3,
             answer_3 : req.body.answer_3,
+            // question_4 : req.body.question_4,
             answer_4 : req.body.answer_4,
 
         }

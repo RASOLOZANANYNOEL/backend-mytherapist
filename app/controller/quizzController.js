@@ -14,9 +14,15 @@ const quizzController = {
     async getAll(_,res,next){
         try {
         const allQuizz = await quizzDatamapper.findAll();
-        res.json(allQuizz)
-        } catch {
-            next(new APIError("Erreur lors de la récupération des quizz", 500));
+        
+        if (allQuizz.length === 0) {
+            next(new APIError("Aucun quizz trouvé", 404));
+
+        } else{
+            res.json(allQuizz)
+        }
+        }catch {
+                next(new APIError("Erreur lors de la récupération des quizz", 500));
         }
     },
     /**
@@ -27,12 +33,22 @@ const quizzController = {
      */
     async getById(req,res,next){
         const id = req.params.id
-        try {
-        const oneQuizzById= await quizzDatamapper.findByPk(id);
-        res.json(oneQuizzById)
-        } catch {
-            next(new APIError("Erreur lors de la récupération du quizz", 500));
+
+        if (!id) {
+            next(new APIError("Paramètres manquants", 400));
+            return;
         }
+        try {
+            const oneQuizzById= await quizzDatamapper.findByPk(id);
+            
+            if (oneQuizzById.length === 0) {
+                next(new APIError("Aucun quizz trouvé", 404));
+            } else {
+                res.json(oneQuizzById)
+            }
+            } catch {
+                next(new APIError("Erreur lors de la récupération du quizz", 500));
+            }
     },
 
     

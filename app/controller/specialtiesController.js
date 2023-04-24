@@ -12,11 +12,17 @@ const specialtiesController = {
      */
     async getAll(_,res,next) {
         try {
-        const allSpecialties = await specialtiesDatamapper.findAll();
-        res.json(allSpecialties)
-        } catch {
-            next(new APIError("Erreur lors de la récupération des spécialités", 500))
-        }
+            const allSpecialties = await specialtiesDatamapper.findAll();
+        
+            if (allSpecialties.length === 0) {
+                next(new APIError("Aucune spécialité n'a été trouvée", 404))
+
+            } else {
+                res.json(allSpecialties)
+            }
+            } catch {
+                next(new APIError("Erreur lors de la récupération des spécialités", 500))
+            }
     },
     /**
      * Récupérer une spécialité par son id
@@ -26,12 +32,22 @@ const specialtiesController = {
      */
     async getById(req,res,next) {
         const id = req.params.id
+
+        if (!id) {
+            next(new APIError("Paramètres manquants",400))
+        }
         try {
-        const getSpecialtyById = await specialtiesDatamapper.findByPk(id);
-        res.json(getSpecialtyById)
-    } catch {
-        next(new APIError("Erreur lors de la récupération de la spécialité", 500))
-    }
+            const getSpecialtyById = await specialtiesDatamapper.findByPk(id);
+            
+            if (getSpecialtyById.length === 0) {
+                next(new APIError("Aucune spécialité n'a été trouvée", 404))
+                
+            } else {
+                res.json(getSpecialtyById)
+            }
+        } catch {
+            next(new APIError("Erreur lors de la récupération de la spécialité", 500))
+        }
     },
 
 }

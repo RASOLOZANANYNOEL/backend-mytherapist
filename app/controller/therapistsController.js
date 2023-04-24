@@ -1,8 +1,7 @@
 
-
 const therapistsDatamapper = require('../model/therapists')
 const APIError = require("../service/error/APIError");
-const debug = require("debug")("controller:therapists");
+const debug = require("debug")("controller");
 
 const therapistsController = {
     /**
@@ -15,10 +14,8 @@ const therapistsController = {
 
         try {
             const allTherapists = await therapistsDatamapper.findAll();
-            if (!allTherapists) {
-                next(new APIError("Mauvaise requête",400))
 
-            } else if (allTherapists.length === 0)  {
+            if (allTherapists.length === 0)  {
                 next(new APIError("La route n'a pas été trouvé",404))
 
             } else {
@@ -43,20 +40,17 @@ const therapistsController = {
         }
 
         try {
-        const getTherapistById = await therapistsDatamapper.findByPk(id);
+            const getTherapistById = await therapistsDatamapper.findByPk(id);
         
-        if (!getTherapistById) {
-            next(new APIError("Mauvaise requête",400))
-            
-        } else if (getTherapistById.length === 0) {
-            next(new APIError("La route n'a pas été trouvé",404));
-        } else {
-            res.json(getTherapistById)  
-        }
+            if (getTherapistById.length === 0) {
+                next(new APIError("La route n'a pas été trouvé",404));
+            } else {
+                res.json(getTherapistById)  
+            }
 
-        } catch {
-        next(new APIError("Erreur lors de la récupération d'un therapists",500))
-        }
+            } catch {
+            next(new APIError("Erreur lors de la récupération d'un therapists",500))
+            }
     },
     /**
      * Création d'un therapist
@@ -82,17 +76,16 @@ const therapistsController = {
             return;
         }
         try {
-        const creatTherapist = await therapistsDatamapper.create(therapistInfo);
-        if (!creatTherapist) {
-            next(new APIError("Mauvaise requête",400));
-        } else if (creatTherapist.length === 0) {
-            next(new APIError("La route n'a pas été trouvé",404))
-        } else {
-            res.json(creatTherapist)
-        }
-        } catch {
-            next(new APIError("Erreur lors de la création d'un therapists",500))
+            const creatTherapist = await therapistsDatamapper.create(therapistInfo);
+        
+            if (creatTherapist.length === 0) {
+                next(new APIError("La route n'a pas été trouvé",404))
+            } else {
+                res.json(creatTherapist)
             }
+            } catch {
+                next(new APIError("Erreur lors de la création d'un therapists",500))
+                }
     },
     /**
      * Mise à jour d'un therapist
@@ -121,22 +114,24 @@ const therapistsController = {
             next(new APIError("Paramètres manquants",400));
             return;
         }
+
+        if (!therapistInfo) {
+            next(new APIError("Paramètres manquants",400));
+            return;
+        }
         
         try {
-        const updateTherapist = await therapistsDatamapper.update({id},therapistInfo)
+            const updateTherapist = await therapistsDatamapper.update({id},therapistInfo)
         
-        if (!updateTherapist) {
-            next(new APIError("Mauvaise requête",400))
-            
-        } else if (updateTherapist.length === 0) {
-            next(new APIError("La route n'a pas été trouvé",404));
+            if (updateTherapist.length === 0) {
+                next(new APIError("La route n'a pas été trouvé",404));
 
-        } else {
-            res.json(updateTherapist)
-        }
-        } catch {
-        next(new APIError("Erreur lors de la récupération d'un therapists",500))
-        }
+            } else {
+                res.json(updateTherapist)
+            }
+            } catch {
+            next(new APIError("Erreur lors de la récupération d'un therapists",500))
+            }
         
     },
     /**
@@ -154,19 +149,17 @@ const therapistsController = {
         }
 
         try {
-        const deleteTherapist = await therapistsDatamapper.delete(id)
-        if (!deleteTherapist) {
-            next(new APIError("Mauvaise requête",400)) 
-            
-        } else if (deleteTherapist.length === 0) {
-            next(new APIError("La route n'a pas été trouvé",404))  
+            const deleteTherapist = await therapistsDatamapper.delete(id)
+        
+            if (deleteTherapist.length === 0) {
+                next(new APIError("La route n'a pas été trouvé",404))  
 
-        } else {
-            res.json(deleteTherapist)
-        }
-        } catch {
-            next(new APIError("Erreur lors de la suppression d'un therapists",500))
-        }
+            } else {
+                res.json(deleteTherapist)
+            }
+            } catch {
+                next(new APIError("Erreur lors de la suppression d'un therapists",500))
+            }
     
     },
     /**
@@ -184,19 +177,17 @@ const therapistsController = {
         }
 
         try {
-        const findTherapistsWithSpecialties = await therapistsDatamapper.findTherapistsWithSpecialties(id);
+            const findTherapistsWithSpecialties = await therapistsDatamapper.findTherapistsWithSpecialties(id);
         
-        if(!findTherapistsWithSpecialties) {
-            next(new APIError("Mauvaise requête",400));
-            
-        } else if (findTherapistsWithSpecialties.length === 0) {
-            next(new APIError("La route n'a pas été trouvé",404))
-        } else {
-        res.json(findTherapistsWithSpecialties)
-        }
-        } catch {
-            next(new APIError("Erreur lors de la récupération des therapists avec leurs spécialités",500))
-        }
+            if (findTherapistsWithSpecialties.length === 0) {
+                next(new APIError("La route n'a pas été trouvé",404))
+
+            } else {
+            res.json(findTherapistsWithSpecialties)
+            }
+            } catch {
+                next(new APIError("Erreur lors de la récupération des therapists avec leurs spécialités",500))
+            }
     },
     /**
      * Récupération de tous les therapists avec leurs spécialités
@@ -206,20 +197,17 @@ const therapistsController = {
      */
     async findAllTherapistsWithSpecialities (_,res,next) {
         try {
-        const findAllTherapistsWithSpecialities = await therapistsDatamapper.AllTherapistsWithSpecialities();
+            const findAllTherapistsWithSpecialities = await therapistsDatamapper.AllTherapistsWithSpecialities();
         
-        if (!findAllTherapistsWithSpecialities) {
-            next(new APIError("Mauvaise requête",400));
-
-        } else if (findAllTherapistsWithSpecialities.length === 0) {
-            next(new APIError("La route n'a pas été trouvé",404))
-            
-        } else {
-            res.json(findAllTherapistsWithSpecialities)
-        }
-        } catch {
-            next(new APIError("Erreur lors de la récupération de tout les therapists avec leurs spécialités",500))
-        }
+            if (findAllTherapistsWithSpecialities.length === 0) {
+                next(new APIError("La route n'a pas été trouvé",404))
+                
+            } else {
+                res.json(findAllTherapistsWithSpecialities)
+            }
+            } catch {
+                next(new APIError("Erreur lors de la récupération de tout les therapists avec leurs spécialités",500))
+            }
     },
     /**
      * Ajouter une spécialité à un thérapist
@@ -237,19 +225,17 @@ const therapistsController = {
         }
 
         try {
-        const addSpecialtiesToTherapist = await therapistsDatamapper.addSpecialtiesToTherapist(therapistId, specialityId);
-        if (!addSpecialtiesToTherapist) {
-            next(new APIError("Mauvaise requête",400));
-                        
-        } else if (addSpecialtiesToTherapist.length === 0) {
-            next(new APIError("La route n'a pas été trouvé",404))
-            
-        } else {
-            res.json(addSpecialtiesToTherapist)
-        }
-        } catch {
-            next(new APIError("Erreur lors de l'ajout d'une spécialité à un thérapeute",500))
-        }
+            const addSpecialtiesToTherapist = await therapistsDatamapper.addSpecialtiesToTherapist(therapistId, specialityId);
+        
+            if (addSpecialtiesToTherapist.length === 0) {
+                next(new APIError("La route n'a pas été trouvé",404))
+                
+            } else {
+                res.json(addSpecialtiesToTherapist)
+            }
+            } catch {
+                next(new APIError("Erreur lors de l'ajout d'une spécialité à un thérapeute",500))
+            }
     },
     /**
      * Supprimer une spécialité à un thérapist
@@ -267,20 +253,17 @@ const therapistsController = {
         }
 
         try {
-        const removeSpecialtiesToTherapist = await therapistsDatamapper.removeSpecialtiesFromTherapist(therapistId, specialityId);
+            const removeSpecialtiesToTherapist = await therapistsDatamapper.removeSpecialtiesFromTherapist(therapistId, specialityId);
         
-        if (!removeSpecialtiesToTherapist) {
-            next(new APIError("Mauvaise requête",400));
-            
-        } else if (removeSpecialtiesToTherapist.length === 0) {
-            next(new APIError("La route n'a pas été trouvé",404))
+            if (removeSpecialtiesToTherapist.length === 0) {
+                next(new APIError("La route n'a pas été trouvé",404))
 
-        } else {
-            res.json(removeSpecialtiesToTherapist)
-        }
-        } catch {
-        next(new APIError("Erreur lors de la suppression d'une spécialité à un thérapeute",500))
-        }
+            } else {
+                res.json(removeSpecialtiesToTherapist)
+            }
+            } catch {
+                next(new APIError("Erreur lors de la suppression d'une spécialité à un thérapeute",500))
+            }
     },
     /**
      * Récupération de tous les therapists par leurs genres et avec leurs spécialités
@@ -297,20 +280,17 @@ const therapistsController = {
         }
 
         try {
-        const getAllTherapistsByGenderWithSpe = await therapistsDatamapper.getAllTherapistsByGenderWithSpecialities(gender);
+            const getAllTherapistsByGenderWithSpe = await therapistsDatamapper.getAllTherapistsByGenderWithSpecialities(gender);
         
-        if (!getAllTherapistsByGenderWithSpe) {
-            next(new APIError("Mauvaise requête",400))
-            
-        } else if (getAllTherapistsByGenderWithSpe.length === 0) {
-            next(new APIError("La route n'a pas été trouvé",404));
-            
-        }else {
-            res.json(getAllTherapistsByGenderWithSpe)
-        }
-        } catch {
-            next(new APIError("Erreur lors de la récupération des therapists par leurs genres et avec leurs spécialités",500))
-        }
+            if (getAllTherapistsByGenderWithSpe.length === 0) {
+                next(new APIError("La route n'a pas été trouvé",404));
+                
+            }else {
+                res.json(getAllTherapistsByGenderWithSpe)
+            }
+            } catch {
+                next(new APIError("Erreur lors de la récupération des therapists par leurs genres et avec leurs spécialités",500))
+            }
     },
     /**
      * Récupération de tous les therapists par leurs genres
@@ -327,22 +307,17 @@ const therapistsController = {
         }
 
         try {
-        const getAllTherapistsByGender = await therapistsDatamapper.getAllTherapistsByGender(gender);
+            const getAllTherapistsByGender = await therapistsDatamapper.getAllTherapistsByGender(gender);
         
-        if (!getAllTherapistsByGender) {
-            next(new APIError("Mauvaise requête",400))
-            
-            
-        } else if (getAllTherapistsByGender.length === 0) {
-            next(new APIError("La route n'a pas été trouvé",404));
-            
-        } else {
-            res.json(getAllTherapistsByGender)
-
-        }
-        } catch {
-            next(new APIError("Erreur lors de la récupération des therapists par leurs genres",500))
-        }
+            if (getAllTherapistsByGender.length === 0) {
+                next(new APIError("La route n'a pas été trouvé",404));
+                
+            } else {
+                res.json(getAllTherapistsByGender)
+            }
+            } catch {
+                next(new APIError("Erreur lors de la récupération des therapists par leurs genres",500))
+            }
     },
     /**
      * Récupération de tous les rendez-vous d'un therapist
@@ -359,21 +334,18 @@ const therapistsController = {
         }
 
         try {
-        const getAllAppointmentOfATherapist = await therapistsDatamapper.getAllAppointmentOfATherapist(id);
+            const getAllAppointmentOfATherapist = await therapistsDatamapper.getAllAppointmentOfATherapist(id);
         
-        if (!getAllAppointmentOfATherapist) {
-            next(new APIError("Mauvaise requête",400))
-            
-        } else if (getAllAppointmentOfATherapist.length === 0) {
-            next(new APIError("La route n'a pas été trouvé",404));
+            if (getAllAppointmentOfATherapist.length === 0) {
+                next(new APIError("La route n'a pas été trouvé",404));
 
-        } else {
-            res.json(getAllAppointmentOfATherapist)
-            
-        }
-        } catch {
-            next(new APIError("Erreur lors de la récupération des rendez-vous d'un therapist",500))
-        }
+            } else {
+                res.json(getAllAppointmentOfATherapist)
+                
+            }
+            } catch {
+                next(new APIError("Erreur lors de la récupération des rendez-vous d'un therapist",500))
+            }
     },
     /**
      * Récupération d'un rendez-vous d'un therapist
@@ -391,21 +363,18 @@ const therapistsController = {
         }
 
         try {
-        const getOneAppointmentOfATherapist = await therapistsDatamapper.getOneAppointmentOfATherapist(therapistId,appointmentId);
+            const getOneAppointmentOfATherapist = await therapistsDatamapper.getOneAppointmentOfATherapist(therapistId,appointmentId);
         
-        if (!getOneAppointmentOfATherapist) {
-            next(new APIError("Mauvaise requête",400))
-            
-        } else if (getOneAppointmentOfATherapist.length) {
-            next(new APIError("La route n'a pas été trouvé",404));
+            if (getOneAppointmentOfATherapist.length === 0) {
+                next(new APIError("La route n'a pas été trouvé",404));
 
-        }else{
-            res.json(getOneAppointmentOfATherapist)
+            }else{
+                res.json(getOneAppointmentOfATherapist)
 
-        }
-         } catch {
-            next(new APIError("Erreur lors de la récupération d'un rendez-vous d'un therapist",500))
-        }
+            }
+            } catch {
+                next(new APIError("Erreur lors de la récupération d'un rendez-vous d'un therapist",500))
+            }
     },
     /**
      * Créer rendez-vous d'un therapist avec un patient
@@ -439,21 +408,18 @@ const therapistsController = {
         }
 
         try {
-        const createAppointmentOneTherapist = await therapistsDatamapper.creatAppointmentWithOnePatient({therapistId,patientId},appointment);
+            const createAppointmentOneTherapist = await therapistsDatamapper.creatAppointmentWithOnePatient({therapistId,patientId},appointment);
         
-        if (!createAppointmentOneTherapist) {
-            next(new APIError("Mauvaise requête",400));
-            
-        } else if (!createAppointmentOneTherapist.length === 0) {
-            next(new APIError("La route n'a pas été trouvé",404))
-            
-        } else {
-            res.json(createAppointmentOneTherapist);
+            if (createAppointmentOneTherapist.length === 0) {
+                next(new APIError("La route n'a pas été trouvé",404))
+                
+            } else {
+                res.json(createAppointmentOneTherapist);
 
-        }
-        } catch {
-        next(new APIError("Erreur lors de la création d'un rendez-vous d'un therapist avec un patient",500))
-        }
+            }
+            } catch {
+            next(new APIError("Erreur lors de la création d'un rendez-vous d'un therapist avec un patient",500))
+            }
     },
     /**
      * Récupérer d'un avis sur un therapist 
@@ -470,21 +436,18 @@ const therapistsController = {
         }
 
         try {
-        const viewOneTherapistReviews = await therapistsDatamapper.viewOneTherapistReviews(id)
+            const viewOneTherapistReviews = await therapistsDatamapper.viewOneTherapistReviews(id)
         
-        if(!viewOneTherapistReviews) {
-            next(new APIError("Mauvaise requête",400));
+            if (viewOneTherapistReviews.length === 0) {
+                next(new APIError("La route n'a pas été trouvé",404))
 
-        } else if (viewOneTherapistReviews.length === 0) {
-            next(new APIError("La route n'a pas été trouvé",404))
-
-        } else {
-            res.json(viewOneTherapistReviews)
-            
-        }
-        } catch {
-            next(new APIError("Erreur lors de la récupération d'un avis sur un therapist",500))
-        }
+            } else {
+                res.json(viewOneTherapistReviews)
+                
+            }
+            } catch {
+                next(new APIError("Erreur lors de la récupération d'un avis sur un therapist",500))
+            }
     },
     /**
      * Récupérer tous les therapists par leurs spécialités
@@ -500,21 +463,17 @@ const therapistsController = {
             return;
         }
         try {
-        findAllTherapistBySpecialties = await therapistsDatamapper.findAllTherapistBySpecialties(id)
+            const findAllTherapistBySpecialties = await therapistsDatamapper.findAllTherapistBySpecialties(id)
         
-        if (!findAllTherapistBySpecialties) {
-            next(new APIError("Mauvaise requête",400));
-                       
-        } else if(findAllTherapistBySpecialties.length === 0) {
-            next(new APIError("La route n'a pas été trouvé",404))
-            
-        }else {
-            res.json(findAllTherapistBySpecialties)
-            
-        }
-        } catch {
-            next(new APIError("Erreur lors de la récupération de tous les therapists par leurs spécialités",500))
-        }
+            if(findAllTherapistBySpecialties.length === 0) {
+                next(new APIError("La route n'a pas été trouvé",404))
+                
+            }else {
+                res.json(findAllTherapistBySpecialties)          
+            }
+            } catch {
+                next(new APIError("Erreur lors de la récupération de tous les therapists par leurs spécialités",500))
+            }
     },
     
 }

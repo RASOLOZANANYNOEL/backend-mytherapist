@@ -32,3 +32,7 @@ date;contexte;message
 2023-04-24T09:23:08.926Z;/therapists/2/appointment/patients/16;Erreur lors de la création d'un rendez-vous d'un therapist avec un patient
 2023-04-24T10:11:05.227Z;/therapistsgg;Not found
 2023-04-24T10:17:24.727Z;/therapists/178;Erreur lors de la récupération d'un therapists
+2023-04-24T13:24:00.794Z;Base de données;la colonne « answer_5 » n'existe pas
+2023-04-24T13:24:33.603Z;Base de données;la colonne « answer_5 » n'existe pas
+2023-04-24T13:28:17.049Z;Base de données;la colonne « answer_5 » n'existe pas
+2023-04-24T13:28:19.383Z;Base de données;la colonne « answer_5 » n'existe pas

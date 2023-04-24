@@ -76,6 +76,9 @@ CHECK (
 
 CREATE TYPE type_role AS ENUM ('admin', 'therapist','patient');
 
+CREATE TYPE relevant_person AS ENUM ('none', 'me', 'relation', 'child');
+CREATE TYPE pathology AS ENUM ('none', 'professionnal', 'accident', 'aggression', 'death', 'phobia', 'anxiety', 'depression', 'loneliness', 'confidence', 'addiction', 'evaluation', 'couple');
+
 
 ---------------------------------------------------------------------------------------------------
 
@@ -108,42 +111,18 @@ CREATE TABLE therapists (
 
 CREATE TABLE quizz (
     "id" int GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    "quizz_1" TEXT NULL,
-    "answer_1" BOOLEAN NULL,
-    "quizz_2" TEXT NULL,
-    "answer_2" BOOLEAN NULL,
-    "quizz_3" TEXT NULL,
-    "answer_3" BOOLEAN NULL,
-    "quizz_4" TEXT NULL,
-    "answer_4" BOOLEAN NULL,
-    "quizz_5" TEXT NULL,
-    "answer_5" BOOLEAN NULL,
-    "quizz_6" TEXT NULL,
-    "answer_6" BOOLEAN NULL,
-    "quizz_7" TEXT NULL,
-    "answer_7" BOOLEAN NULL,
-    "quizz_8" TEXT NULL,
-    "answer_8" BOOLEAN NULL,
-    "quizz_9" TEXT NULL,
-    "answer_9" BOOLEAN NULL,
-    "quizz_10" TEXT NULL,
-    "answer_10" BOOLEAN NULL,
-    "quizz_11" TEXT NULL,
-    "answer_11" BOOLEAN NULL,
-    "quizz_12" TEXT NULL,
-    "answer_12" BOOLEAN NULL,
-    "quizz_13" TEXT NULL,
-    "answer_13" BOOLEAN NULL,
-    "quizz_14" TEXT NULL,
-    "answer_14" BOOLEAN NULL,
-    "quizz_15" TEXT NULL,
-    "answer_15" BOOLEAN NULL,
-    "quizz_16" TEXT NULL,
-    "answer_16" BOOLEAN NULL,
-    "quizz_17" TEXT NULL,
-    "answer_17" BOOLEAN NULL,
-    "quizz_18" TEXT NULL,
-    "answer_18" BOOLEAN NULL
+    -- Etes vous un particulier ?
+    "question_1" text not null ,
+    "answer_1" boolean not null,
+    -- Pour qui voulez vous prendez rendez-vous ?
+    "question_2" text not null, 
+    "answer_2" relevant_person default 'none',
+    -- Sur quoi voulez vous travailler ?
+    "question_3" text not null,
+    "answer_3" pathology default 'none',
+    -- Préférez-vous un practicien homme ou femme ?
+    "question_4" text not null,
+    "answer_4" boolean default null     
 );
 
 

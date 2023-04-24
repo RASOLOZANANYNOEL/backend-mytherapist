@@ -345,10 +345,10 @@ const patientsController = {
             return;
         }
 
-        try {
+        // try {
             const answerPatientsQuizz = await patientsDatamapper.answerPatientsQuizz(answers);
-            
-            if (answerPatientsQuizz.length === 0) {
+            res.json(answerPatientsQuizz)
+           /*  if (answerPatientsQuizz.length === 0) {
                 next(new APIError("La route n'a pas été trouvé", 404));
             }else {
                 res.json(answerPatientsQuizz)
@@ -356,7 +356,7 @@ const patientsController = {
             } catch {
                 next(new APIError("Erreur lors de la réponse au quizz", 500));
             
-            }
+            } */
     }
      
 

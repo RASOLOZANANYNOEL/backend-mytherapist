@@ -36,3 +36,11 @@ date;contexte;message
 2023-04-24T13:24:33.603Z;Base de données;la colonne « answer_5 » n'existe pas
 2023-04-24T13:28:17.049Z;Base de données;la colonne « answer_5 » n'existe pas
 2023-04-24T13:28:19.383Z;Base de données;la colonne « answer_5 » n'existe pas
+2023-04-24T17:24:47.083Z;Base de données;erreur de syntaxe sur ou près de « ) »
+2023-04-24T17:24:47.093Z;/patients/quizz;Erreur lors de la réponse au quizz
+2023-04-24T17:25:32.327Z;Base de données;erreur de syntaxe sur ou près de « ) »
+2023-04-24T17:25:32.329Z;/patients/quizz;Erreur lors de la réponse au quizz
+2023-04-24T17:25:52.129Z;Base de données;erreur de syntaxe sur ou près de « ) »
+2023-04-24T17:25:52.136Z;/patients/quizz;Erreur lors de la réponse au quizz
+2023-04-24T17:26:48.018Z;Base de données;erreur de syntaxe sur ou près de « ) »
+2023-04-24T17:26:49.884Z;Base de données;erreur de syntaxe sur ou près de « ) »

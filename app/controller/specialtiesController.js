@@ -10,7 +10,7 @@ const specialtiesController = {
      * @param {*} res réponse express
      * @returns {JSON} liste des spécialités
      */
-    async getAll(_,res) {
+    async getAll(_,res,next) {
         try {
         const allSpecialties = await specialtiesDatamapper.findAll();
         res.json(allSpecialties)
@@ -24,7 +24,7 @@ const specialtiesController = {
      * @param {*} res réponse express
      * @returns {JSON} une spécialité
      */
-    async getById(req,res) {
+    async getById(req,res,next) {
         const id = req.params.id
         try {
         const getSpecialtyById = await specialtiesDatamapper.findByPk(id);

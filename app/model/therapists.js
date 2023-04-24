@@ -1,5 +1,8 @@
 const CoreDatamapper = require('./CoreDatamapper');
 const client = require('../db/pg');
+const debug = require("debug")("datamapper");
+const errorModule = require("../service/error/errorHandling");
+
 
 class Therapists extends CoreDatamapper {
     tableName = 'therapists';
@@ -13,10 +16,13 @@ class Therapists extends CoreDatamapper {
             WHERE t.id = $1`,
             values: [id],
         };
-
+        try {
         const result = await this.client.query(preparedQuery);
 
         return result.rows;
+        } catch(err) {
+            await errorModule.log(err,"Base de donnée");
+        }
     }
 
     async findByEmail(email) {
@@ -24,10 +30,14 @@ class Therapists extends CoreDatamapper {
             text: `SELECT * FROM therapists t WHERE t.email = $1`,
             values: [email],
         };
+        try {
 
         const result = await this.client.query(preparedQuery);
 
         return result.rows[0];
+        } catch(err) {
+            await errorModule.log(err,"Base de donnée");
+        }
     }
     
     async AllTherapistsWithSpecialities() {
@@ -51,10 +61,13 @@ class Therapists extends CoreDatamapper {
             text: `INSERT INTO therapists_own_specialties (therapists_id, specialties_id) VALUES ($1, $2) RETURNING *`,
             values: [therapistId, specialityId],
         };
-
+        try {
         const result = await this.client.query(preparedQuery);
 
         return result.rows;
+    } catch(err) {
+        await errorModule.log(err,"Base de donnée");
+    }
     }
     
     async removeSpecialtiesFromTherapist(therapistId, specialityId) {
@@ -62,10 +75,13 @@ class Therapists extends CoreDatamapper {
             text: `DELETE FROM therapists_own_specialties WHERE therapists_id = $1 AND specialties_id = $2 RETURNING *`,
             values: [therapistId, specialityId],
         };
-
+        try {
         const result = await this.client.query(preparedQuery);
 
         return result.rows;
+    } catch (err) {
+        await errorModule.log(err,"Base de donnée");
+    }
     }
 
     async getAllTherapistsByGenderWithSpecialities(gender) {
@@ -76,10 +92,13 @@ class Therapists extends CoreDatamapper {
 			WHERE gender = $1`,
             values: [gender],
         };
-
+        try {
         const result = await this.client.query(preparedQuery);
 
         return result.rows;
+    } catch (err) {
+        await errorModule.log(err,"Base de donnée");
+    }
     }
 
     async getAllTherapistsByGender(gender) {
@@ -88,10 +107,13 @@ class Therapists extends CoreDatamapper {
 			WHERE gender = $1`,
             values: [gender],
         };
-
+        try {
         const result = await this.client.query(preparedQuery);
 
         return result.rows;
+        } catch (err) {
+            await errorModule.log(err,"Base de donnée");
+        }
     }
 
     async getAllAppointmentOfATherapist(id) {
@@ -103,10 +125,13 @@ class Therapists extends CoreDatamapper {
             values: [id],
         
         };
-
+        try {
         const result = await this.client.query(preparedQuery);
 
         return result.rows;
+        } catch(err) {
+            await errorModule.log(err,"Base de donnée");
+        }
     }
 
     async getOneAppointmentOfATherapist(TherapistId, appointmentId) {
@@ -118,10 +143,13 @@ class Therapists extends CoreDatamapper {
             values: [TherapistId,appointmentId],
         
         };
-
+        try {
         const result = await this.client.query(preparedQuery);
 
         return result.rows;
+        } catch (err) {
+            await errorModule.log(err,"Base de donnée");
+        }
     }
 
     async creatAppointmentWithOnePatient ({patientId,therapistId},appointment){
@@ -143,9 +171,13 @@ class Therapists extends CoreDatamapper {
             values : [appointment.beginninghour, appointment.endtime, 
                 patientId,therapistId, appointment.videosession,
                 appointment.audiosession,appointment.chatsession, appointment.sessionatoffice ],
-        }
+        };
+        try {
         const result = await this.client.query(preparedQuery);
         return result.rows;
+        } catch (err) {
+            await errorModule.log(err,"Base de donnée");
+        }
     }
 
     async viewOneTherapistReviews(id) {
@@ -156,37 +188,47 @@ class Therapists extends CoreDatamapper {
             WHERE t.id = $1;`,
             values : [id],
         }
+        try {
         const result = await this.client.query(preparedQuery);
         return result.rows;
+        } catch (err) {
+            await errorModule.log(err,"Base de donnée");
+        }
     }
 
     async findAllTherapistBySpecialties(id) {
         const preparedQuery = {
-            text: `SELECT t.lastname, t.firstname, s.label, t.gender FROM therapists t
+            text: `SELECT t.id, t.lastname, t.firstname, s.label, t.gender FROM therapists t
             JOIN therapists_own_specialties ts ON ts.therapists_id = t.id
 			JOIN specialties s ON s.id = ts.specialties_id 
             WHERE s.id = $1`,
             values: [id],
         };
-
+        try {
         const result = await this.client.query(preparedQuery);
 
         return result.rows;
+        } catch (err) {
+            await errorModule.log(err,"Base de donnée");
+        }
     }
 
     async findAllTherapistBySpecialtiesAndGender(id,gender) {
         
         const preparedQuery = {
-            text: `SELECT t.lastname, t.firstname, s.label, t.id, t.gender FROM therapists t
+            text: `SELECT t.id ,t.lastname, t.firstname, s.label, t.id, t.gender FROM therapists t
             JOIN therapists_own_specialties ts ON ts.therapists_id = t.id
 			JOIN specialties s ON s.id = ts.specialties_id
 			WHERE s.id = $1 AND t.gender = $2`,
             values: [id,gender],
         };
-
+        try {
         const result = await this.client.query(preparedQuery);
 
         return result.rows;
+        } catch {
+            await errorModule.log(err,"Base de donnée");
+        }
     }
 
     

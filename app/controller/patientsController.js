@@ -10,7 +10,7 @@ const patientsController = {
      * @param {*} res réponse Express
      * @returns {json} liste des patients
      */
-    async getAll(_,res) {
+    async getAll(_,res,next) {
         try {
         const allPatients= await patientsDatamapper.findAll();
         res.json(allPatients)
@@ -24,7 +24,7 @@ const patientsController = {
      * @param {*} res réponse Express
      * @returns {json} un patient
      */
-    async getById(req,res) {
+    async getById(req,res,next) {
         const id = req.params.id
         try {
         const onePatientsById = await patientsDatamapper.findByPk(id);
@@ -41,7 +41,7 @@ const patientsController = {
      * @param {*} res réponse Express
      * @returns {json} créer un patient 
      */
-    async createPatients(req,res) {
+    async createPatients(req,res,next) {
         try {
         const patientsInfo = {
             email : req.body.email,
@@ -66,7 +66,7 @@ const patientsController = {
      * @param {*} res réponse Express
      * @returns {json} mettre à jour un patient
      */
-    async updatePatients(req,res){
+    async updatePatients(req,res,next){
         const id = req.params.id
         try {
         const patientsInfo = {
@@ -92,7 +92,7 @@ const patientsController = {
      * @param {*} res réponse Express
      * @returns {json} supprimer un patient
      */
-    async deletePatients(req,res){
+    async deletePatients(req,res,next){
         const id = req.params.id
         try {
         const deletePatients = await patientsDatamapper.delete(id);
@@ -107,7 +107,7 @@ const patientsController = {
      * @param {*} res réponse Express
      * @returns {json} un patient avec ses rendez-vous
      */
-    async getOnePatientWithAllAppointments (req,res) {
+    async getOnePatientWithAllAppointments (req,res,next) {
         const id = req.params.id
         try {
         const getOnePatientsWithAllAppointments = await patientsDatamapper.getOnePatientWithAllAppointments(id);
@@ -122,7 +122,7 @@ const patientsController = {
      * @param {*} res réponse Express
      * @returns {json} un patient avec ses quizz
      */
-    async getOnePatientWithQuizz (req,res) {
+    async getOnePatientWithQuizz (req,res,next) {
         const id= req.params.id
         try {
         const getOnePatientWithQuizz = await patientsDatamapper.getOnePatientWithQuizz(id);
@@ -137,7 +137,7 @@ const patientsController = {
      * @param {*} res réponse Express
      * @returns {json} avis des patients sur un therapist
      */
-    async getReviewsOneTherapists (req,res){
+    async getReviewsOneTherapists (req,res,next){
         const id= req.params.id
         try {
         const getReviewsOneTherapists = await patientsDatamapper.getReviewsOneTherapists(id);
@@ -152,7 +152,7 @@ const patientsController = {
      * @param {*} res réponse Express
      * @returns {json} créer un rendez-vous entre un patient et un therapist
      */
-    async createAppointmentOneTherapist (req,res) {
+    async createAppointmentOneTherapist (req,res,next) {
         
         const therapistId = req.params.therapistId
         const patientId= req.params.patientId
@@ -181,7 +181,7 @@ const patientsController = {
      * @param {*} res réponse Express
      * @returns {json} créer un avis sur un therapist
      */
-    async createReviewsOneTherapist (req,res){
+    async createReviewsOneTherapist (req,res,next){
         const patientId= req.params.patientId
         const therapistId = req.params.therapistId
         try {
@@ -205,7 +205,7 @@ const patientsController = {
      * @param {*} res réponse Express
      * @returns {json} répondre au quizz pour récupérer le quizz_id
      */
-    async answerPatientsQuizz(req,res) {
+    async answerPatientsQuizz(req,res,next) {
         
         try {
 

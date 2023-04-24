@@ -11,7 +11,7 @@ const quizzController = {
      * @param {*} res réponse Express
      * @returns {JSON} liste des quizz
      */
-    async getAll(_,res){
+    async getAll(_,res,next){
         try {
         const allQuizz = await quizzDatamapper.findAll();
         res.json(allQuizz)
@@ -25,7 +25,7 @@ const quizzController = {
      * @param {*} res réponse Express
      * @returns {JSON} un quizz
      */
-    async getById(req,res){
+    async getById(req,res,next){
         const id = req.params.id
         try {
         const oneQuizzById= await quizzDatamapper.findByPk(id);

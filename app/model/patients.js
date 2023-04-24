@@ -1,9 +1,14 @@
 const CoreDatamapper = require('./CoreDatamapper');
 const client = require('../db/pg');
+const debug = require("debug")("model");
+const errorModule = require("../service/error/errorHandling");
 
 class Patients extends CoreDatamapper {
     tableName = 'patients';
-
+    /**
+     * permet de récupérer un patient avec son id
+     * @param {number} id
+     */
     async getOnePatientWithAllAppointments(id){
         const preparedQuery ={
             text: `SELECT p.id, p.email, p.lastname,p.firstname, p.phonenumber,p.profilpicture, p.streetname,p.zipcode,p.city,p.complement ,a.id AS appointmentId,t.id AS therapistId,t.firstname AS therapistFirstname,
@@ -14,21 +19,33 @@ class Patients extends CoreDatamapper {
             WHERE p.id = $1`,
             values: [id],
         }
+        try {
         const result =await this.client.query(preparedQuery);
-        return result.rows;
+        return result.rows
+        } catch (err) {
+            await errorModule.log(err,"Base de données");
+        }
     }
-
+    /**
+     * permet de récupérer un patient avec son email
+     * @param {string} email
+     */
     async findByEmail(email) {
         const preparedQuery = {
             text: `SELECT * FROM patients t WHERE t.email = $1`,
             values: [email],
         };
-
+        try {
         const result = await this.client.query(preparedQuery);
-
         return result.rows[0];
+        } catch (err) {
+            await errorModule.log(err,"Base de données");
+        }
     }
-
+    /**
+     * permet de récupérer un patient avec son quizz par son id
+     * @param {number} id
+     */
     async getOnePatientWithQuizz (id){
         const preparedQuery = {
             text: `SELECT p.id, p.email, p.lastname,p.firstname, p.phonenumber,p.profilpicture, p.streetname,p.zipcode,p.city,p.complement, p.quizz_id ,
@@ -40,8 +57,12 @@ class Patients extends CoreDatamapper {
             WHERE p.id = $1`,
             values: [id]
         }
+        try {
         const result = await this.client.query(preparedQuery);
         return result.rows;
+        } catch (err) {
+            await errorModule.log(err,"Base de données");
+        }
     }
 
     async getReviewsOneTherapists(id){
@@ -54,8 +75,12 @@ class Patients extends CoreDatamapper {
            WHERE t.id = $1` ,
            values: [id],
         }
+        try {
         const result =await this.client.query(preparedQuery);
         return result.rows;
+        } catch (err) {
+            await errorModule.log(err,"Base de données");
+        }
     }
     
     async createAppointmentOneTherapist({therapistId,patientId},appointment){
@@ -78,8 +103,12 @@ class Patients extends CoreDatamapper {
                 therapistId,patientId, appointment.videosession,
                 appointment.audiosession,appointment.chatsession, appointment.sessionatoffice ],
         }
+        try {
         const result = await this.client.query(preparedQuery);
         return result.rows;
+        } catch (err) {
+            await errorModule.log(err,"Base de données");
+        }
     }
 
     async createReviewsOneTherapist ({patientId,therapistId},reviews){
@@ -93,8 +122,12 @@ class Patients extends CoreDatamapper {
             values : [reviews.messages,reviews.negatifreviews,reviews.positifreviews,
             patientId,therapistId],
         }
+        try {
         const result = await this.client.query(preparedQuery);
         return result.rows;
+        } catch (err) {
+            await errorModule.log(err,"Base de données");
+        }
     } 
 
     async answerPatientsQuizz (answers){
@@ -151,8 +184,12 @@ class Patients extends CoreDatamapper {
                 answers.answer_17,answers.answer_18,
             ],
         }
+        try {
         const result = await this.client.query(preparedQuery);
         return result.rows;
+        } catch (err) {
+            await errorModule.log(err,"Base de données");
+        }
     }
 
     async getSurveyAnswer(id){
@@ -164,8 +201,13 @@ class Patients extends CoreDatamapper {
         
             values: [id],
         }
+        try {
         const result = await this.client.query(preparedQuery);
         return result.rows;
+        } catch (err) {
+            await errorModule.log(err,"Base de données");
+        }
+
     }
 }
 

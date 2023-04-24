@@ -9,6 +9,36 @@ const {
     faker
 } = require('@faker-js/faker');
 faker.locale = 'fr';
+/*********************************************/
+/************** GetPicture Men function ***************/
+/*********************************************/
+const path = require('path');
+const fs = require('fs').promises;
+//const fs = require('fs')
+
+async function getPictures(pathToImages) {
+    let pictureTherapistMens = [];
+    const directoryPath = path.join(__dirname, '../Images/' + pathToImages);
+
+    return await fs.readdir(directoryPath)
+    .then(files => {
+        pictureTherapistMens = files.map(file => {
+            return { "picture": `../Images/${pathToImages}/${file}` };
+        });
+        
+        return pictureTherapistMens;
+    })
+    .catch(err => {
+    console.error(err);
+    return [];
+    });
+  };
+
+  // Retourner le tableau à la fin de la fonction
+ 
+
+
+
 
 /*********************************************/
 /************** Data Reset Before Seed ***************/
@@ -25,45 +55,52 @@ async function resetDB() {
 }
 
 /*********************************************/
-/************** therapists seeding ***************/
+/************** therapists Homme seeding ***************/
 /*********************************************/
-
 const adresses = require('./Paris01.js');
 const adresse = adresses
-const therapists = [];
 
-//therapist seeding
-for (let counter = 0; counter < 50; counter++) {
-    const therapist = {
-        email: faker.internet.email(),
-        lastname: faker.name.lastName(),
-        firstname: faker.name.firstName(),
-        password: faker.internet.password(),
-        phonenumber: faker.phone.number('06########'),
-        adelinumber: faker.random.numeric(9),
-        profilpicture: "NULL",
-        profilpresentation: faker.lorem.text(100),
-        streetname: adresse[counter % adresse.length].libelle_voie_complet,
-        zipcode: adresse[counter % adresse.length].code_commune,
-        city: "Paris",
-        complement: faker.lorem.text(100),
-        videosession: faker.datatype.boolean(),
-        audiosession: faker.datatype.boolean(),
-        chatsession: faker.datatype.boolean(),
-        sessionatoffice: faker.datatype.boolean(),
-        gender: faker.name.sex(),
-        updated_at: "2020-04-20 14:00:00-04",
-        role: "therapist",
-    };
+function generateFakeDataMen(pictureTherapistMen)
+{
+    const therapists = [];
+    
+    //console.log(pictureTherapistMen)
+    //therapist seeding
+    for (let counter = 0; counter < 25; counter++) {
+        const therapist = {
+            email: faker.internet.email(),
+            lastname: faker.name.lastName(),
+            firstname: faker.name.firstName('male'),
+            password: faker.internet.password(),
+            phonenumber: faker.phone.number('06########'),
+            adelinumber: faker.random.numeric(9),
+            profilpicture: pictureTherapistMen[counter % pictureTherapistMen.length].picture,
+            profilpresentation: faker.lorem.text(100),
+            streetname: adresse[counter % adresse.length].libelle_voie_complet,
+            zipcode: adresse[counter % adresse.length].code_commune,
+            city: "Paris",
+            complement: faker.lorem.text(100),
+            videosession: faker.datatype.boolean(),
+            audiosession: faker.datatype.boolean(),
+            chatsession: faker.datatype.boolean(),
+            sessionatoffice: faker.datatype.boolean(),
+            gender: "Homme",
+            updated_at: "2020-04-20 14:00:00-04",
+            role: "therapist",
+        };
+        
+        // console.log(therapist);
+    
+        therapists.push(therapist);
+    }
 
-    // console.log(therapist);
-
-    therapists.push(therapist);
+    return therapists;
 }
 
 
-async function importDataTherapists() {
-    console.time("Ajout des thérapistes");
+
+async function importDataTherapists(therapists) {
+    console.time("Ajout des thérapistes Hommes");
 
     let values = [];
     let parameters = [];
@@ -104,7 +141,92 @@ async function importDataTherapists() {
 
     console.log("Nombre de therapistes : ", therapists.length);
     console.log("Nombre de requêtes : ", requestCount);
-    console.timeEnd("Ajout des thérapistes");
+    console.timeEnd("Ajout des thérapistes Hommes");
+
+}
+
+/*********************************************/
+/************** therapists FEMME seeding ***************/
+/*********************************************/
+function generateFakeDataWoman(pictureTherapistWomen)
+{
+const therapistsFemmes = [];
+
+//therapist seeding
+for (let counter = 0; counter < 25; counter++) {
+    const therapistFemme = {
+        email: faker.internet.email(),
+        lastname: faker.name.lastName(),
+        firstname: faker.name.firstName('female'),
+        password: faker.internet.password(),
+        phonenumber: faker.phone.number('06########'),
+        adelinumber: faker.random.numeric(9),
+        profilpicture: pictureTherapistWomen[counter % pictureTherapistWomen.length].picture,
+        profilpresentation: faker.lorem.text(100),
+        streetname: adresse[counter % adresse.length].libelle_voie_complet,
+        zipcode: adresse[counter % adresse.length].code_commune,
+        city: "Paris",
+        complement: faker.lorem.text(100),
+        videosession: faker.datatype.boolean(),
+        audiosession: faker.datatype.boolean(),
+        chatsession: faker.datatype.boolean(),
+        sessionatoffice: faker.datatype.boolean(),
+        gender: "Femme",
+        updated_at: "2020-04-20 14:00:00-04",
+        role: "therapist",
+    };
+
+    // console.log(therapistFemme);
+
+    therapistsFemmes.push(therapistFemme);
+}
+return therapistsFemmes;
+}
+
+
+async function importDataTherapistsFemmes(therapistsWoman) {
+    console.time("Ajout des thérapistes femmes");
+
+    let values = [];
+    let parameters = [];
+    let parameterCounter = 1;
+    let requestCount = 0;
+
+    for (const therapistFemme of therapistsWoman) {
+        // Ajouter l'utilisateur
+        values.push(therapistFemme.email);
+        values.push(therapistFemme.lastname);
+        values.push(therapistFemme.firstname);
+        values.push(therapistFemme.password);
+        values.push(therapistFemme.phonenumber);
+        values.push(therapistFemme.adelinumber);
+        values.push(therapistFemme.profilpicture);
+        values.push(therapistFemme.profilpresentation);
+        values.push(therapistFemme.streetname);
+        values.push(therapistFemme.zipcode);
+        values.push(therapistFemme.city);
+        values.push(therapistFemme.complement);
+        values.push(therapistFemme.videosession);
+        values.push(therapistFemme.audiosession);
+        values.push(therapistFemme.chatsession);
+        values.push(therapistFemme.sessionatoffice);
+        values.push(therapistFemme.gender);
+        values.push(therapistFemme.updated_at);
+        values.push(therapistFemme.role);
+
+        parameters.push(`($${parameterCounter},$${parameterCounter + 1},$${parameterCounter + 2},$${parameterCounter + 3},$${parameterCounter + 4},$${parameterCounter + 5},$${parameterCounter + 6},$${parameterCounter + 7},$${parameterCounter + 8},$${parameterCounter + 9},$${parameterCounter + 10},$${parameterCounter + 11},$${parameterCounter + 12},$${parameterCounter + 13},$${parameterCounter + 14},$${parameterCounter + 15},$${parameterCounter + 16},$${parameterCounter + 17},$${parameterCounter + 18})`);
+        parameterCounter += 19;
+    }
+
+    if (values.length > 0) {
+        const sqlQuery = `INSERT INTO "therapists" (email,lastname,firstname,password, phonenumber,adelinumber,profilpicture, profilpresentation, streetname,zipcode, city,complement, videosession, audiosession, chatsession, sessionatoffice,gender,updated_at,role) VALUES ${parameters.join()}`;
+        await pool.query(sqlQuery, values);
+        requestCount++;
+    }
+
+    console.log("Nombre de therapistes femme : ", therapistsWoman.length);
+    console.log("Nombre de requêtes : ", requestCount);
+    console.timeEnd("Ajout des thérapistes femmes");
 
 }
 
@@ -115,43 +237,25 @@ async function importDataTherapists() {
 const quizzes = [];
 for (let counter = 0; counter < 50; counter++) {
     const quizz = {
-        quizz_1: "Vous-êtes un particulier ?",
+        question_1: "Vous-êtes un particulier ?",
         answer_1: faker.datatype.boolean(),
-        quizz_2: "Souhaitez-vous faire intervenir un praticiens dans votre entreprise ?",
-        answer_2: faker.datatype.boolean(),
-        quizz_3: "Souhaitez-vous prendre rendez-vous pour vous ?",
-        answer_3: faker.datatype.boolean(),
-        quizz_4: "Souhaitez-vous prendre rendez-vous pour un de vos proches ?",
-        answer_4: faker.datatype.boolean(),
-        quizz_5: "Souhaitez-vous prendre rendez-vous pour un ou plusieurs de vos enfants ?",
-        answer_5: faker.datatype.boolean(),
-        quizz_6: "Avez-vous des problématiques à régler dans votre couple ?",
-        answer_6: faker.datatype.boolean(),
-        quizz_7: "Sur quoi souhaitez-vous travailler, sur un Accident ?",
-        answer_7: faker.datatype.boolean(),
-        quizz_8: "Sur quoi souhaitez-vous travailler, sur une Agression ?",
-        answer_8: faker.datatype.boolean(),
-        quizz_9: "Sur quoi souhaitez-vous travailler, sur un Deuil ?",
-        answer_9: faker.datatype.boolean(),
-        quizz_10: "Sur quoi souhaitez-vous travailler, sur une Phobie ?",
-        answer_10: faker.datatype.boolean(),
-        quizz_11: "Sur quoi souhaitez-vous travailler, sur une Anxiété ?",
-        answer_11: faker.datatype.boolean(),
-        quizz_12: "Sur quoi souhaitez-vous travailler, sur une Depression ?",
-        answer_12: faker.datatype.boolean(),
-        quizz_13: "Sur quoi souhaitez-vous travailler, sur une Solitude ?",
-        answer_13: faker.datatype.boolean(),
-        quizz_14: "Sur quoi souhaitez-vous travailler, sur une Confiance/Estime de soi ?",
-        answer_14: faker.datatype.boolean(),
-        quizz_15: "'Sur quoi souhaitez-vous travailler, sur une Addictions ?",
-        answer_15: faker.datatype.boolean(),
-        quizz_16: "Sur quoi souhaitez-vous travailler, sur une Evalution/Bilan psychologique et/ou test psychométriques ?",
-        answer_16: faker.datatype.boolean(),
-        quizz_17: "Sur quoi souhaitez-vous travailler, sur une Vie profesionnel ?",
-        answer_17: faker.datatype.boolean(),
-        quizz_18: "Préférez-vous un praticien Femme ? ",
-        answer_18: faker.datatype.boolean()
+        question_2: "Pour qui voulez vous prendre rendez-vous ?",
+        answer_2:'none',
+        question_3: "Sur quoi voulez vous travailler ?",
+        answer_3:'none',
+        question_4: "Préférez-vous un practicien homme ou femme ?",
+        answer_4:'null'
     };
+    
+    if(!quizz.answer_1) {
+        quizz.answer_2 = 'none';
+        quizz.answer_3 = 'none';
+        quizz.answer_4 = null;
+    } else {
+        quizz.answer_2 = faker.helpers.arrayElement(['me', 'relation', 'child']);
+        quizz.answer_3 = faker.helpers.arrayElement(['professionnal', 'accident', 'aggression', 'death', 'phobia', 'anxiety', 'depression', 'loneliness', 'confidence', 'addiction', 'evaluation', 'couple']);
+        quizz.answer_4 = faker.datatype.boolean();
+    }
 
     // console.log(quizz);
 
@@ -169,51 +273,21 @@ async function importDataQuizzes() {
 
     for (const quizz of quizzes) {
         // Ajouter l'utilisateur
-        values.push(quizz.quizz_1);
+        values.push(quizz.question_1);
         values.push(quizz.answer_1);
-        values.push(quizz.quizz_2);
+        values.push(quizz.question_2);
         values.push(quizz.answer_2);
-        values.push(quizz.quizz_3);
+        values.push(quizz.question_3);
         values.push(quizz.answer_3);
-        values.push(quizz.quizz_4);
+        values.push(quizz.question_4);
         values.push(quizz.answer_4);
-        values.push(quizz.quizz_5);
-        values.push(quizz.answer_5);
-        values.push(quizz.quizz_6);
-        values.push(quizz.answer_6);
-        values.push(quizz.quizz_7);
-        values.push(quizz.answer_7);
-        values.push(quizz.quizz_8);
-        values.push(quizz.answer_8);
-        values.push(quizz.quizz_9);
-        values.push(quizz.answer_9);
-        values.push(quizz.quizz_10);
-        values.push(quizz.answer_10);
-        values.push(quizz.quizz_11);
-        values.push(quizz.answer_11);
-        values.push(quizz.quizz_12);
-        values.push(quizz.answer_12);
-        values.push(quizz.quizz_13);
-        values.push(quizz.answer_13);
-        values.push(quizz.quizz_14);
-        values.push(quizz.answer_14);
-        values.push(quizz.quizz_15);
-        values.push(quizz.answer_15);
-        values.push(quizz.quizz_16);
-        values.push(quizz.answer_16);
-        values.push(quizz.quizz_17);
-        values.push(quizz.answer_17);
-        values.push(quizz.quizz_18);
-        values.push(quizz.answer_18);
 
-
-        parameters.push(`($${parameterCounter},$${parameterCounter + 1},$${parameterCounter + 2},$${parameterCounter + 3},$${parameterCounter + 4},$${parameterCounter + 5},$${parameterCounter + 6},$${parameterCounter + 7},$${parameterCounter + 8},$${parameterCounter + 9},$${parameterCounter + 10},$${parameterCounter + 11},$${parameterCounter + 12},$${parameterCounter + 13},$${parameterCounter + 14},$${parameterCounter + 15},$${parameterCounter + 16},$${parameterCounter + 17},$${parameterCounter + 18},
-            $${parameterCounter + 19},$${parameterCounter + 20},$${parameterCounter + 21},$${parameterCounter + 22},$${parameterCounter + 23},$${parameterCounter + 24},$${parameterCounter + 25},$${parameterCounter + 26},$${parameterCounter + 27},$${parameterCounter + 28},$${parameterCounter + 29},$${parameterCounter + 30},$${parameterCounter + 31},$${parameterCounter + 32},$${parameterCounter + 33},$${parameterCounter + 34},$${parameterCounter + 35})`);
-        parameterCounter += 36;
+        parameters.push(`($${parameterCounter},$${parameterCounter + 1},$${parameterCounter + 2},$${parameterCounter + 3},$${parameterCounter + 4},$${parameterCounter + 5},$${parameterCounter + 6},$${parameterCounter + 7})`);
+        parameterCounter += 8;
     }
 
     if (values.length > 0) {
-        const sqlQuery = `INSERT INTO "quizz" ("quizz_1", "answer_1", "quizz_2", "answer_2", "quizz_3", "answer_3", "quizz_4", "answer_4", "quizz_5", "answer_5", "quizz_6", "answer_6", "quizz_7", "answer_7", "quizz_8", "answer_8", "quizz_9", "answer_9", "quizz_10", "answer_10", "quizz_11", "answer_11", "quizz_12", "answer_12", "quizz_13", "answer_13", "quizz_14", "answer_14", "quizz_15", "answer_15", "quizz_16", "answer_16", "quizz_17", "answer_17", "quizz_18", "answer_18") VALUES ${parameters.join()}`;
+        const sqlQuery = `INSERT INTO "quizz" ("question_1", "answer_1", "question_2", "answer_2", "question_3", "answer_3", "question_4", "answer_4") VALUES ${parameters.join()}`;
         await pool.query(sqlQuery, values);
         requestCount++;
     }
@@ -229,8 +303,9 @@ async function importDataQuizzes() {
 /*********************************************/
 const adressesP2 = require('./Paris02.js');
 const adresseParisDeux = adressesP2
+function generateFakeDataPatients (picturePatients)
+{
 const patients = [];
-
 //patient seeding
 for (let counter = 0; counter < 50; counter++) {
     const patient = {
@@ -239,7 +314,7 @@ for (let counter = 0; counter < 50; counter++) {
         firstname: faker.name.firstName(),
         password: faker.internet.password(),
         phonenumber: faker.phone.number('06########'),
-        profilpicture: "NULL",
+        profilpicture: picturePatients[counter % picturePatients.length].picture,
         streetname: adresseParisDeux[counter % adresse.length].libelle_voie_complet,
         zipcode: adresseParisDeux[counter % adresse.length].code_commune,
         city: "Paris",
@@ -252,8 +327,10 @@ for (let counter = 0; counter < 50; counter++) {
     patients.push(patient);
 
 }
+return patients;
+}
 
-async function importDataPatients() {
+async function importDataPatients(patients) {
     console.time("Ajout des patients");
 
     let values = [];
@@ -425,7 +502,7 @@ for (let counter = 0; counter < 50; counter++) {
 
 }
 
-console.log('coucou');
+
 
 async function importDataReviews() {
     console.time("Ajout des reviews");
@@ -456,7 +533,7 @@ async function importDataReviews() {
 
     console.log("Nombre de reviews : ", reviews.length);
     console.log("Nombre de requêtes : ", requestCount);
-    console.timeEnd("Ajout des review");
+    console.timeEnd("Ajout des reviews");
 
 }
 /*********************************************/
@@ -582,9 +659,17 @@ async function importDataTherapistHasPatients() {
 
 (async () => {
     await resetDB();
-    await importDataTherapists();
+    const pictureTherapistMen = await getPictures("Therapists profile picture/Therapists mens");
+    const pictureTherapistWomen = await getPictures("Therapists profile picture/Therapists womans");
+    const picturePatients = await getPictures("Patients profile picture")
+    console.log(pictureTherapistMen, pictureTherapistWomen);
+    const therapists = generateFakeDataMen(pictureTherapistMen);
+    const therapistsWoman = generateFakeDataWoman(pictureTherapistWomen);
+    await importDataTherapists(therapists);
+    await importDataTherapistsFemmes(therapistsWoman);
     await importDataQuizzes();
-    await importDataPatients();
+    const patients = generateFakeDataPatients(picturePatients);
+    await importDataPatients(patients);
     await importDataSpecialties();
     await importDataTherapistOwnSpecialties();
     await importDataReviews();
@@ -594,3 +679,5 @@ async function importDataTherapistHasPatients() {
     await pool.end();
     console.log('Script over');
 })();
+
+

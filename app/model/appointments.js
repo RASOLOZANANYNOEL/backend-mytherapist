@@ -1,5 +1,7 @@
 const CoreDatamapper = require('./CoreDatamapper');
 const client = require('../db/pg');
+const debug = require("debug")("datamapper");
+const errorModule = require("../service/error/errorHandling");
 
 class Appointments extends CoreDatamapper {
     tableName = 'appointments';
@@ -13,10 +15,13 @@ class Appointments extends CoreDatamapper {
             values: [id],
         
         };
-
+        try {
         const result = await this.client.query(preparedQuery);
 
         return result.rows;
+        } catch (err){
+            await errorModule.log(err,"Base de donnée");
+        }
     }
 
     async getAllAppointments() {
@@ -27,10 +32,13 @@ class Appointments extends CoreDatamapper {
             
         
         };
-
+        try {
         const result = await this.client.query(preparedQuery);
 
         return result.rows;
+        } catch (err) {
+            await errorModule.log(err,"Base de donnée");
+        }
     }
 
     

@@ -49,9 +49,7 @@ class Patients extends CoreDatamapper {
     async getOnePatientWithQuizz (id){
         const preparedQuery = {
             text: `SELECT p.id, p.email, p.lastname,p.firstname, p.phonenumber,p.profilpicture, p.streetname,p.zipcode,p.city,p.complement, p.quizz_id ,
-            q.quizz_1, q.answer_1, q.quizz_2, q.answer_2,q.quizz_3, q.answer_3,q.quizz_4, q.answer_4,q.quizz_5, q.answer_5,q.quizz_6, q.answer_6,q.quizz_7, q.answer_7,
-            q.quizz_8, q.answer_8,q.quizz_9, q.answer_9,q.quizz_10, q.answer_10,q.quizz_11, q.answer_11,q.quizz_12, q.answer_12,q.quizz_13, q.answer_13,
-            q.quizz_14, q.answer_14,q.quizz_15, q.answer_15,q.quizz_16, q.answer_16,q.quizz_17, q.answer_17,q.quizz_18, q.answer_18
+            q.question_1, q.answer_1, q.question_2, q.answer_2,q.question_3, q.answer_3,q.question_4, q.answer_4
             FROM patients p
             JOIN quizz q ON q.id = quizz_id
             WHERE p.id = $1`,

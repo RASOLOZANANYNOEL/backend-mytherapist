@@ -94,6 +94,7 @@ const authController = {
       email,
       password
     } = req.body;
+    console.log(req.body)
 
     let user = await therapistsDatamapper.findByEmail(email);
    
@@ -117,7 +118,7 @@ const authController = {
     const token = jwt.sign({
       data: user,
     }, 'therapist-secret', { expiresIn: '7h'});
-
+    console.log(token)
     try {
       jwt.verify(token, 'therapist-secret')
     } catch(e) {

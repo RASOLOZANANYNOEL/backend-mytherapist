@@ -69,7 +69,7 @@ class Patients extends CoreDatamapper {
            t.lastname AS therapistName, r.negatifreviews , r.positifreviews, r.messages
            FROM reviews r
            JOIN therapists t ON t.id = therapists_id
-		   JOIN patients p ON p.id = patients_id
+                   JOIN patients p ON p.id = patients_id
            WHERE t.id = $1` ,
            values: [id],
         }
@@ -139,8 +139,10 @@ class Patients extends CoreDatamapper {
                 'Vous-êtes un particulier ?',$1,
                 'Pour qui voulez vous prendre rendez-vous ?',$2,
                 'Sur quoi voulez vous travailler ?',$3,
-                'Préférez-vous un practicien homme ou femme ?',$4)
-                RETURNING *;`,
+                'Préférez-vous un practicien homme ou femme ?',$4
+                
+               
+            )RETURNING *;`,
             values :[
                 answers.answer_1,answers.answer_2,
                 answers.answer_3,answers.answer_4
@@ -148,7 +150,6 @@ class Patients extends CoreDatamapper {
         }
         try {
         const result = await this.client.query(preparedQuery);
-        
         return result.rows;
         } catch (err) {
             await errorModule.log(err,"Base de données");

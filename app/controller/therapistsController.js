@@ -71,6 +71,7 @@ const therapistsController = {
             city:req.body.city,
             gender:req.body.gender,
         }
+
         if (!therapistInfo) {
             next(new APIError("Paramètres manquants",400));
             return;

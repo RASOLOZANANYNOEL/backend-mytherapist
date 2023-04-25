@@ -18,12 +18,12 @@ const fs = require('fs').promises;
 
 async function getPictures(pathToImages) {
     let pictureTherapistMens = [];
-    const directoryPath = path.join(__dirname, '../Images/' + pathToImages);
+    const directoryPath = path.join(__dirname, '../public/images/' + pathToImages);
 
     return await fs.readdir(directoryPath)
     .then(files => {
         pictureTherapistMens = files.map(file => {
-            return { "picture": `../Images/${pathToImages}/${file}` };
+            return { "picture": `public/images/${pathToImages}/${file}` };
         });
         
         return pictureTherapistMens;

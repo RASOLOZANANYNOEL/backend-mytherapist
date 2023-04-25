@@ -4,6 +4,7 @@ const cors = require('cors');
 // Cette ligne importe le module express
 const express = require("express");
 const debug = require("debug")("express");
+const path = require('path');
 
 // Cette ligne crée une instance d'application express
 const app = express();
@@ -43,7 +44,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(openapiSpecification));
 // on autorise les requêtes depuis d'autres domaines que celui de notre API
 // important => appeler ce middleware avant le routeur
 
-
+app.use('/public', express.static(path.join(__dirname, 'public')))
 app.use( bodyParser.none() )
 
 // Cette ligne configure l'analyseur de corps JSON pour l'application express

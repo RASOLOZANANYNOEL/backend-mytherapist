@@ -70,6 +70,7 @@ const therapistsController = {
             email:req.body.email,
             city:req.body.city,
             gender:req.body.gender,
+            role: req.body.role
         }
 
         if (!therapistInfo) {

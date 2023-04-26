@@ -198,10 +198,10 @@ class Therapists extends CoreDatamapper {
 
     async findAllTherapistBySpecialties(id) {
         const preparedQuery = {
-            text: `SELECT t.id, t.lastname, t.firstname, s.label, t.gender FROM therapists t
+            text: `SELECT t.id ,t.lastname, t.firstname, s.label, t.id, t.gender, t.profilpicture, t.videosession, t.chatsession, t.sessionatoffice,t.audiosession, t.adelinumber, t.streetname, t.city, t.phonenumber,t.profilpresentation, t.complement, t.zipcode FROM therapists t
             JOIN therapists_own_specialties ts ON ts.therapists_id = t.id
-			JOIN specialties s ON s.id = ts.specialties_id 
-            WHERE s.id = $1`,
+			JOIN specialties s ON s.id = ts.specialties_id
+			WHERE s.id = $1`,
             values: [id],
         };
         try {
@@ -216,7 +216,7 @@ class Therapists extends CoreDatamapper {
     async findAllTherapistBySpecialtiesAndGender(id,gender) {
         
         const preparedQuery = {
-            text: `SELECT t.id ,t.lastname, t.firstname, s.label, t.id, t.gender FROM therapists t
+            text: `SELECT t.id ,t.lastname, t.firstname, s.label, t.id, t.gender, t.profilpicture, t.videosession, t.chatsession, t.sessionatoffice,t.audiosession, t.adelinumber, t.streetname, t.city, t.phonenumber,t.profilpresentation, t.complement, t.zipcode FROM therapists t
             JOIN therapists_own_specialties ts ON ts.therapists_id = t.id
 			JOIN specialties s ON s.id = ts.specialties_id
 			WHERE s.id = $1 AND t.gender = $2`,

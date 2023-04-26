@@ -73,7 +73,6 @@ const patientsController = {
         }
         try {
             const createPatients = await patientsDatamapper.create(patientsInfo);
-            
             if (createPatients.length === 0) {
                 next(new APIError("La route n'a pas été trouvé", 404));
             } else {
@@ -81,7 +80,7 @@ const patientsController = {
             }
             } catch {
             next(new APIError("Erreur lors de la création du patient", 500));
-        }
+            }
     },
     /**
      * Mise à jour d'un patient

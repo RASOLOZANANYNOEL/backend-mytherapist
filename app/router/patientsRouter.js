@@ -95,6 +95,29 @@ const { isPatientMiddleware } = require('../middlewares')
  */
 router.get('/',patientsController.getAll);
 
+/**Create patient
+ * @swagger
+ * /patients:
+ *   post:
+ *     summary: Ajout d'un Patient
+ *     tags : 
+ *      - patients
+ *     requestBody:
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/patients'
+ *     responses:
+ *       200:
+ *         description: OK
+ *         content:
+ *           application/json:
+ *             schema:
+ *                $ref: '#/components/schemas/patients'
+ */
+router.post('/', patientsController.createPatients);
+
+
 /** get One patients
  * @swagger
  * /patients/{id}:
@@ -306,27 +329,7 @@ router.get('/:id/quizz', patientsController.getOnePatientWithQuizz);
  */
 router.get('/reviews/therapists/:id',patientsController.getReviewsOneTherapists);
 
-/**Create patient
- * @swagger
- * /patients:
- *   post:
- *     summary: Ajout d'un Patient
- *     tags : 
- *      - patients
- *     requestBody:
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/patients'
- *     responses:
- *       200:
- *         description: OK
- *         content:
- *           application/json:
- *             schema:
- *                $ref: '#/components/schemas/patients'
- */
-router.post('/',patientsController.createPatients);
+
 
 /**CREATE appointment patient->therapist
  * @swagger

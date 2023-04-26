@@ -13,6 +13,7 @@ const algorithmController = {
         async function therapist(id) {
 
             const getSurveyAnswer = await patientsDatamapper.getSurveyAnswer(id);
+            
             let result = '';
 
             for (const answer of getSurveyAnswer) {
@@ -29,6 +30,7 @@ const algorithmController = {
                  */
                 if (!answer.answer_1 || answer.answer_3 === 'professionnal') {
                     getWorkTherapistInCompany = await therapistsDatamapper.findAllTherapistBySpecialties(1)
+                    
                     return res.json(getWorkTherapistInCompany);
                 } else {
 
@@ -37,7 +39,6 @@ const algorithmController = {
                      * Ici on gère le cas ou la personne concernée est un enfant.
                      */
                     if (answer.answer_2 === 'child') {
-                        console.log(`Voici la liste des psychologues pour enfant ${gender} qui sauront vous aider`); //fetch
                         getChildrenTherapist = await therapistsDatamapper.findAllTherapistBySpecialtiesAndGender(7, gender)
                         result = getChildrenTherapist
                         return res.json(result);
@@ -90,7 +91,7 @@ const algorithmController = {
                         result = getWorkTherapist
                         break;
                 }
-
+            
                 return res.json(result)
             }
         }

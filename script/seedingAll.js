@@ -624,7 +624,7 @@ async function importDataAppointments() {
 
 const therapists_has_patients = [];
 
-for (let counter = 0; counter < 50; counter++) {
+for (let counter = 0; counter < 200; counter++) {
     const therapists_has_patient = {
         patients_id: faker.datatype.number({
             min: 1,

@@ -13,6 +13,7 @@ const algorithmController = {
         async function therapist(id) {
 
             const getSurveyAnswer = await patientsDatamapper.getSurveyAnswer(id);
+            console.log(getSurveyAnswer)
             let result = '';
 
             for (const answer of getSurveyAnswer) {

@@ -117,6 +117,7 @@ router.get('/',patientsController.getAll);
  */
 router.post('/', patientsController.createPatients);
 
+
 /** get One patients
  * @swagger
  * /patients/{id}:

@@ -30,6 +30,7 @@ const algorithmController = {
                  */
                 if (!answer.answer_1 || answer.answer_3 === 'professionnal') {
                     getWorkTherapistInCompany = await therapistsDatamapper.findAllTherapistBySpecialties(1)
+                    console.log(getWorkTherapistInCompany)
                     return res.json(getWorkTherapistInCompany);
                 } else {
 
@@ -91,7 +92,7 @@ const algorithmController = {
                         result = getWorkTherapist
                         break;
                 }
-
+            
                 return res.json(result)
             }
         }

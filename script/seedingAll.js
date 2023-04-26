@@ -66,7 +66,7 @@ function generateFakeDataMen(pictureTherapistMen)
     
     //console.log(pictureTherapistMen)
     //therapist seeding
-    for (let counter = 0; counter < 25; counter++) {
+    for (let counter = 0; counter < 100; counter++) {
         const therapist = {
             email: faker.internet.email(),
             lastname: faker.name.lastName(),
@@ -153,7 +153,7 @@ function generateFakeDataWoman(pictureTherapistWomen)
 const therapistsFemmes = [];
 
 //therapist seeding
-for (let counter = 0; counter < 25; counter++) {
+for (let counter = 0; counter < 100; counter++) {
     const therapistFemme = {
         email: faker.internet.email(),
         lastname: faker.name.lastName(),
@@ -425,13 +425,23 @@ async function importDataSpecialties() {
 
 const therapist_own_specialties = [];
 
-for (let counter = 0; counter < 50; counter++) {
+for (let counter = 0; counter < 200; counter++) {
     const therapist_own_specialty = {
         therapists_id: counter + 1,
-        specialties_id: faker.random.numeric(1, {
-            bannedDigits: ['9']
-        }),
-
+        specialties_id: [
+            {id: faker.datatype.number({
+                min: 1,
+                max: 3
+            })},
+            {id: faker.datatype.number({
+                min: 4,
+                max: 6
+            })},
+            {id: faker.datatype.number({
+                min: 7,
+                max: 8
+            })}
+        ]
     };
     // console.log(therapist_own_specialty);
     therapist_own_specialties.push(therapist_own_specialty);
@@ -448,11 +458,13 @@ async function importDataTherapistOwnSpecialties() {
 
     for (const therapist_own_specialty of therapist_own_specialties) {
         // Ajouter l'utilisateur
+        for (const specialty of therapist_own_specialty.specialties_id) {
         values.push(therapist_own_specialty.therapists_id);
-        values.push(therapist_own_specialty.specialties_id);
+        values.push(specialty.id);
 
         parameters.push(`($${parameterCounter},$${parameterCounter + 1})`);
         parameterCounter += 2;
+        }
     }
 
     if (values.length > 0) {
@@ -662,7 +674,6 @@ async function importDataTherapistHasPatients() {
     const pictureTherapistMen = await getPictures("Therapists profile picture/Therapists mens");
     const pictureTherapistWomen = await getPictures("Therapists profile picture/Therapists womans");
     const picturePatients = await getPictures("Patients profile picture")
-    console.log(pictureTherapistMen, pictureTherapistWomen);
     const therapists = generateFakeDataMen(pictureTherapistMen);
     const therapistsWoman = generateFakeDataWoman(pictureTherapistWomen);
     await importDataTherapists(therapists);

@@ -1,7 +1,7 @@
 const request = require('supertest');
 const assert = require('assert');
 const express = require('express');
-const expect = require('chai');
+const expect = require('chai').expect;
 
 const app = require('../app/router/therapistsRouter.js');
 
@@ -76,14 +76,13 @@ console.log(JSON.stringify(balbla))
       });
     });
 
- /*    const therapistInfo = {
-      firstname: req.body.firstname,
-      lastname: req.body.lastname,
-      password: req.body.password,
-      adelinumber: req.body.adelinumber,
-      phonenumber: req.body.phonenumber,
-      streetname: req.body.streetname,
-      zipcode: req.body.zipcode,
-      email:req.body.email,
-      city:req.body.city,
-      gender:req.body.gender,} */
+
+  describe('GET /patients', function() {
+    it('responds with json', function(done) {
+      request(app)
+        .get('/patients')
+        .expect('Content-Type', /json/)
+        .expect(200, done)
+        return done()
+    });
+  });

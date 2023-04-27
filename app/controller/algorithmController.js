@@ -1,28 +1,25 @@
 const patientsDatamapper = require('../model/patients');
 const therapistsDatamapper = require('../model/therapists')
 
-/*********************************************/
-/********* ALGO *********/
+/**********************************************/
+/******************* ALGO ********************/
 /*********************************************/
 const algorithmController = {
 
     async getTherapistBySurvey(req, res) {
         const id = req.params.id
 
-
         async function therapist(id) {
 
             const getSurveyAnswer = await patientsDatamapper.getSurveyAnswer(id);
-            
+
             let result = '';
 
             for (const answer of getSurveyAnswer) {
 
-
                 const gender = answer.answer_4 ?
                     'Homme' :
                     'Femme';
-
 
 
                 /**
@@ -30,7 +27,7 @@ const algorithmController = {
                  */
                 if (!answer.answer_1 || answer.answer_3 === 'professionnal') {
                     getWorkTherapistInCompany = await therapistsDatamapper.findAllTherapistBySpecialties(1)
-                    
+
                     return res.json(getWorkTherapistInCompany);
                 } else {
 
@@ -91,7 +88,7 @@ const algorithmController = {
                         result = getWorkTherapist
                         break;
                 }
-            
+
                 return res.json(result)
             }
         }

@@ -173,7 +173,6 @@ const authController = {
        * Vérifier si l'user existe avec l'adresse mail
        */
       const existingUserWithSameEmail = await patientsDatamapper.findByEmail(email);
-      console.log(existingUserWithSameEmail)
       if (existingUserWithSameEmail) {
         return res.status(400).json({
           error: "Cet email est déjà utilisé"

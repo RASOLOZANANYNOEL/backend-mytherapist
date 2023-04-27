@@ -101,6 +101,7 @@ const patientsController = {
             firstname: req.body.firstname,
             password:req.body.password,
             phonenumber: req.body.phonenumber,
+            profilpicture: req.body.profilpicture,
             streetname : req.body.streetname,
             zipcode : req.body.zipcode,
             city : req.body.city,

@@ -7,7 +7,9 @@ const errorModule = require("../service/error/errorHandling");
 class Therapists extends CoreDatamapper {
     tableName = 'therapists';
 
-    
+    /**
+     * permet de récupérer un thérapiste avec ses spécialités
+     */
     async findTherapistsWithSpecialties(id) {
         const preparedQuery = {
             text: `SELECT t.lastname, t.firstname, s.label, t.gender FROM therapists t
@@ -24,7 +26,9 @@ class Therapists extends CoreDatamapper {
             await errorModule.log(err,"Base de donnée");
         }
     }
-
+    /**
+     * permet de récupérer un thérapiste par son email
+     */
     async findByEmail(email) {
         const preparedQuery = {
             text: `SELECT * FROM therapists t WHERE t.email = $1`,
@@ -39,7 +43,43 @@ class Therapists extends CoreDatamapper {
             await errorModule.log(err,"Base de donnée");
         }
     }
-    
+    /**
+     * permet de récupérer un thérapiste par son numéro de téléphone
+     */
+    async findByPhonenumber(phonenumber) {
+        const preparedQuery = {
+            text: `SELECT * FROM therapists t WHERE t.phonenumber = $1`,
+            values: [phonenumber],
+        };
+        try {
+
+        const result = await this.client.query(preparedQuery);
+
+        return result.rows[0];
+        } catch(err) {
+            await errorModule.log(err,"Base de donnée");
+        }
+    }
+    /**
+     * permet de récupérer un thérapiste par son numéro d'adelinumber
+     */
+    async findByAdelinumber(adelinumber) {
+        const preparedQuery = {
+            text: `SELECT * FROM therapists t WHERE t.adelinumber = $1`,
+            values: [adelinumber],
+        };
+        try {
+
+        const result = await this.client.query(preparedQuery);
+
+        return result.rows[0];
+        } catch(err) {
+            await errorModule.log(err,"Base de donnée");
+        }
+    }
+    /**
+     * permet de récupérer tous les thérapistes avec leurs spécialités
+     */
     async AllTherapistsWithSpecialities() {
         const preparedQuery = {
             text: `SELECT t.lastname, t.firstname, s.label, t.id FROM therapists t
@@ -55,7 +95,9 @@ class Therapists extends CoreDatamapper {
             throw error;
         }
     }
-
+    /**
+     * permet de rajouter une spécialité à un thérapeute
+     */
     async addSpecialtiesToTherapist(therapistId, specialityId) {
         const preparedQuery = {
             text: `INSERT INTO therapists_own_specialties (therapists_id, specialties_id) VALUES ($1, $2) RETURNING *`,
@@ -69,7 +111,9 @@ class Therapists extends CoreDatamapper {
         await errorModule.log(err,"Base de donnée");
     }
     }
-    
+    /**
+     * permet de supprimer une spécialité à un thérapeute
+     */
     async removeSpecialtiesFromTherapist(therapistId, specialityId) {
         const preparedQuery = {
             text: `DELETE FROM therapists_own_specialties WHERE therapists_id = $1 AND specialties_id = $2 RETURNING *`,
@@ -83,7 +127,9 @@ class Therapists extends CoreDatamapper {
         await errorModule.log(err,"Base de donnée");
     }
     }
-
+    /**
+     * permet de récupérer tous les thérapeutes par leur genre avec leurs spécialités
+     */
     async getAllTherapistsByGenderWithSpecialities(gender) {
         const preparedQuery = {
             text: `SELECT t.lastname, t.firstname, s.label, t.id, t.gender FROM therapists t
@@ -100,7 +146,9 @@ class Therapists extends CoreDatamapper {
         await errorModule.log(err,"Base de donnée");
     }
     }
-
+    /**
+     * permet de récupérer tous les thérapeutes par leur genre
+     */
     async getAllTherapistsByGender(gender) {
         const preparedQuery = {
             text: `SELECT t.lastname, t.firstname, t.id, t.gender, t.phonenumber, t.email, t.streetname, t.city, t.complement, t.profilpresentation, t.audiosession,t.videosession, t.chatsession,t.sessionatoffice FROM therapists t
@@ -115,7 +163,9 @@ class Therapists extends CoreDatamapper {
             await errorModule.log(err,"Base de donnée");
         }
     }
-
+    /**
+     * permet de récupérer tous les rendez-vous d'un thérapeute
+     */
     async getAllAppointmentOfATherapist(id) {
         const preparedQuery = {
             text: `SELECT a.beginninghour, a.endtime, a.patients_id, t.videosession, t.audiosession, t.chatsession, t.sessionatoffice, t.email AS therapist_email, t.lastname AS therapist_lastname, t.firstname AS therapist_firstname, t.phonenumber AS therapist_phonenumber, p.profilpicture AS patient_profilepicture, t.streetname AS therapist_adress, t.zipcode AS therapist_zipcode, t.city AS therapist_city, t.complement AS therapist_adresscomplement, p.email AS patient_email, p.phonenumber AS patient_phonenumber, p.lastname AS patient_lastname, p.firstname AS patient_firstname,a.id AS appointment_id  FROM appointments a
@@ -133,7 +183,9 @@ class Therapists extends CoreDatamapper {
             await errorModule.log(err,"Base de donnée");
         }
     }
-
+    /**
+     * permet de récupérer un rendez-vous d'un thérapeute
+     */
     async getOneAppointmentOfATherapist(TherapistId, appointmentId) {
         const preparedQuery = {
             text: `SELECT a.beginninghour, a.endtime, a.patients_id, t.videosession, t.audiosession, t.chatsession, t.sessionatoffice, t.email AS therapist_email, t.lastname AS therapist_lastname, t.firstname AS therapist_firstname, t.phonenumber AS therapist_phonenumber, p.profilpicture AS patient_profilepicture, t.streetname AS therapist_adress, t.zipcode AS therapist_zipcode, t.city AS therapist_city, t.complement AS therapist_adresscomplement, p.email AS patient_email, p.phonenumber AS patient_phonenumber, p.lastname AS patient_lastname, p.firstname AS patient_firstname,a.id AS appointment_id  FROM appointments a
@@ -151,7 +203,9 @@ class Therapists extends CoreDatamapper {
             await errorModule.log(err,"Base de donnée");
         }
     }
-
+    /**
+     * permet de créer un rendez-vous avec un patient
+     */
     async creatAppointmentWithOnePatient ({patientId,therapistId},appointment){
         const preparedQuery = {
             text:`INSERT INTO appointments
@@ -179,7 +233,9 @@ class Therapists extends CoreDatamapper {
             await errorModule.log(err,"Base de donnée");
         }
     }
-
+    /**
+     * permet de récupérer tous les avis d'un thérapeute
+     */
     async viewOneTherapistReviews(id) {
         const preparedQuery = {
             text:`SELECT r.messages AS patient_messages, r.negatifreviews AS badscore, r.positifreviews AS goodscore, p.firstname AS patient_firstname, p.lastname AS patient_lastname, p.id AS patient_id, p.profilpicture AS patient_profilpicture, t.lastname AS therapist_lastname, t.firstname AS therapist_firstname FROM reviews r
@@ -195,7 +251,9 @@ class Therapists extends CoreDatamapper {
             await errorModule.log(err,"Base de donnée");
         }
     }
-
+    /**
+     * permet de récupérer tous les thérapeutes par spécialité
+     */
     async findAllTherapistBySpecialties(id) {
         const preparedQuery = {
             text: `SELECT t.id ,t.lastname, t.firstname, s.label, t.id, t.gender, t.profilpicture, t.videosession, t.chatsession, t.sessionatoffice,t.audiosession, t.adelinumber, t.streetname, t.city, t.phonenumber,t.profilpresentation, t.complement, t.zipcode FROM therapists t
@@ -212,7 +270,9 @@ class Therapists extends CoreDatamapper {
             await errorModule.log(err,"Base de donnée");
         }
     }
-
+    /**
+     * permet de récupérer tous les thérapeutes par spécialité et par genre
+     */
     async findAllTherapistBySpecialtiesAndGender(id,gender) {
         
         const preparedQuery = {

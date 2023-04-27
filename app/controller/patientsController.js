@@ -119,8 +119,9 @@ const patientsController = {
             } else {
                 res.json(updatePatients)
             }
-            } catch {
+            } catch (err){
                 next(new APIError("Erreur lors de la mise à jour du patient", 500));
+                console.log(err)
             }
     },
     /**

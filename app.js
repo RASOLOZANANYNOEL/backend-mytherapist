@@ -3,6 +3,7 @@ const cors = require('cors');
 const express = require("express");
 const debug = require("debug")("express");
 const path = require('path');
+const fileUpload = require('express-fileupload');
 
 // Cette ligne crée une instance d'application express
 const app = express();
@@ -47,7 +48,9 @@ app.use( bodyParser.none() )
 
 // Cette ligne configure l'analyseur de corps JSON pour l'application express
 app.use(cors());
-app.use(express.json());
+app.use(express.json({limit:'200kb'}));
+
+
 
 /*********************************************/
 /************** Config Express ***************/

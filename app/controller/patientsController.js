@@ -2,6 +2,8 @@
 const patientsDatamapper= require('../model/patients');
 const APIError = require("../service/error/APIError");
 const debug = require("debug")("controller");
+const fs = require('fs')
+
 
 const patientsController = {
     /**
@@ -94,6 +96,31 @@ const patientsController = {
         if (!id){
             next(new APIError("Paramètres manquants", 400));
         }
+        
+
+        let base64String = req.body.profilpicture; 
+        // Remove header
+        let base64Image = base64String.split(';base64,');
+        const fileType = base64Image[0].split('/').pop();
+
+        const findPatient = await patientsDatamapper.findByPk(id);
+        if (findPatient.profilpicture) {
+            const imagePath = `public/images/Patients profile picture/${req.body.firstname}.${fileType}`
+            fs.unlink(imagePath, (err) => {
+                if (err) {
+                    console.error(err);
+                } else {
+                    console.log(`L'image précédent a été supprimée ${imagePath}`)
+                }
+            })
+        }
+        
+        // if (findPatient.profilpicture === null) {
+        const imagePath = `public/images/Patients profile picture/${req.body.firstname}.${fileType}`;
+        fs.writeFile(imagePath, base64Image[1], {encoding: 'base64'}, function(err) {
+            console.log('File created');
+        });
+    // }
 
         const patientsInfo = {
             email : req.body.email,
@@ -101,20 +128,15 @@ const patientsController = {
             firstname: req.body.firstname,
             password:req.body.password,
             phonenumber: req.body.phonenumber,
-            profilpicture: req.body.profilpicture,
+            profilpicture: imagePath,
             streetname : req.body.streetname,
             zipcode : req.body.zipcode,
             city : req.body.city,
-            role : req.body.role
         }
-        
-        if (!patientsInfo){
-            next(new APIError("Paramètres manquants", 400));
-        }
+        console.log(patientsInfo,id)
         
         try {
             const updatePatients = await patientsDatamapper.update({id},patientsInfo);
-            
             if (updatePatients.length === 0) {
                 next(new APIError("La route n'a pas été trouvé", 404));
             } else {

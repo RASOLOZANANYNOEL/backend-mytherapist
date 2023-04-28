@@ -178,22 +178,22 @@ const therapistsController = {
     async updateTherapist(req, res, next) {
         const id = req.params.id
 
-        /**
-         * update profilpicture
-         */
+        // update profilpicture
         let base64String = req.body.profilpicture;
         // Remove header
         let base64Image = base64String.split(';base64,');
         const fileType = base64Image[0].split('/').pop();
 
         const findPatient = await therapistsDatamapper.findByPk(id);
+        //vérifier si l'image existe
         if (findPatient.profilpicture) {
             const imagePath = `public/images/therapists/${req.body.firstname}.${fileType}`
+            //Supprimer l'ancienne image
             fs.unlink(imagePath, (err) => {
                 if (err) {
                     console.error(err);
                 } else {
-                    console.log(`L'image précédent a été supprimée ${imagePath}`)
+                    console.log(`L'image précédente a été supprimée ${imagePath}`)
                 }
             })
         }
@@ -204,7 +204,9 @@ const therapistsController = {
         }, function (err) {
             console.log('File created');
         });
-
+        /**
+         * Récupérer les données du body
+         */
         const {
             email,
             lastname,
@@ -223,7 +225,9 @@ const therapistsController = {
              */
          const passwordCrypted = await bcrypt.hash(password, 10);
 
-
+        /**
+        * ajouter le therapist en bdd
+        */
         const therapistInfo = {
             firstname,
             lastname,
@@ -555,12 +559,7 @@ const therapistsController = {
             chatsession: req.body.chatsession,
             sessionatoffice: req.body.sessionatoffice,
         }
-
-        if (!appointment) {
-            next(new APIError("Paramètres manquants", 400));
-            return;
-        }
-
+        
         try {
             const createAppointmentOneTherapist = await therapistsDatamapper.creatAppointmentWithOnePatient({
                 therapistId,

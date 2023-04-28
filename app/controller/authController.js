@@ -6,6 +6,9 @@ const APIError = require("../service/error/APIError");
 
 const authController = {
 
+  /**
+   * inscription d'un thérapeute
+   */
   async registerTherapist(req, res, next) {
 
     // récupérer les données du body
@@ -124,6 +127,10 @@ const authController = {
       console.error(err)
     }
   },
+
+  /**
+   * inscription d'un patient
+   */
   async registerPatient(req, res, next) {
 
     /**
@@ -215,6 +222,10 @@ const authController = {
       next(new APIError("Erreur lors de la création d'un patients", 500, err))
     }
   },
+
+  /**
+   * Méthode pour se connecter
+   */
   async login(req, res) {
     const {
       email,

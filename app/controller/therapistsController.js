@@ -2,6 +2,7 @@ const therapistsDatamapper = require('../model/therapists')
 const APIError = require("../service/error/APIError");
 const debug = require("debug")("controller");
 const bcrypt = require('bcrypt');
+const fs = require('fs')
 
 const therapistsController = {
     /**
@@ -162,7 +163,10 @@ const therapistsController = {
             return res.status(201).json(createTherapist)
         } catch (err) {
             // next(new APIError("Erreur lors de la création d'un therapists", 500))
-            res.status(500).send({message : "Erreur lors de la création d'un therapists", err})
+            res.status(500).send({
+                message: "Erreur lors de la création d'un therapists",
+                err
+            })
         }
     },
     /**
@@ -174,30 +178,100 @@ const therapistsController = {
     async updateTherapist(req, res, next) {
         const id = req.params.id
 
+        /**
+         * update profilpicture
+         */
+        let base64String = req.body.profilpicture;
+        // Remove header
+        let base64Image = base64String.split(';base64,');
+        const fileType = base64Image[0].split('/').pop();
+
+        const findPatient = await therapistsDatamapper.findByPk(id);
+        if (findPatient.profilpicture) {
+            const imagePath = `public/images/therapists/${req.body.firstname}.${fileType}`
+            fs.unlink(imagePath, (err) => {
+                if (err) {
+                    console.error(err);
+                } else {
+                    console.log(`L'image précédent a été supprimée ${imagePath}`)
+                }
+            })
+        }
+
+        const imagePath = `public/images/therapists/${req.body.firstname}.${fileType}`;
+        fs.writeFile(imagePath, base64Image[1], {
+            encoding: 'base64'
+        }, function (err) {
+            console.log('File created');
+        });
+
+        const {
+            email,
+            lastname,
+            firstname,
+            password,
+            confirmPassword,
+            phonenumber,
+            adelinumber,
+            streetname,
+            zipcode,
+            city,
+            gender,
+          } = req.body;
+         /**
+             * Crypter le mot de passe
+             */
+         const passwordCrypted = await bcrypt.hash(password, 10);
+
+
         const therapistInfo = {
-            firstname: req.body.firstname,
-            lastname: req.body.lastname,
-            password: req.body.password,
-            adelinumber: req.body.adelinumber,
-            phonenumber: req.body.phonenumber,
-            streetname: req.body.streetname,
-            zipcode: req.body.zipcode,
-            email: req.body.email,
-            city: req.body.city,
-            gender: req.body.gender,
-            role: req.body.role
+            firstname,
+            lastname,
+            password: passwordCrypted,
+            adelinumber,
+            phonenumber,
+            profilpicture: imagePath,
+            streetname,
+            zipcode,
+            email,
+            city,
+            gender
+        
         }
 
-        if (!id) {
-            next(new APIError("Paramètres manquants", 400));
-            return;
+        /**
+         * Vérifier que le numéro adeli est composé de 9 chiffres
+         */
+        if (therapistInfo.adelinumber.length !== 9) {
+            return res.status(400).json({
+                error: "Le numéro adeli doit être composé de 9 chiffres"
+            });
         }
-
-        if (!therapistInfo) {
-            next(new APIError("Paramètres manquants", 400));
-            return;
+        /**
+         * Vérifier que le genre est bien renseigné
+         */
+        if (!therapistInfo.gender) {
+            return res.status(400).json({
+                error: "Merci de renseigner votre sexe"
+            });
         }
-
+        /**
+         * Vérifier que tous les champs sont remplis
+         */
+        if (!therapistInfo.email || !therapistInfo.lastname || !therapistInfo.firstname || !therapistInfo.phonenumber || !therapistInfo.adelinumber || !therapistInfo.streetname || !therapistInfo.zipcode || !therapistInfo.city || !therapistInfo.gender || !therapistInfo.password) {
+            return res.status(400).json({
+                error: "Veuillez renseigner tous les champs"
+            });
+        }
+        /**
+         * Vérifier que le numéro de téléphone est composé de 10 chiffres
+         */
+        if (therapistInfo.phonenumber.length !== 10) {
+            return res.status(400).json({
+                error: "Le numéro de téléphone doit être composé de 10 chiffres"
+            });
+        }
+        
         try {
             const updateTherapist = await therapistsDatamapper.update({
                 id

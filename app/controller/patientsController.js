@@ -115,12 +115,11 @@ const patientsController = {
             })
         }
         
-        // if (findPatient.profilpicture === null) {
         const imagePath = `public/images/Patients profile picture/${req.body.firstname}.${fileType}`;
         fs.writeFile(imagePath, base64Image[1], {encoding: 'base64'}, function(err) {
             console.log('File created');
         });
-    // }
+
 
         const patientsInfo = {
             email : req.body.email,

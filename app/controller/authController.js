@@ -201,6 +201,7 @@ const authController = {
         firstname,
         password: passwordCrypted,
         phonenumber,
+        profilpicture: '', 
         streetname,
         zipcode,
         city,

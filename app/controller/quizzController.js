@@ -6,10 +6,10 @@ const debug = require("debug")("controller");
 
 const quizzController = {
     /** 
-     * Récupérer tous les quizz
-     * @param {*} _ requête Express
-     * @param {*} res réponse Express
-     * @returns {JSON} liste des quizz
+     * Get all quizz
+     * @param {*} _ request Express
+     * @param {*} res response Express
+     * @returns {JSON} get all quizz
      */
     async getAll(_,res,next){
         try {
@@ -26,10 +26,10 @@ const quizzController = {
         }
     },
     /**
-     * Récupérer un quizz par son id
-     * @param {*} req requête Express
-     * @param {*} res réponse Express
-     * @returns {JSON} un quizz
+     * get one quizz by id
+     * @param {*} req request Express
+     * @param {*} res response Express
+     * @returns {JSON} get one quizz by id
      */
     async getById(req,res,next){
         const id = req.params.id

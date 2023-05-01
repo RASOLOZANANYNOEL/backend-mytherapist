@@ -2,102 +2,102 @@
 
 BEGIN;
 
---Les expressions régulières (REGEX) sont souvent utilisées pour valider les entrées utilisateur et protéger contre les injections SQL.
---Les expressions régulières peuvent aider à empêcher les attaques d'injection SQL en limitant les entrées utilisateur aux formats attendus.
+--Regular expressions (REGEX) are often used to validate user input and protect against SQL injections. 
+--Regular expressions can help prevent SQL injection attacks by limiting user input to expected formats.
 
 ---------------------------------------------------------------------------------------------------
 
--- Création de domain utilisant des REGEX pour les code postaux
+-- Creation of domain using REGEX for postal codes.
 CREATE DOMAIN "postal_code_fr" AS text
 CHECK(
-    value ~ '^\d{5}$' -- code postaux metropole de 01 a 09
-    OR value ~ '^0[1-9]\d{3}$' -- code postaux metropole de 01 a 09
-    OR value ~ '^20[1-2]\d{2}$|^20300$' -- code postaux de la Corse
-    OR value ~ '^[13-8]\d{4}$' -- code postaux les plus génériques
-    OR value ~ '^9[0-6]\d{3}$' -- code postaux metropole commencant par 9
-    OR value ~ '^97[1-6]\d{2}$' -- code postaux DOM
-    OR value ~ '^98[4678]\d{2}$' -- code postaux TOM
-    OR value ~ '^9{5}$' -- code postal de la poste
+    value ~ '^\d{5}$' -- Postal codes for mainland France from 01 to 09.
+    OR value ~ '^0[1-9]\d{3}$' -- Postal codes for mainland France from 01 to 09.
+    OR value ~ '^20[1-2]\d{2}$|^20300$' -- Postal codes for Corsica
+    OR value ~ '^[13-8]\d{4}$' -- Most generic postal codes.
+    OR value ~ '^9[0-6]\d{3}$' -- Postal codes for mainland France starting with 9.
+    OR value ~ '^97[1-6]\d{2}$' -- Postal codes for French Overseas Departments (DOM).
+    OR value ~ '^98[4678]\d{2}$' -- Postal codes for French Overseas Territories (TOM).
+    OR value ~ '^9{5}$' -- Postal code for the post office.
     
 );
 
---Création de domain utilisant des REGEX pour les emails
+--Creation of domain using REGEX for emails.
 CREATE DOMAIN "email" AS text
 CHECK(
     value ~ '(?:[a-z0-9!#$%&''*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&''*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])'
 );
 
--- Création de domain utilisant des REGEX pour les nom & prenom + nom de la ville 
+-- Creation of domain using REGEX for names & surnames + city names
 
 CREATE DOMAIN "firstnames_lastnames_cities" AS text --
 CHECK(
     value ~ '^[a-zA-ZÀ-ÿ. -]*$'
 );
 
--- Création de domain utilisant des REGEX pour les mdp (au minimim 8 caractères, un lettre, un numéro et un caractère spécial)
+-- Creation of domain using REGEX for passwords (minimum 8 characters, one letter, one number, and one special character).
 CREATE DOMAIN "passwords" AS text
 CHECK(
     value ~ '^[a-zA-Z0-9@$.!/%*#?&_]{8,}$'
 );
 
--- Création de domain utilisant des REGEX pour les numéro de telephone 
+-- Creation of domain using REGEX for phone numbers.
 CREATE DOMAIN "phone_number" AS text
 CHECK(
     value ~  '^[0-9]{10}$'
 
 );
 
--- Création de domain utilisant des REGEX pour les numéro adeli 
+-- Creation of domain using REGEX for Adeli numbers.
 CREATE DOMAIN "adeli_number" AS text
 CHECK(
     value ~  '^[0-9]{9}$'
 );    
 
---Création de domain utilisant des REGEX pour profil presentation(500 caractères MAX)
+--Creation of domain using REGEX for profile presentation (maximum 1000 characters).
 CREATE DOMAIN "profil_presentation" AS text
 CHECK(
-    -- value ~ '^[a-zA-Z0-9À-ÿ\s''’‘".,;:()-]{1,500}$'
     value ~ '^[a-zA-Z0-9À-ÿ\s''’‘".,;:()-]*$' 
     AND length(value) < 1000
 );
 
--- Création de domain utilisant REGEX pour les rues 
+--Creation of domain using REGEX for street names.
 CREATE DOMAIN "streets" AS text
 CHECK(
     value ~  '^[a-zA-Z0-9À-ÿ\s''’‘-]*$'
 ); 
 
---Création de domain utilsant des REGEX pour les messages (1000 caracteres max)
+--Creation of domain using REGEX for messages (maximum 1000 characters).
 CREATE DOMAIN "messages" AS text
 CHECK (
     value ~ '^[a-zA-Z0-9À-ÿ\s''’‘".,;:()!?-]*$' 
     AND length(value) < 1000
 );
 
+-- Creation of a type ENUM for roles. 
 CREATE TYPE type_role AS ENUM ('admin', 'therapist','patient');
-
+-- Creation of a type ENUM for relevant persons. 
 CREATE TYPE relevant_person AS ENUM ('none', 'me', 'relation', 'child');
+-- Creation of a type ENUM for "pathologies". 
 CREATE TYPE pathology AS ENUM ('none', 'professionnal', 'accident', 'aggression', 'death', 'phobia', 'anxiety', 'depression', 'loneliness', 'confidence', 'addiction', 'evaluation', 'couple');
 
 
 ---------------------------------------------------------------------------------------------------
-
+-- Tables are created below 
 
 CREATE TABLE therapists (
     "id" int GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    "email" email NOT NULL UNIQUE, --REGEX
-    "lastname" firstnames_lastnames_cities  NOT NULL, --REGEX
-    "firstname" firstnames_lastnames_cities  NOT NULL, --REGEX
+    "email" email NOT NULL UNIQUE, 
+    "lastname" firstnames_lastnames_cities  NOT NULL, 
+    "firstname" firstnames_lastnames_cities  NOT NULL, 
     "password" passwords NOT NULL,
-    "phonenumber" phone_number NOT NULL UNIQUE, --REGEX
-    "adelinumber" adeli_number  NOT NULL UNIQUE, --REGEX
+    "phonenumber" phone_number NOT NULL UNIQUE, 
+    "adelinumber" adeli_number  NOT NULL UNIQUE, 
     "profilpicture" TEXT NULL,
-    "profilpresentation" profil_presentation NULL, --REGEX
-    -- "profilpresentation" TEXT NULL, --REGEX
-    "streetname" streets  NOT NULL, --REGEX
-    "zipcode" postal_code_fr NOT NULL, --REGEX
-    "city" firstnames_lastnames_cities NOT NULL, --REGEX
-    "complement" TEXT NULL, --REGEX 
+    "profilpresentation" profil_presentation NULL, 
+    "streetname" streets  NOT NULL, 
+    "zipcode" postal_code_fr NOT NULL, 
+    "city" firstnames_lastnames_cities NOT NULL, 
+    "complement" TEXT NULL, 
     "videosession" BOOLEAN NULL,
     "audiosession" BOOLEAN NULL,
     "chatsession" BOOLEAN NULL,
@@ -108,7 +108,7 @@ CREATE TABLE therapists (
 );
 
 ----------
-
+-- the questions are in french.
 CREATE TABLE quizz (
     "id" int GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     -- Etes vous un particulier ?
@@ -128,16 +128,16 @@ CREATE TABLE quizz (
 
 CREATE TABLE patients (
     "id" int GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    "email" email  NOT NULL UNIQUE, --REGEX
-    "lastname" firstnames_lastnames_cities NOT NULL, --REGEX
-    "firstname" firstnames_lastnames_cities NOT NULL, --REGEX
-    "password" passwords NOT NULL, --REGEX
-    "phonenumber" phone_number NOT NULL UNIQUE, --REGEX
+    "email" email  NOT NULL UNIQUE, 
+    "lastname" firstnames_lastnames_cities NOT NULL, 
+    "firstname" firstnames_lastnames_cities NOT NULL, 
+    "password" passwords NOT NULL, 
+    "phonenumber" phone_number NOT NULL UNIQUE, 
     "profilpicture" TEXT NULL,
-    "streetname" streets NOT NULL, --REGEX
-    "zipcode" postal_code_fr NOT NULL, --REGEX
-    "city" firstnames_lastnames_cities NOT NULL, --REGEX 
-    "complement" TEXT NULL, --REGEX
+    "streetname" streets NOT NULL, 
+    "zipcode" postal_code_fr NOT NULL, 
+    "city" firstnames_lastnames_cities NOT NULL, 
+    "complement" TEXT NULL, 
     "role" type_role,
     "updated_at"  TIMESTAMPTZ DEFAULT NOW(),
     "quizz_id" INTEGER NOT NULL REFERENCES quizz(id) UNIQUE
@@ -145,8 +145,7 @@ CREATE TABLE patients (
 
 CREATE TABLE reviews (
     "id" int GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    "messages" messages NULL, --REGEX
-    -- "messages" TEXT NULL, --REGEX
+    "messages" messages NULL, 
     "negatifreviews" INTEGER NULL,
     "positifreviews" INTEGER NULL,
     "patients_id"  INTEGER REFERENCES patients(id),
@@ -155,8 +154,7 @@ CREATE TABLE reviews (
 
 CREATE TABLE conversations (
     "id" int GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    "messages" messages NULL, --REGEX
-    -- "messages" TEXT NULL, --REGEX
+    "messages" messages NULL, 
     "patients_id"  INTEGER REFERENCES patients(id),
     "therapists_id" INTEGER REFERENCES therapists(id),
     "created_at" TIMESTAMPTZ DEFAULT NOW()

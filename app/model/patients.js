@@ -43,6 +43,23 @@ class Patients extends CoreDatamapper {
         }
     }
     /**
+     * permet de récupérer un patient avec son numéro de téléphone
+     * @param {string} phonenumber
+     */
+    async findByPhonenumber(phonenumber) {
+        const preparedQuery = {
+            text: `SELECT * FROM patients t WHERE t.phonenumber = $1`,
+            values: [phonenumber],
+        };
+        try {
+        const result = await this.client.query(preparedQuery);
+        return result.rows[0];
+        } catch (err) {
+            await errorModule.log(err,"Base de données");
+        }
+    }
+
+    /**
      * permet de récupérer un patient avec son quizz par son id
      * @param {number} id
      */
@@ -62,7 +79,9 @@ class Patients extends CoreDatamapper {
             await errorModule.log(err,"Base de données");
         }
     }
-
+    /**
+     * permet de récupérer les avis d'un thérapeute par son id
+     */
     async getReviewsOneTherapists(id){
         const preparedQuery = {
            text: `SELECT p.id AS patients_id, p.lastname AS patients_lastname,p.firstname AS patients_firstname,p.profilpicture AS patients_profilpicture, t.id AS therapistId,t.firstname AS therapistFirstname,
@@ -80,7 +99,9 @@ class Patients extends CoreDatamapper {
             await errorModule.log(err,"Base de données");
         }
     }
-    
+    /**
+     * permet de créer un rendez-vous entre un patient et un thérapeute
+     */
     async createAppointmentOneTherapist({therapistId,patientId},appointment){
         const preparedQuery = {
             text:`INSERT INTO appointments
@@ -108,7 +129,9 @@ class Patients extends CoreDatamapper {
             await errorModule.log(err,"Base de données");
         }
     }
-
+    /**
+     * permet de créer un avis sur un thérapeute
+     */
     async createReviewsOneTherapist ({patientId,therapistId},reviews){
         const preparedQuery = {
             text:`INSERT INTO reviews
@@ -127,7 +150,9 @@ class Patients extends CoreDatamapper {
             await errorModule.log(err,"Base de données");
         }
     } 
-
+    /**
+     * permet de créer un quizz pour un patient
+     */
     async answerPatientsQuizz (answers){
         const preparedQuery = {
             text: `INSERT INTO quizz
@@ -155,7 +180,9 @@ class Patients extends CoreDatamapper {
             await errorModule.log(err,"Base de données");
         }
     }
-
+    /**
+     * permet de récupérer les réponses d'un patient par son id
+     */
     async getSurveyAnswer(id){
         const preparedQuery = {
             text:`SELECT  answer_1,answer_2,answer_3,answer_4

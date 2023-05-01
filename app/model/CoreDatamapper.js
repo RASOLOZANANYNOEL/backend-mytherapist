@@ -69,7 +69,7 @@ class CoreDatamapper {
         const placeholders = [];
         const values = [];
         let indexPlaceholder = 1;
-
+        
         Object.entries(inputData).forEach(([prop, value]) => {
             fields.push(`"${prop}"`);
             placeholders.push(`$${indexPlaceholder}`);
@@ -77,16 +77,18 @@ class CoreDatamapper {
             values.push(value);
         });
 
+        
         const preparedQuery = {
             text: `
-                INSERT INTO "${this.tableName}"
-                (${fields})
+            INSERT INTO "${this.tableName}"
+            (${fields})
                 VALUES (${placeholders})
                 RETURNING *
-            `,
-            values,
-        };
-
+                `,
+                values,
+            };
+            
+            
         const result = await this.client.query(preparedQuery);
         const row = result.rows[0];
 

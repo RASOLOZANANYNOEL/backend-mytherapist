@@ -1,3 +1,5 @@
+//verifies if the user is a therapist
+
 const jwt = require('jsonwebtoken');
 
 const isTherapistMiddleware = function(req, res, next) {

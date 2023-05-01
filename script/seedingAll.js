@@ -487,7 +487,7 @@ const allreviews = require('./reviews.js');
 const oneReview = allreviews
 const reviews = [];
 
-for (let counter = 0; counter < 50; counter++) {
+for (let counter = 0; counter < 200; counter++) {
     const review = {
         messages: oneReview[counter % oneReview.length].message,
         negatifreviews: faker.random.numeric({
@@ -504,7 +504,7 @@ for (let counter = 0; counter < 50; counter++) {
         }),
         therapists_id: faker.random.numeric({
             'min': 1,
-            'max': 50
+            'max': 200
         }),
 
     };

@@ -1,3 +1,5 @@
+//verifies if the user is connected or not
+
 const jwt = require('jsonwebtoken');
 
 const authMiddleware = function(req, res, next) {

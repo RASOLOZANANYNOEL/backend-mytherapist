@@ -14,5 +14,7 @@ DROP DOMAIN IF EXISTS "profil_presentation";
 DROP DOMAIN "streets";
 DROP DOMAIN IF EXISTS "messages";
 DROP TYPE "type_role";
+DROP TYPE "relevant_person";
+DROP TYPE "pathology";
 
 COMMIT;

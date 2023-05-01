@@ -7,10 +7,10 @@ const debug = require("debug")("controller");
 
 const adminController = {
     /**
-     * Récupérer tous les spécialités
-     * @param {*} _ requête express
-     * @param {*} res réponse express
-     * @returns {JSON} liste des spécialités
+     * get all specialties
+     * @param {*} _ request express
+     * @param {*} res response express
+     * @returns {JSON} get all specialties
      */
     async getAllSpecialties(_,res) {
         try {
@@ -22,10 +22,10 @@ const adminController = {
 
     },
     /**
-     * Récupérer tous les thérapeutes
-     * @param {*} _ requête express
-     * @param {*} res réponse express
-     * @returns {JSON} liste des thérapeutes
+     * get all therapists
+     * @param {*} _ request express
+     * @param {*} res response express
+     * @returns {JSON} get all therapists
      */
     async getAllTherapists(_,res) {
         try{
@@ -36,10 +36,10 @@ const adminController = {
         }
     },
     /**
-     * Récupérer tous les rendez-vous
-     * @param {*} _ requête express
-     * @param {*} res réponse express
-     * @returns {JSON} liste des rendez-vous
+     * get all appointments
+     * @param {*} _ request express
+     * @param {*} res response express
+     * @returns {JSON} get all appointments
      */
     async getAllAppointments(_,res) {
         try {
@@ -50,10 +50,10 @@ const adminController = {
         }
     },
     /**
-     * Récupérer une spécialité
-     * @param {*} req requête express
-     * @param {*} res réponse express
-     * @returns {JSON} spécialité
+     * get One specialties
+     * @param {*} req request express
+     * @param {*} res response express
+     * @returns {JSON} get One specialties
      */
     async getOneSpecialties(req,res) {
         const id = req.params.id
@@ -65,10 +65,10 @@ const adminController = {
         }
     },
     /**
-     * Récupérer un thérapeute
-     * @param {*} req requête express
-     * @param {*} res réponse express
-     * @returns {JSON} une thérapeute
+     * get One therapists
+     * @param {*} req request express
+     * @param {*} res response express
+     * @returns {JSON} get One therapists
      */
     async getOneTherapists(req,res) {
         const id = req.params.id
@@ -80,10 +80,10 @@ const adminController = {
         }
     },
     /**
-     * Récupérer un rendez-vous
-     * @param {*} req requête express
-     * @param {*} res réponse express
-     * @returns {JSON} un rendez-vous
+     * get One appointments
+     * @param {*} req request express
+     * @param {*} res response express
+     * @returns {JSON} get One appointments
      */
     async getOneAppointments(req,res) {
         const id = req.params.id
@@ -95,10 +95,10 @@ const adminController = {
         }
     },
     /**
-     * Récupérer tous les patients
-     * @param {*} _ requête express
-     * @param {*} res réponse express
-     * @returns {JSON} liste des patients
+     * Get all patients
+     * @param {*} _ request express
+     * @param {*} res response express
+     * @returns {JSON} get all patients
      */
     async getAllPatients(_,res){
         try {
@@ -109,10 +109,10 @@ const adminController = {
     }
     },
     /**
-     * Récupérer un patient
-     * @param {*} req requête express
-     * @param {*} res réponse express
-     * @returns {JSON} un patient
+     * get One patients
+     * @param {*} req request express
+     * @param {*} res response express
+     * @returns {JSON} get One patients
      */
     async getOnePatients(req,res){
        
@@ -125,10 +125,10 @@ const adminController = {
         }
     },
     /**
-     * 
-     * @param {*} req requête express
-     * @param {*} res réponse express
-     * @return {JSON} un patient
+     * update One patients
+     * @param {*} req request express
+     * @param {*} res response express
+     * @return {JSON} update One patients
      */
     async updateOnePatients(req,res){
         const id = req.params.id
@@ -149,7 +149,12 @@ const adminController = {
             next(new APIError("Erreur lors de la récupération de la mise a jours des informations d'un patient", 500))
         }
     },
-
+    /**
+     * delete One patients
+     * @param {*} req request express
+     * @param {*} res response express
+     * @return {JSON} delete One patients
+     */
     async deleteOnePatients(req,res){
         const id = req.params.id
         try {

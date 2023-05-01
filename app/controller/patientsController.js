@@ -1,16 +1,15 @@
 const patientsDatamapper = require('../model/patients');
 const APIError = require("../service/error/APIError");
-const debug = require("debug")("controller");
 const bcrypt = require('bcrypt');
 const fs = require('fs')
 
 
 const patientsController = {
     /**
-     * Récupération de tous les patients
-     * @param {*}_ requête Express
-     * @param {*} res réponse Express
-     * @returns {json} liste des patients
+     * Get all patients
+     * @param {*}_ request Express
+     * @param {*} res response Express
+     * @returns {json} liste of patients
      */
     async getAll(_, res, next) {
         try {
@@ -27,10 +26,10 @@ const patientsController = {
     },
 
     /**
-     * Récupération d'un patient par son id
-     * @param {*}req requête Express
-     * @param {*} res réponse Express
-     * @returns {json} un patient
+     * Get one patient by his id
+     * @param {*}req request Express
+     * @param {*} res respons Express
+     * @returns {json} one patient
      */
     async getById(req, res, next) {
         const id = req.params.id
@@ -48,18 +47,18 @@ const patientsController = {
         }
     },
 
-    // dans le patientsInfo il y aura quizz_id
-    //et le quizz id sera recupéré soit via le body ou params
+    //in the patientsInfo there will be quizz_id
+    //and the quiz id will be retrieved either via the body
     /**
-     * Création d'un patient
-     * @param {*} req requête Express
-     * @param {*} res réponse Express
-     * @returns {json} créer un patient 
+     * Creation of a patient outside the authentication system
+     * @param {*} req request Express
+     * @param {*} res respons Express
+     * @returns {json} creat a patient 
      */
     async createPatients(req, res, next) {
 
         /**
-         * récupérer les données du body
+         * retrieve body data
          */
         const {
             email,
@@ -77,7 +76,7 @@ const patientsController = {
 
         try {
             /**
-             * Vérifier que le numéro de téléphone est composé de 10 chiffres
+             * Make sure the phone number is 10 digits
              */
             if (phonenumber.length !== 10) {
                 return res.status(400).json({
@@ -85,7 +84,7 @@ const patientsController = {
                 });
             }
             /**
-             * Vérifier que tous les champs sont remplis
+             * Check that all fields are filled in
              */
             if (!email || !lastname || !firstname || !phonenumber || !streetname || !zipcode || !city || !confirmPassword || !password) {
                 return res.status(400).json({
@@ -94,7 +93,7 @@ const patientsController = {
             }
 
             /**
-             * Vérifier si l'user existe avec l'adresse mail
+             * Check if the user exists with the email address
              */
             const existingUserWithSameEmail = await patientsDatamapper.findByEmail(email);
             if (existingUserWithSameEmail) {
@@ -104,7 +103,7 @@ const patientsController = {
             }
 
             /**
-             * Vérifier que les deux mots de passe sont identiques
+             * Check that the two passwords are identical
              */
             if (password !== confirmPassword) {
                 return res.status(400).json({
@@ -113,13 +112,13 @@ const patientsController = {
             }
 
             /**
-             * Crypter le mot de passe
+             * Encrypt password
              */
             const passwordCrypted = await bcrypt.hash(password, 10);
             /**
-             * ajouter le patient en bdd
+             * add the patient in db
              */
-            const patientInfo = {
+            const patientsInfo = {
                 email,
                 lastname,
                 firstname,
@@ -145,10 +144,10 @@ const patientsController = {
     },
 
     /**
-     * Mise à jour d'un patient
-     * @param {*} req requête Express
-     * @param {*} res réponse Express
-     * @returns {json} mettre à jour un patient
+     * Update a patient
+     * @param {*} req request Express
+     * @param {*} res respos Express
+     * @returns {json} Update a patient
      */
     async updatePatients(req, res, next) {
         const id = req.params.id
@@ -164,10 +163,10 @@ const patientsController = {
         const fileType = base64Image[0].split('/').pop();
 
         const findPatient = await patientsDatamapper.findByPk(id);
-        //vérifier si l'image existe
+        //check a image already exists
         if (findPatient.profilpicture) {
             const imagePath = `public/images/Patients profile picture/${req.body.firstname}.${fileType}`
-            //Supprimer l'ancienne image
+            //Delete old image
             fs.unlink(imagePath, (err) => {
                 if (err) {
                     console.error(err);
@@ -176,8 +175,9 @@ const patientsController = {
                 }
             })
         }
-
+        // Create the path for the image using the patient's first name and file type
         const imagePath = `public/images/Patients profile picture/${req.body.firstname}.${fileType}`;
+        // Write the image as a file to the server using fs.writeFile()
         fs.writeFile(imagePath, base64Image[1], {
             encoding: 'base64'
         }, function (err) {
@@ -185,7 +185,7 @@ const patientsController = {
         });
 
         /**
-         * récupérer les données du body
+         * retrieve body data
          */
         const {
             email,
@@ -200,12 +200,12 @@ const patientsController = {
             quizz_id,
         } = req.body;
         /**
-         * Crypter le mot de passe
+         * Encrypt password
          */
         const passwordCrypted = await bcrypt.hash(password, 10);
 
         /**
-         * ajouter le patient en bdd
+         * add the patient in db
          */
         const patientsInfo = {
             email,
@@ -220,9 +220,9 @@ const patientsController = {
             quizz_id,
             role
         }
-        console.log(patientsInfo, id)
+    
         /**
-         * Vérifier que le numéro de téléphone est composé de 10 chiffres
+         * Make sure the phone number is 10 digits
          */
         if (patientsInfo.phonenumber.length !== 10) {
             return res.status(400).json({
@@ -230,7 +230,7 @@ const patientsController = {
             });
         }
         /**
-         * Vérifier que tous les champs sont remplis
+         * Check that all fields are filled in
          */
         if (!patientsInfo.email || !patientsInfo.lastname || !patientsInfo.firstname || !patientsInfo.phonenumber || !patientsInfo.streetname || !patientsInfo.zipcode || !patientsInfo.city || !patientsInfo.password) {
             return res.status(400).json({
@@ -253,10 +253,10 @@ const patientsController = {
         }
     },
     /**
-     * Suppression d'un patient
-     * @param {*} req requête Express
-     * @param {*} res réponse Express
-     * @returns {json} supprimer un patient
+     * Delete a patient
+     * @param {*} req request Express
+     * @param {*} res response Express
+     * @returns {json} Delete a patient
      */
     async deletePatients(req, res, next) {
         const id = req.params.id
@@ -279,10 +279,10 @@ const patientsController = {
         }
     },
     /**
-     * Récupération d'un patient avec ses rendez-vous
-     * @param {*} req requête Express
-     * @param {*} res réponse Express
-     * @returns {json} un patient avec ses rendez-vous
+     * Retrieving a patient with their appointments
+     * @param {*} req request Express
+     * @param {*} res response Express
+     * @returns {json} Retrieving a patient with their appointments
      */
     async getOnePatientWithAllAppointments(req, res, next) {
         const id = req.params.id
@@ -306,10 +306,10 @@ const patientsController = {
         }
     },
     /**
-     * Récupération d'un patient avec ses quizz
-     * @param {*} req requête Express
-     * @param {*} res réponse Express
-     * @returns {json} un patient avec ses quizz
+     *  Recovery of a patient with his quizzes
+     * @param {*} req request Express
+     * @param {*} res response Express
+     * @returns {json} Recovery of a patient with his quizzes
      */
     async getOnePatientWithQuizz(req, res, next) {
         const id = req.params.id
@@ -333,10 +333,10 @@ const patientsController = {
         }
     },
     /**
-     * Récupération l'avis des patients sur un therapist
-     * @param {*} req requête Express
-     * @param {*} res réponse Express
-     * @returns {json} avis des patients sur un therapist
+     * Retrieving the opinion of patients on a therapist
+     * @param {*} req request Express
+     * @param {*} res response Express
+     * @returns {json} Retrieving the opinion of patients on a therapist
      */
     async getReviewsOneTherapists(req, res, next) {
         const id = req.params.id
@@ -359,10 +359,10 @@ const patientsController = {
         }
     },
     /**
-     * création d'un rendez-vous entre un patient et un therapist
-     * @param {*} req requête Express
-     * @param {*} res réponse Express
-     * @returns {json} créer un rendez-vous entre un patient et un therapist
+     * créate a new appointment between a patient and a therapist
+     * @param {*} req request Express
+     * @param {*} res response Express
+     * @returns {json} créate a new appointment between a patient and a therapist
      */
     async createAppointmentOneTherapist(req, res, next) {
 
@@ -406,10 +406,10 @@ const patientsController = {
         }
     },
     /**
-     * création d'un avis sur un therapist
-     * @param {*} req requête Express
-     * @param {*} res réponse Express
-     * @returns {json} créer un avis sur un therapist
+     * créate a review on a therapist
+     * @param {*} req request Express
+     * @param {*} res response Express
+     * @returns {json} create a review on a therapist
      */
     async createReviewsOneTherapist(req, res, next) {
         const patientId = req.params.patientId
@@ -450,10 +450,10 @@ const patientsController = {
         }
     },
     /**
-     * Répondre au quizz pour récupérer le quizz_id
-     * @param {*} req requête Express
-     * @param {*} res réponse Express
-     * @returns {json} répondre au quizz pour récupérer le quizz_id
+     * answer the quizz to get quizz_id
+     * @param {*} req request Express
+     * @param {*} res response Express
+     * @returns {json} answer the quizz to get quizz_id
      */
     async answerPatientsQuizz(req, res, next) {
 
@@ -465,16 +465,11 @@ const patientsController = {
             answer_4: req.body.answer_4
 
         }
-
-        if (!answers) {
-            next(new APIError("Paramètres manquants", 400));
-            return;
-        }
-
-        // try {
+    
+        try {
         const answerPatientsQuizz = await patientsDatamapper.answerPatientsQuizz(answers);
         res.json(answerPatientsQuizz)
-        /*  if (answerPatientsQuizz.length === 0) {
+        if (answerPatientsQuizz.length === 0) {
              next(new APIError("La route n'a pas été trouvé", 404));
          }else {
              res.json(answerPatientsQuizz)
@@ -482,7 +477,7 @@ const patientsController = {
          } catch {
              next(new APIError("Erreur lors de la réponse au quizz", 500));
          
-         } */
+         } 
     }
 
 

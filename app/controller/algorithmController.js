@@ -21,22 +21,21 @@ const algorithmController = {
                     'Homme' :
                     'Femme';
 
-
                 /**
-                 * Ici on gére le cas ou le patient est un professionnel ou un particulier ayant des soucis côté professionnelle.
+                 * Here we manage the case where the patient is a professional or an individual with professional concerns.
                  */
                 if (!answer.answer_1 || answer.answer_3 === 'professionnal') {
-                    getWorkTherapistInCompany = await therapistsDatamapper.findAllTherapistBySpecialties(1)
+                    getWorkTherapistInCompany = await therapistsDatamapper.findAllTherapistBySpecialties(1);
 
                     return res.json(getWorkTherapistInCompany);
                 } else {
 
 
                     /**
-                     * Ici on gère le cas ou la personne concernée est un enfant.
+                     * Here we manage the case where the person concerned is a child.
                      */
                     if (answer.answer_2 === 'child') {
-                        getChildrenTherapist = await therapistsDatamapper.findAllTherapistBySpecialtiesAndGender(7, gender)
+                        getChildrenTherapist = await therapistsDatamapper.findAllTherapistBySpecialtiesAndGender(7, gender);
                         result = getChildrenTherapist
                         return res.json(result);
                     }
@@ -44,47 +43,41 @@ const algorithmController = {
 
 
                 /**
-                 * Ici on gère les autres cas en fonction de la pathologie.
+                 * Here we manage the other cases according to the pathology.
                  */
 
                 switch (answer.answer_3) {
                     case 'death':
                     case 'aggression':
                     case 'accident':
-                        let getTraumaTherapist = await therapistsDatamapper.findAllTherapistBySpecialtiesAndGender(3, gender)
+                        let getTraumaTherapist = await therapistsDatamapper.findAllTherapistBySpecialtiesAndGender(3, gender);
                         result = getTraumaTherapist
                         break;
                     case 'phobia':
                     case 'anxiety':
                     case 'depression':
-
-                        getTCCTherapist = await therapistsDatamapper.findAllTherapistBySpecialtiesAndGender(4, gender)
-
-
+                        getTCCTherapist = await therapistsDatamapper.findAllTherapistBySpecialtiesAndGender(4, gender);
                         result = getTCCTherapist
-
                         break;
                     case 'loneliness':
                     case 'confidence':
-
-
-                        let getCoachingTherapist = await therapistsDatamapper.findAllTherapistBySpecialtiesAndGender(5, gender)
+                        let getCoachingTherapist = await therapistsDatamapper.findAllTherapistBySpecialtiesAndGender(5, gender);
                         result = getCoachingTherapist
                         break;
                     case 'addiction':
-                        let getAddictionTherapist = await therapistsDatamapper.findAllTherapistBySpecialtiesAndGender(6, gender)
+                        let getAddictionTherapist = await therapistsDatamapper.findAllTherapistBySpecialtiesAndGender(6, gender);
                         result = getAddictionTherapist
                         break;
                     case 'evaluation':
-                        getClinicalTherapist = await therapistsDatamapper.findAllTherapistBySpecialtiesAndGender(8, gender)
+                        getClinicalTherapist = await therapistsDatamapper.findAllTherapistBySpecialtiesAndGender(8, gender);
                         result = getClinicalTherapist
                         break;
                     case 'couple':
-                        getCoupleTherapist = await therapistsDatamapper.findAllTherapistBySpecialtiesAndGender(2, gender)
+                        getCoupleTherapist = await therapistsDatamapper.findAllTherapistBySpecialtiesAndGender(2, gender);
                         result = getCoupleTherapist
                         break;
                     case 'professionnal':
-                        getWorkTherapist = await therapistsDatamapper.findAllTherapistBySpecialtiesAndGender(1, gender)
+                        getWorkTherapist = await therapistsDatamapper.findAllTherapistBySpecialtiesAndGender(1, gender);
                         result = getWorkTherapist
                         break;
                 }

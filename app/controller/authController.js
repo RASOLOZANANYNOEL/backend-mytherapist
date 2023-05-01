@@ -7,11 +7,11 @@ const APIError = require("../service/error/APIError");
 const authController = {
 
   /**
-   * inscription d'un thérapeute
+   * registration of a therapist
    */
   async registerTherapist(req, res, next) {
 
-    // récupérer les données du body
+    // retrieve body data
     const {
       email,
       lastname,
@@ -29,7 +29,7 @@ const authController = {
     try {
 
       /**
-       * Vérifier que les deux mots de passe sont identiques
+       * Check that the two passwords are identical
        */
       if (password !== confirmPassword) {
         return res.status(400).json({
@@ -37,7 +37,7 @@ const authController = {
         });
       }
       /**
-       * Vérifier que le numéro adeli est composé de 9 chiffres
+       * Make sure the adelinumber number is 9 digits
        */
       if (adelinumber.length !== 9) {
         return res.status(400).json({
@@ -45,7 +45,7 @@ const authController = {
         });
       }
       /**
-       * Vérifier que le genre est bien renseigné
+       * Check that the gender is well informed
        */
       if (!gender) {
         return res.status(400).json({
@@ -53,7 +53,7 @@ const authController = {
         });
       }
       /**
-       * Vérifier que le numéro de téléphone est composé de 10 chiffres
+       * Make sure the phone number is 10 digits
        */
       if (phonenumber.length !== 10) {
         return res.status(400).json({
@@ -61,7 +61,7 @@ const authController = {
         });
       }
       /**
-       * Vérifier que tous les champs sont remplis
+       * Check that all fields are filled in
        */
       if (!email || !lastname || !firstname || !phonenumber || !adelinumber || !streetname || !zipcode || !city || !gender || !confirmPassword || !password) {
         return res.status(400).json({
@@ -70,7 +70,7 @@ const authController = {
       }
 
       /**
-       * Vérifier si l'user existe avec l'adresse mail
+       * Check if the user exists with the email address
        */
       const existingUserWithSameEmail = await therapistsDatamapper.findByEmail(email);
       if (existingUserWithSameEmail) {
@@ -79,7 +79,7 @@ const authController = {
         });
       }
       /**
-       * Vérifier si l'user existe avec le numero de téléphone
+       * Check if the user exists with the phone number
        */
       const existingUserWithSamePhoneNumber = await therapistsDatamapper.findByPhonenumber(phonenumber);
       if (existingUserWithSamePhoneNumber) {
@@ -89,7 +89,7 @@ const authController = {
       }
 
        /**
-       * Vérifier si l'user existe avec le numero adeli
+       * Check if the user exists with the adelinumber
        */
        const existingUserWithSameAdeliNumber = await therapistsDatamapper.findByAdelinumber(adelinumber);
        if (existingUserWithSameAdeliNumber) {
@@ -99,12 +99,12 @@ const authController = {
        }
 
       /**
-       * Crypter le mot de passe
+       * Encrypt password
        */
       const passwordCrypted = await bcrypt.hash(password, 10);
 
       /**
-       * ajouter le therapist en bdd
+       * add therapist in database
        */
       const therapistInfo = {
         email,
@@ -129,12 +129,12 @@ const authController = {
   },
 
   /**
-   * inscription d'un patient
+   * patient registration
    */
   async registerPatient(req, res, next) {
 
     /**
-     * récupérer les données du body
+     * retrieve body data
      */
     const {
       email,
@@ -152,7 +152,7 @@ const authController = {
     try {
 
       /**
-       * Vérifier que les deux mots de passe sont identiques
+       * Check that the two passwords are identical
        */
       if (password !== confirmPassword) {
         return res.status(400).json({
@@ -161,7 +161,7 @@ const authController = {
       }
 
       /**
-       * Vérifier que le numéro de téléphone est composé de 10 chiffres
+       * Make sure the phone number is 10 digits
        */
       if (phonenumber.length !== 10) {
         return res.status(400).json({
@@ -169,7 +169,7 @@ const authController = {
         });
       }
       /**
-       * Vérifier que tous les champs sont remplis
+       * Check that all fields are filled in
        */
       if (!email || !lastname || !firstname || !phonenumber || !streetname || !zipcode || !city || !confirmPassword || !password) {
         return res.status(400).json({
@@ -178,7 +178,7 @@ const authController = {
       }
 
       /**
-       * Vérifier si l'user existe avec l'adresse mail
+       * Check if the user exists with the email address
        */
       const existingUserWithSameEmail = await patientsDatamapper.findByEmail(email);
       if (existingUserWithSameEmail) {
@@ -188,7 +188,7 @@ const authController = {
       }
 
       /**
-       * Vérifier que les deux mots de passe sont identiques
+       * Check that the two passwords are identical
        */
       if (password !== confirmPassword) {
         return res.status(400).json({
@@ -197,11 +197,11 @@ const authController = {
       }
 
       /**
-       * Crypter le mot de passe
+       * Encrypt password
        */
       const passwordCrypted = await bcrypt.hash(password, 10);
       /**
-       * ajouter le patient en bdd
+       * add the patient in db
        */
       const patientInfo = {
         email,
@@ -224,7 +224,7 @@ const authController = {
   },
 
   /**
-   * Méthode pour se connecter
+   * Method for connection
    */
   async login(req, res) {
     const {
@@ -255,13 +255,14 @@ const authController = {
       }
 
       delete user.password;
-
+      // Generate a JWT token using user information and a secret key
       const token = jwt.sign({
         data: user,
       }, 'therapist-secret', {
         expiresIn: '7h'
       });
       console.log(token)
+      // verify that the token is valid using the same secret key used to sign it. If the check fails, an error message is returned in response.
       try {
         jwt.verify(token, 'therapist-secret')
       } catch (e) {

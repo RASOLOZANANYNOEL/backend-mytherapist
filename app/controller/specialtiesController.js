@@ -5,10 +5,10 @@ const debug = require("debug")("controller");
 
 const specialtiesController = {
     /**
-     * Récupérer toutes les spécialités
-     * @param {*} _ requête express
-     * @param {*} res réponse express
-     * @returns {JSON} liste des spécialités
+     * Get all specialties
+     * @param {*} _ request express
+     * @param {*} res response express
+     * @returns {JSON} get all specialties
      */
     async getAll(_, res, next) {
         try {
@@ -25,10 +25,10 @@ const specialtiesController = {
         }
     },
     /**
-     * Récupérer une spécialité par son id
-     * @param {*} req requête express
-     * @param {*} res réponse express
-     * @returns {JSON} une spécialité
+     * Get one specialty by id
+     * @param {*} req request express
+     * @param {*} res response express
+     * @returns {JSON} get one specialty by id
      */
     async getById(req, res, next) {
         const id = req.params.id

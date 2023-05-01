@@ -1,3 +1,4 @@
+//verifies if the user is a patient
 const jwt = require('jsonwebtoken');
 
 const isPatientMiddleware = function(req, res, next) {

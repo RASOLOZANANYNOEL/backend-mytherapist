@@ -119,7 +119,7 @@ const { isTherapistMiddleware } = require('../middlewares')
  *		            "role": "therapist"
  *                  }]
  */
-router.get('/',therapistsController.getAll);
+router.get('/', therapistsController.getAll);
 
 /** get all therapists with specialties
  * @swagger
@@ -282,7 +282,7 @@ router.get('/specialties', therapistsController.findAllTherapistsWithSpecialitie
  *		"updated_at": "2020-04-20T18:00:00.000Z",
  *		"role": "therapist"}]
  */
-router.post('/',therapistsController.creatTherapist);
+router.post('/', therapistsController.creatTherapist);
 
 /** get One therapists
  * @swagger
@@ -332,11 +332,57 @@ router.post('/',therapistsController.creatTherapist);
  *	                "updated_at": "2020-04-20T18:00:00.000Z",
  *	                "role": "therapist"}]
  */
-router.get('/:id',therapistsController.getById);
+router.get('/:id', therapistsController.getById);
 
-router.put('/:id',therapistsController.updateTherapist);
+/**modify one therapist
+ * @swagger
+ * /therapists/{id}:
+ *   put:
+ *     summary: modify one therapist
+ *     parameters:
+ *       - in: path
+ *         name : therapist ID
+ *         description: The id of the therapist that you want to modify
+ *         schema: 
+ *           type:  integer
+ *           required: true
+ *     tags : 
+ *      - therapists
+ *     responses:
+ *       200:
+ *         description: OK
+ *         content:
+ *           application/json:
+ *             schema:
+ *                $ref: 
+ *                example: 
+ */
+router.put('/:id', therapistsController.updateTherapist);
 
-router.delete('/:id',therapistsController.deleteTherapist);
+/**Delete one therapist
+ * @swagger
+ * /therapists/{id}:
+ *   delete:
+ *     summary: delete one therapist
+ *     parameters:
+ *       - in: path
+ *         name : therapist ID
+ *         description: The id of the therapist that you want to delete
+ *         schema: 
+ *           type:  integer
+ *           required: true
+ *     tags : 
+ *      - therapists
+ *     responses:
+ *       200:
+ *         description: OK
+ *         content:
+ *           application/json:
+ *             schema:
+ *                $ref: 
+ *                example: 
+ */
+router.delete('/:id', therapistsController.deleteTherapist);
 
 /** get One therapists with specialties
  * @swagger
@@ -511,9 +557,38 @@ router.get('/:id/specialties', therapistsController.findTherapistsWithSpecialtie
  *		"updated_at": "2020-04-20T18:00:00.000Z",
  *		"role": "therapist"}]
  */
-router.post('/:therapistId/specialities/:specialityId',therapistsController.addSpecialtiesToTherapist);
+router.post('/:therapistId/specialities/:specialityId', therapistsController.addSpecialtiesToTherapist);
 
-router.delete('/:therapistId/specialities/:specialityId',therapistsController.removeSpecialtiesFromTherapist);
+/**Delete one therapist with one specialty
+ * @swagger
+ * /therapists/{id}:
+ *   delete:
+ *     summary: delete one therapist with one specialty
+ *     parameters:
+ *       - in: path
+ *         name : therapist ID
+ *         description: The id of the therapist that you want to delete
+ *         schema: 
+ *           type:  integer
+ *           required: true
+ *       - in: path
+ *         name : specialty ID
+ *         description: The id of the specialty that you want to delete
+ *         schema: 
+ *           type:  integer
+ *           required: true
+ *     tags : 
+ *      - therapists
+ *     responses:
+ *       200:
+ *         description: OK
+ *         content:
+ *           application/json:
+ *             schema:
+ *                $ref: 
+ *                example: 
+ */
+router.delete('/:therapistId/specialities/:specialityId', therapistsController.removeSpecialtiesFromTherapist);
 
 /** get all therapists with sexe with all specialties
  * @swagger
@@ -706,7 +781,71 @@ router.get('/:id/appointments', therapistsController.getAllAppointmentOfATherapi
  */
 router.get('/:therapistId/appointments/:appointmentId', therapistsController.getOneAppointmentOfATherapist);
 
-router.post('/:therapistId/appointment/patients/:patientId', therapistsController.creatAppointmentWithOnePatient);
+/**CREATE appointment between one therapist and one patient
+ * @swagger
+ * /therapists/{therapistId}/appointments/patients/{patientId}:
+ *   post:
+ *      summary: Create appointment between one therapist and one patient
+ *      parameters:
+ *       - in: path
+ *         name: TherapistId
+ *         description: The therapist ID
+ *         required: true
+ *       - in: path
+ *         name : PatientId
+ *         description: The patient ID
+ *         required: true
+ *       - in: path
+ *         name : beginninghour
+ *         description: When the appointement starts (date and hour)
+ *         required: true
+ *       - in: path
+ *         name : endtime
+ *         description: When the appointement finish (date and hour)
+ *         required: true
+ *       - in: path
+ *         name : videosession
+ *         description: type of appointement
+ *         schema: 
+ *           type:  boolean
+ *       - in: path
+ *         name : audiosession
+ *         description: type of appointement
+ *         schema: 
+ *           type:  boolean
+ *       - in: path
+ *         name : chatsession
+ *         description: type of appointement
+ *         schema: 
+ *           type:  boolean
+ *       - in: path
+ *         name : sessionatoffice
+ *         description: type of appointement
+ *         schema: 
+ *           type:  boolean
+ *      tags : 
+ *       - therapists
+ *      produces:
+ *        - application/json
+ *      responses:
+ *        200:
+ *          description: OK
+ *          content:
+ *            application/json:
+ *              schema:
+ *                 $ref: 
+ *                 example: [{
+ *		            "id": 52,
+ *		            "beginninghour": "2002-02-02T22:00:00.000Z",
+ *		            "endtime": "2002-02-02T23:00:00.000Z",
+ *		            "patients_id": 3,
+ *		            "therapists_id": 2,
+ *		            "videosession": true,
+ *		            "audiosession": true,
+ *		            "chatsession": true,
+ *		            "sessionatoffice": true}]
+ */
+router.post('/:therapistId/appointments/patients/:patientId', therapistsController.creatAppointmentWithOnePatient);
 
 /** get One therapists with reviews
  * @swagger

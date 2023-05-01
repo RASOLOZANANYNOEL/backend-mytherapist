@@ -1,3 +1,5 @@
+//verifies if the user is an admin
+
 const jwt = require('jsonwebtoken');
 
 const isAdminMiddleware = function(req, res, next) {

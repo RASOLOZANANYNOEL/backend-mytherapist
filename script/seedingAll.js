@@ -487,22 +487,22 @@ const allreviews = require('./reviews.js');
 const oneReview = allreviews
 const reviews = [];
 
-for (let counter = 0; counter < 200; counter++) {
+for (let counter = 0; counter < 400; counter++) {
     const review = {
         messages: oneReview[counter % oneReview.length].message,
-        negatifreviews: faker.random.numeric({
-            'min': 0,
+        negatifreviews: faker.datatype.number({
+            'min': 1,
             'max': 1
         }),
-        positifreviews: faker.random.numeric({
-            'min': 0,
-            'max': 1
+        positifreviews: faker.datatype.number({
+            'min': 1,
+            'max': 2
         }),
         patients_id: faker.datatype.number({
             min: 1,
             max: 50
         }),
-        therapists_id: faker.random.numeric({
+        therapists_id: faker.datatype.number({
             'min': 1,
             'max': 200
         }),

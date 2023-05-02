@@ -4,6 +4,7 @@ const router = express.Router();
 const { authMiddleware } = require('../middlewares');
 const { isPatientMiddleware } = require('../middlewares')
 
+
 /**schéma patients
  * @swagger
  * components:
@@ -497,7 +498,7 @@ router.post('/quizz',patientsController.answerPatientsQuizz);
  *                $ref: 
  *                example: 
  */
-router.put('/:id',patientsController.updatePatients); 
+router.put('/:id', patientsController.updatePatients); 
 
 /**Delete one patient
  * @swagger

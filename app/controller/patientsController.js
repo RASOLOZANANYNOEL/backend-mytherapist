@@ -1,244 +1,379 @@
-
-const patientsDatamapper= require('../model/patients');
+const patientsDatamapper = require('../model/patients');
 const APIError = require("../service/error/APIError");
-const debug = require("debug")("controller");
+const bcrypt = require('bcrypt');
+const fs = require('fs')
+
 
 const patientsController = {
     /**
-     * Récupération de tous les patients
-     * @param {*}_ requête Express
-     * @param {*} res réponse Express
-     * @returns {json} liste des patients
+     * Get all patients
+     * @param {*}_ request Express
+     * @param {*} res response Express
+     * @returns {json} liste of patients
      */
-    async getAll(_,res,next) {
+    async getAll(_, res, next) {
         try {
-            const allPatients= await patientsDatamapper.findAll();
-                
+            const allPatients = await patientsDatamapper.findAll();
+
             if (allPatients.length === 0) {
                 next(new APIError("La route n'a pas été trouvé", 404));
             } else {
-                res.json(allPatients);  
+                res.json(allPatients);
             }
-            } catch {
-                next(new APIError("Erreur lors de la récupération des patients", 500));
+        } catch {
+            next(new APIError("Erreur lors de la récupération des patients", 500));
         }
     },
 
     /**
-     * Récupération d'un patient par son id
-     * @param {*}req requête Express
-     * @param {*} res réponse Express
-     * @returns {json} un patient
+     * Get one patient by his id
+     * @param {*}req request Express
+     * @param {*} res respons Express
+     * @returns {json} one patient
      */
-    async getById(req,res,next) {
+    async getById(req, res, next) {
         const id = req.params.id
         try {
             const onePatientsById = await patientsDatamapper.findByPk(id);
-            
+
             if (onePatientsById.length === 0) {
                 next(new APIError("La route n'a pas été trouvé", 404));
 
             } else {
                 res.json(onePatientsById)
             }
-            } catch {
-                    next(new APIError("Erreur lors de la récupération du patient", 500));
+        } catch {
+            next(new APIError("Erreur lors de la récupération du patient", 500));
         }
     },
-    
-    // dans le patientsInfo il y aura quizz_id
-    //et le quizz id sera recupéré soit via le body ou params
+
+    //in the patientsInfo there will be quizz_id
+    //and the quiz id will be retrieved either via the body
     /**
-     * Création d'un patient
-     * @param {*} req requête Express
-     * @param {*} res réponse Express
-     * @returns {json} créer un patient 
+     * Creation of a patient outside the authentication system
+     * @param {*} req request Express
+     * @param {*} res respons Express
+     * @returns {json} creat a patient 
      */
-    async createPatients(req,res,next) {
-        
-        const patientsInfo = {
-            email : req.body.email,
-            lastname: req.body.lastname,
-            firstname: req.body.firstname,
-            password:req.body.password,
-            phonenumber: req.body.phonenumber,
-            streetname : req.body.streetname,
-            zipcode : req.body.zipcode,
-            city : req.body.city,
-            quizz_id : req.body.quizz_id     
-        }
+    async createPatients(req, res, next) {
+
+        /**
+         * retrieve body data
+         */
+        const {
+            email,
+            lastname,
+            firstname,
+            password,
+            confirmPassword,
+            phonenumber,
+            streetname,
+            zipcode,
+            city,
+            quizz_id,
+        } = req.body;
+
 
         try {
+            /**
+             * Make sure the phone number is 10 digits
+             */
+            if (phonenumber.length !== 10) {
+                return res.status(400).json({
+                    error: "Le numéro de téléphone doit être composé de 10 chiffres"
+                });
+            }
+            /**
+             * Check that all fields are filled in
+             */
+            if (!email || !lastname || !firstname || !phonenumber || !streetname || !zipcode || !city || !confirmPassword || !password) {
+                return res.status(400).json({
+                    error: "Veuillez renseigner tous les champs"
+                });
+            }
+
+            /**
+             * Check if the user exists with the email address
+             */
+            const existingUserWithSameEmail = await patientsDatamapper.findByEmail(email);
+            if (existingUserWithSameEmail) {
+                return res.status(400).json({
+                    error: "Cet email est déjà utilisé"
+                });
+            }
+
+            /**
+             * Check that the two passwords are identical
+             */
+            if (password !== confirmPassword) {
+                return res.status(400).json({
+                    error: "Les mots de passe ne sont pas identiques"
+                });
+            }
+
+            /**
+             * Encrypt password
+             */
+            const passwordCrypted = await bcrypt.hash(password, 10);
+            /**
+             * add the patient in db
+             */
+            const patientsInfo = {
+                email,
+                lastname,
+                firstname,
+                password: passwordCrypted,
+                phonenumber,
+                profilpicture: 'public/images/profil-default.png',
+                streetname,
+                zipcode,
+                city,
+                quizz_id,
+                role: 'patient'
+            }
+
             const createPatients = await patientsDatamapper.create(patientsInfo);
             if (createPatients.length === 0) {
                 next(new APIError("La route n'a pas été trouvé", 404));
             } else {
                 res.json(createPatients)
             }
-            } catch {
+        } catch {
             next(new APIError("Erreur lors de la création du patient", 500));
-            }
+        }
     },
+
     /**
-     * Mise à jour d'un patient
-     * @param {*} req requête Express
-     * @param {*} res réponse Express
-     * @returns {json} mettre à jour un patient
+     * Update a patient
+     * @param {*} req request Express
+     * @param {*} res respos Express
+     * @returns {json} Update a patient
      */
-    async updatePatients(req,res,next){
+    async updatePatients(req, res, next) {
         const id = req.params.id
-        
-        if (!id){
+
+        if (!id) {
             next(new APIError("Paramètres manquants", 400));
         }
 
-        const patientsInfo = {
-            email : req.body.email,
-            lastname: req.body.lastname,
-            firstname: req.body.firstname,
-            password:req.body.password,
-            phonenumber: req.body.phonenumber,
-            profilpicture: req.body.profilpicture,
-            streetname : req.body.streetname,
-            zipcode : req.body.zipcode,
-            city : req.body.city,
-            role : req.body.role
+        // update profilpicture
+        let base64String = req.body.profilpicture;
+        // Remove header
+        let base64Image = base64String.split(';base64,');
+        const fileType = base64Image[0].split('/').pop();
+
+        const findPatient = await patientsDatamapper.findByPk(id);
+        //check a image already exists
+        if (findPatient.profilpicture) {
+            const imagePath = `public/images/Patients profile picture/${req.body.firstname}.${fileType}`
+            //Delete old image
+            fs.unlink(imagePath, (err) => {
+                if (err) {
+                    console.error(err);
+                } else {
+                    console.log(`L'image précédent a été supprimée ${imagePath}`)
+                }
+            })
         }
-       
+        // Create the path for the image using the patient's first name and file type
+        const imagePath = `public/images/Patients profile picture/${req.body.firstname}.${fileType}`;
+        // Write the image as a file to the server using fs.writeFile()
+        fs.writeFile(imagePath, base64Image[1], {
+            encoding: 'base64'
+        }, function (err) {
+            console.log('File created');
+        });
+
+        /**
+         * retrieve body data
+         */
+        const {
+            email,
+            lastname,
+            firstname,
+            password,
+            confirmPassword,
+            phonenumber,
+            streetname,
+            zipcode,
+            city,
+            quizz_id,
+        } = req.body;
+        /**
+         * Encrypt password
+         */
+        const passwordCrypted = await bcrypt.hash(password, 10);
+
+        /**
+         * add the patient in db
+         */
+        const patientsInfo = {
+            email,
+            lastname,
+            firstname,
+            password: passwordCrypted,
+            phonenumber,
+            profilpicture: imagePath,
+            streetname,
+            zipcode,
+            city,
+            quizz_id,
+            role
+        }
+    
+        /**
+         * Make sure the phone number is 10 digits
+         */
+        if (patientsInfo.phonenumber.length !== 10) {
+            return res.status(400).json({
+                error: "Le numéro de téléphone doit être composé de 10 chiffres"
+            });
+        }
+        /**
+         * Check that all fields are filled in
+         */
+        if (!patientsInfo.email || !patientsInfo.lastname || !patientsInfo.firstname || !patientsInfo.phonenumber || !patientsInfo.streetname || !patientsInfo.zipcode || !patientsInfo.city || !patientsInfo.password) {
+            return res.status(400).json({
+                error: "Veuillez renseigner tous les champs"
+            });
+        }
+
         try {
-            const updatePatients = await patientsDatamapper.update({id},patientsInfo);
-            
+            const updatePatients = await patientsDatamapper.update({
+                id
+            }, patientsInfo);
             if (updatePatients.length === 0) {
                 next(new APIError("La route n'a pas été trouvé", 404));
             } else {
                 res.json(updatePatients)
             }
-            } catch {
-                next(new APIError("Erreur lors de la mise à jour du patient", 500));
-            }
+        } catch (err) {
+            next(new APIError("Erreur lors de la mise à jour du patient", 500));
+            console.log(err)
+        }
     },
     /**
-     * Suppression d'un patient
-     * @param {*} req requête Express
-     * @param {*} res réponse Express
-     * @returns {json} supprimer un patient
+     * Delete a patient
+     * @param {*} req request Express
+     * @param {*} res response Express
+     * @returns {json} Delete a patient
      */
-    async deletePatients(req,res,next){
+    async deletePatients(req, res, next) {
         const id = req.params.id
 
-        if (!id){
+        if (!id) {
             next(new APIError("Paramètres manquants", 400));
             return;
         }
         try {
             const deletePatients = await patientsDatamapper.delete(id);
-            
-        if (deletePatients.length === 0) {
-            next(new APIError("La route n'a pas été trouvé", 404));
 
-        } else {
-            res.json(deletePatients)
-        }
-        }catch {
-                next(new APIError("Erreur lors de la suppression du patient", 500));
+            if (deletePatients.length === 0) {
+                next(new APIError("La route n'a pas été trouvé", 404));
+
+            } else {
+                res.json(deletePatients)
             }
+        } catch {
+            next(new APIError("Erreur lors de la suppression du patient", 500));
+        }
     },
     /**
-     * Récupération d'un patient avec ses rendez-vous
-     * @param {*} req requête Express
-     * @param {*} res réponse Express
-     * @returns {json} un patient avec ses rendez-vous
+     * Retrieving a patient with their appointments
+     * @param {*} req request Express
+     * @param {*} res response Express
+     * @returns {json} Retrieving a patient with their appointments
      */
-    async getOnePatientWithAllAppointments (req,res,next) {
+    async getOnePatientWithAllAppointments(req, res, next) {
         const id = req.params.id
 
-        if (!id){
+        if (!id) {
             next(new APIError("Paramètres manquants", 400));
             return;
         }
 
         try {
             const getOnePatientsWithAllAppointments = await patientsDatamapper.getOnePatientWithAllAppointments(id);
-            
+
             if (getOnePatientsWithAllAppointments.length === 0) {
                 next(new APIError("La route n'a pas été trouvé", 404));
 
             } else {
                 res.json(getOnePatientsWithAllAppointments)
             }
-            } catch {
-                next(new APIError("Erreur lors de la récupération du patient avec ses rendez-vous", 500));
-            }
+        } catch {
+            next(new APIError("Erreur lors de la récupération du patient avec ses rendez-vous", 500));
+        }
     },
     /**
-     * Récupération d'un patient avec ses quizz
-     * @param {*} req requête Express
-     * @param {*} res réponse Express
-     * @returns {json} un patient avec ses quizz
+     *  Recovery of a patient with his quizzes
+     * @param {*} req request Express
+     * @param {*} res response Express
+     * @returns {json} Recovery of a patient with his quizzes
      */
-    async getOnePatientWithQuizz (req,res,next) {
-        const id= req.params.id
+    async getOnePatientWithQuizz(req, res, next) {
+        const id = req.params.id
 
-        if (!id){
+        if (!id) {
             next(new APIError("Paramètres manquants", 400));
             return;
         }
 
         try {
             const getOnePatientWithQuizz = await patientsDatamapper.getOnePatientWithQuizz(id);
-            
+
             if (getOnePatientWithQuizz.length === 0) {
                 next(new APIError("La route n'a pas été trouvé", 404));
 
             } else {
                 res.json(getOnePatientWithQuizz)
             }
-            } catch {
-                next(new APIError("Erreur lors de la récupération du patient avec ses quizz", 500));
-            }
+        } catch {
+            next(new APIError("Erreur lors de la récupération du patient avec ses quizz", 500));
+        }
     },
     /**
-     * Récupération l'avis des patients sur un therapist
-     * @param {*} req requête Express
-     * @param {*} res réponse Express
-     * @returns {json} avis des patients sur un therapist
+     * Retrieving the opinion of patients on a therapist
+     * @param {*} req request Express
+     * @param {*} res response Express
+     * @returns {json} Retrieving the opinion of patients on a therapist
      */
-    async getReviewsOneTherapists (req,res,next){
-        const id= req.params.id
+    async getReviewsOneTherapists(req, res, next) {
+        const id = req.params.id
 
-        if (!id){
+        if (!id) {
             next(new APIError("Paramètres manquants", 400));
             return;
         }
         try {
             const getReviewsOneTherapists = await patientsDatamapper.getReviewsOneTherapists(id);
-            
+
             if (getReviewsOneTherapists.length === 0) {
                 next(new APIError("La route n'a pas été trouvé", 404));
 
-            }else {
+            } else {
                 res.json(getReviewsOneTherapists)
             }
-            } catch {
-                next(new APIError("Erreur lors de la récupération des avis des patients sur un therapist", 500));
-            }
+        } catch {
+            next(new APIError("Erreur lors de la récupération des avis des patients sur un therapist", 500));
+        }
     },
     /**
-     * création d'un rendez-vous entre un patient et un therapist
-     * @param {*} req requête Express
-     * @param {*} res réponse Express
-     * @returns {json} créer un rendez-vous entre un patient et un therapist
+     * créate a new appointment between a patient and a therapist
+     * @param {*} req request Express
+     * @param {*} res response Express
+     * @returns {json} créate a new appointment between a patient and a therapist
      */
-    async createAppointmentOneTherapist (req,res,next) {
-        
+    async createAppointmentOneTherapist(req, res, next) {
+
         const therapistId = req.params.therapistId
-        const patientId= req.params.patientId
-        
-        if (!therapistId){
+        const patientId = req.params.patientId
+
+        if (!therapistId) {
             next(new APIError("Paramètres manquants", 400));
             return;
         }
-         if (!patientId){
+        if (!patientId) {
             next(new APIError("Paramètres manquants", 400));
             return;
         }
@@ -247,103 +382,104 @@ const patientsController = {
             beginninghour: req.body.beginninghour,
             endtime: req.body.endtime,
             patients_id: patientId,
-            therapists_id:therapistId,
+            therapists_id: therapistId,
             videosession: req.body.videosession,
-            audiosession : req.body.audiosession,
-            chatsession : req.body.chatsession,
-            sessionatoffice : req.body.sessionatoffice,
+            audiosession: req.body.audiosession,
+            chatsession: req.body.chatsession,
+            sessionatoffice: req.body.sessionatoffice,
         }
 
-        
         try {
-            const createAppointmentOneTherapist = await patientsDatamapper.createAppointmentOneTherapist({therapistId,patientId},appointment);
-            
+            const createAppointmentOneTherapist = await patientsDatamapper.createAppointmentOneTherapist({
+                therapistId,
+                patientId
+            }, appointment);
+
             if (createAppointmentOneTherapist.length === 0) {
                 next(new APIError("La route n'a pas été trouvé", 404));
 
             } else {
                 res.json(createAppointmentOneTherapist)
             }
-            } catch {
-                next(new APIError("Erreur lors de la création du rendez-vous entre un patient et un therapist", 500));
+        } catch {
+            next(new APIError("Erreur lors de la création du rendez-vous entre un patient et un therapist", 500));
         }
     },
     /**
-     * création d'un avis sur un therapist
-     * @param {*} req requête Express
-     * @param {*} res réponse Express
-     * @returns {json} créer un avis sur un therapist
+     * créate a review on a therapist
+     * @param {*} req request Express
+     * @param {*} res response Express
+     * @returns {json} create a review on a therapist
      */
-    async createReviewsOneTherapist (req,res,next){
-        const patientId= req.params.patientId
+    async createReviewsOneTherapist(req, res, next) {
+        const patientId = req.params.patientId
         const therapistId = req.params.therapistId
-        
-        if (!patientId){
+
+        if (!patientId) {
             next(new APIError("Paramètres manquants", 400));
             return;
         }
 
-        if (!therapistId){
+        if (!therapistId) {
             next(new APIError("Paramètres manquants", 400));
             return;
         }
-        
+
         const review = {
             messages: req.body.messages,
-            negatifreviews:req.body.negatifreviews,
-            positifreviews:req.body.positifreviews,
-            patients_id:patientId,
-            therapists_id:therapistId,
+            negatifreviews: req.body.negatifreviews,
+            positifreviews: req.body.positifreviews,
+            patients_id: patientId,
+            therapists_id: therapistId,
         }
 
         try {
-            const createReviewsOneTherapist = await patientsDatamapper.createReviewsOneTherapist({patientId,therapistId},review);
-            
+            const createReviewsOneTherapist = await patientsDatamapper.createReviewsOneTherapist({
+                patientId,
+                therapistId
+            }, review);
+
             if (createReviewsOneTherapist.length === 0) {
                 next(new APIError("La route n'a pas été trouvé", 404));
 
-            }else {
+            } else {
                 res.json(createReviewsOneTherapist)
             }
-            } catch {
-                next(new APIError("Erreur lors de la création d'un avis sur un therapist", 500));
-            }
-    },  
+        } catch {
+            next(new APIError("Erreur lors de la création d'un avis sur un therapist", 500));
+        }
+    },
     /**
-     * Répondre au quizz pour récupérer le quizz_id
-     * @param {*} req requête Express
-     * @param {*} res réponse Express
-     * @returns {json} répondre au quizz pour récupérer le quizz_id
+     * answer the quizz to get quizz_id
+     * @param {*} req request Express
+     * @param {*} res response Express
+     * @returns {json} answer the quizz to get quizz_id
      */
-    async answerPatientsQuizz(req,res,next) {
-        
-            const answers = {
-            // question_1 : req.body.question_1,
-            answer_1 : req.body.answer_1,
-            // question_2 : req.body.question_2,
-            answer_2 : req.body.answer_2,
-            // question_3 : req.body.question_3,
-            answer_3 : req.body.answer_3,
-            // question_4 : req.body.question_4,
-            answer_4 : req.body.answer_4,
+    async answerPatientsQuizz(req, res, next) {
+
+        const answers = {
+
+            answer_1: req.body.answer_1,
+            answer_2: req.body.answer_2,
+            answer_3: req.body.answer_3,
+            answer_4: req.body.answer_4
 
         }
-        console.log(answers)
-
-        // try {
-            const answerPatientsQuizz = await patientsDatamapper.answerPatientsQuizz(answers);
-            res.json(answerPatientsQuizz)
-           /*  if (answerPatientsQuizz.length === 0) {
-                next(new APIError("La route n'a pas été trouvé", 404));
-            }else {
-                res.json(answerPatientsQuizz)
-            }
-            } catch {
-                next(new APIError("Erreur lors de la réponse au quizz", 500));
-            
-            } */
+    
+        try {
+        const answerPatientsQuizz = await patientsDatamapper.answerPatientsQuizz(answers);
+        res.json(answerPatientsQuizz)
+        if (answerPatientsQuizz.length === 0) {
+             next(new APIError("La route n'a pas été trouvé", 404));
+         }else {
+             res.json(answerPatientsQuizz)
+         }
+         } catch {
+             next(new APIError("Erreur lors de la réponse au quizz", 500));
+         
+         } 
     }
-     
+
 
 };
 

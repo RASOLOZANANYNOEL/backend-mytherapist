@@ -1,0 +1,16 @@
+POST http://localhost:3000/therapists
+Content-type: application/json
+
+{
+        "firstname": "john",
+        "lastname": "fafa",
+        "password": "aaaddadaf",
+        "adelinumber": "147896526",
+        "streetname": "zobzob zob",
+        "phonenumber": "0606060608",
+        "zipcode": "56100",
+        "email": "rerefaz@hotmail.com",
+        "city": "panam",
+        "gender": "Homme",
+        "role": "therapist"
+      }

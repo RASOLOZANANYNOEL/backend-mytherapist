@@ -468,7 +468,7 @@ const patientsController = {
     
         try {
         const answerPatientsQuizz = await patientsDatamapper.answerPatientsQuizz(answers);
-        res.json(answerPatientsQuizz)
+        
         if (answerPatientsQuizz.length === 0) {
              next(new APIError("La route n'a pas été trouvé", 404));
          }else {

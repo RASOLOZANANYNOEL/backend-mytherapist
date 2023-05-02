@@ -4,7 +4,7 @@ const assert = require('assert');
 
 const app = require('../app.js');
 
-describe('GET /therapists', function() {
+/* describe('GET /therapists', function() {
   it('responds with json', async function(done) {
     const response = await request(app)
       .get('/therapists')
@@ -14,33 +14,43 @@ describe('GET /therapists', function() {
       console.log(response);
       done();
   });
+}); */
+
+describe('GET /therapists', function() {
+  it('responds with json', async function(done) {
+    request(app)
+      .get('/therapists')
+      .expect('Content-Type', /json/)
+      .expect(200);
+      done();
+  });
 });
     
 
-    // describe('POST /therapists', function() {
-    //   it('responds with json', function(done) {
-    //     request(app)
-    //       .post('/therapists')
+    describe('POST /therapists', function() {
+      it('responds with json', function(done) {
+        request(app)
+          .post('/therapists')
           
-    //       .send({"firstname": "john",
-    //         "lastname": "fafa",
-    //         "password": "aaaddadaf",
-    //         "adelinumber": "147896526",
-    //         "streetname" : "zobzob zob",
-    //         "zipcode" : "56100",
-    //         "email" : "rerefaz@hotmail.com",
-    //         "city" : "panam",
-    //         "gender" : "Homme",
-    //         "role": "therapist"
-    //        })
+          .send({"firstname": "john",
+            "lastname": "fafa",
+            "password": "aaaddadaf",
+            "adelinumber": "147896526",
+            "streetname" : "zobzob zob",
+            "zipcode" : "56100",
+            "email" : "rerefaz@hotmail.com",
+            "city" : "panam",
+            "gender" : "Homme",
+            "role": "therapist"
+           })
           
-    //       .expect(200)
-    //       .end(function(err, res) {
-    //         console.log(err)
-    //         if (err) return done(err);
-    //         return done();
-    //       });
-    //   });
+          .expect(200)
+          .end(function(err, res) {
+            console.log(err)
+            if (err) return done(err);
+            return done();
+          });
+      });
     //   // it ('should handle no message body', function(done) {
     //   //       request(app)
     //   //       .post('/therapists')
@@ -49,7 +59,7 @@ describe('GET /therapists', function() {
     //   //             res.should.have.status(200)
     //   //             });
 
-    //   })
+      })
    
 
 

@@ -68,9 +68,6 @@ const patientsController = {
             quizz_id : req.body.quizz_id     
         }
 
-        if (!patientsInfo){
-            next(new APIError("Paramètres manquants", 400));
-        }
         try {
             const createPatients = await patientsDatamapper.create(patientsInfo);
             if (createPatients.length === 0) {
@@ -107,11 +104,7 @@ const patientsController = {
             city : req.body.city,
             role : req.body.role
         }
-        
-        if (!patientsInfo){
-            next(new APIError("Paramètres manquants", 400));
-        }
-        
+       
         try {
             const updatePatients = await patientsDatamapper.update({id},patientsInfo);
             
@@ -261,10 +254,7 @@ const patientsController = {
             sessionatoffice : req.body.sessionatoffice,
         }
 
-        if (!appointment){
-            next(new APIError("Paramètres manquants", 400));
-            return;
-        }
+        
         try {
             const createAppointmentOneTherapist = await patientsDatamapper.createAppointmentOneTherapist({therapistId,patientId},appointment);
             
@@ -306,10 +296,6 @@ const patientsController = {
             therapists_id:therapistId,
         }
 
-        if (!review){
-            next(new APIError("Paramètres manquants", 400));
-            return;
-        }
         try {
             const createReviewsOneTherapist = await patientsDatamapper.createReviewsOneTherapist({patientId,therapistId},review);
             
@@ -343,11 +329,6 @@ const patientsController = {
 
         }
         console.log(answers)
-
-        if (!answers){
-            next(new APIError("Paramètres manquants", 400));
-            return;
-        }
 
         // try {
             const answerPatientsQuizz = await patientsDatamapper.answerPatientsQuizz(answers);

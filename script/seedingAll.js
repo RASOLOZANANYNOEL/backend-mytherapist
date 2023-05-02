@@ -491,12 +491,12 @@ for (let counter = 0; counter < 400; counter++) {
     const review = {
         messages: oneReview[counter % oneReview.length].message,
         negatifreviews: faker.datatype.number({
-            'min': 1,
+            'min': 0,
             'max': 1
         }),
         positifreviews: faker.datatype.number({
-            'min': 1,
-            'max': 2
+            'min': 0,
+            'max': 1
         }),
         patients_id: faker.datatype.number({
             min: 1,
@@ -508,6 +508,11 @@ for (let counter = 0; counter < 400; counter++) {
         }),
 
     };
+    if(review.positifreviews == 1) {
+        review.negatifreviews = 0;
+    } else if (review.negatifreviews == 1) {
+        review.positifreviews = 0;
+    }
     //console.log(review);
     reviews.push(review);
 

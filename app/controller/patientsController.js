@@ -217,8 +217,8 @@ const patientsController = {
             streetname,
             zipcode,
             city,
-            quizz_id,
-            role
+            role: 'patient',
+            quizz_id
         }
     
         /**

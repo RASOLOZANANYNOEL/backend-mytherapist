@@ -330,8 +330,6 @@ router.get('/:id/quizz', patientsController.getOnePatientWithQuizz);
  */
 router.get('/reviews/therapists/:id',patientsController.getReviewsOneTherapists);
 
-
-
 /**CREATE appointment patient->therapist
  * @swagger
  * /patients/{id}/appointment/therapists/{id}:

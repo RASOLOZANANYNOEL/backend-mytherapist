@@ -60,6 +60,6 @@ const router = express.Router();
  *                   "complement": "Commodi beatae excepturi pariatur saepe cum eos saepe corporis quas. Aliquid reprehenderit ad sequi eum corrupti provident at corrupti cum. Tempore ab quidem iure blanditiis amet distinctio asperiores nobis dolor.",
  *                   "zipcode": "75101"}]
  */
-router.get('/patient/:id',algorithmController.getTherapistBySurvey);
+router.get('/me/get-therapists',algorithmController.getTherapistBySurvey);
 
 module.exports = router;

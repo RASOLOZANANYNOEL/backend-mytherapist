@@ -1,5 +1,6 @@
 const patientsDatamapper = require('../model/patients');
 const therapistsDatamapper = require('../model/therapists')
+const jwt = require('jsonwebtoken');
 
 /**********************************************/
 /******************* ALGO ********************/
@@ -9,11 +10,13 @@ const algorithmController = {
     async getTherapistBySurvey(req, res) {
 
         const token = req.headers.authorization 
-        console.log(token)
+        
 
         const decodedToken = jwt.decode(token, {
             complete: true
            });
+
+           console.log(decodedToken)
 
         
     

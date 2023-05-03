@@ -7,8 +7,10 @@ const therapistsDatamapper = require('../model/therapists')
 const algorithmController = {
 
     async getTherapistBySurvey(req, res) {
-        const id = req.params.id
 
+        const token = req.header.authorization 
+        console.log(token)
+    
         async function therapist(id) {
 
             const getSurveyAnswer = await patientsDatamapper.getSurveyAnswer(id);

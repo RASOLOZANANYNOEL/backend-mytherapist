@@ -1,6 +1,7 @@
 const express = require("express");
 const algorithmController = require("../controller/algorithmController");
 const router = express.Router();
+const isAuth = require('../middlewares/authMiddleware');
 
 // Route de l'algo -> donne tout les information des psy dans une spécialité.
 
@@ -60,6 +61,6 @@ const router = express.Router();
  *                   "complement": "Commodi beatae excepturi pariatur saepe cum eos saepe corporis quas. Aliquid reprehenderit ad sequi eum corrupti provident at corrupti cum. Tempore ab quidem iure blanditiis amet distinctio asperiores nobis dolor.",
  *                   "zipcode": "75101"}]
  */
-router.get('/me/get-therapists',algorithmController.getTherapistBySurvey);
+router.get('/me/get-therapists', isAuth,algorithmController.getTherapistBySurvey);
 
 module.exports = router;

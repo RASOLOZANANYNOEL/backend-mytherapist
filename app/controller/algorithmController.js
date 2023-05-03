@@ -8,8 +8,14 @@ const algorithmController = {
 
     async getTherapistBySurvey(req, res) {
 
-        const token = req.header.authorization 
+        const token = req.headers.authorization 
         console.log(token)
+
+        const decodedToken = jwt.decode(token, {
+            complete: true
+           });
+
+        
     
         async function therapist(id) {
 

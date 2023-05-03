@@ -16,7 +16,7 @@ const algorithmController = {
             complete: false
            });
 
-           console.log(decodedToken)
+           const id = decodedToken.data.id;
 
         
     

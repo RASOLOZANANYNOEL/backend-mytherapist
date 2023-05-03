@@ -13,7 +13,7 @@ const algorithmController = {
         
 
         const decodedToken = jwt.decode(token, {
-            complete: true
+            complete: false
            });
 
            console.log(decodedToken)

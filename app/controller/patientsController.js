@@ -223,6 +223,7 @@ const patientsController = {
             role: 'patient',
             quizz_id
         }
+        console.log(patientsInfo)
         // } else {
         //     /**
         //  * retrieve body data

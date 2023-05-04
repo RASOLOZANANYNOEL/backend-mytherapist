@@ -12,7 +12,7 @@ class Patients extends CoreDatamapper {
     async getOnePatientWithAllAppointments(id){
         const preparedQuery ={
             text: `SELECT p.id, p.email, p.lastname,p.firstname, p.phonenumber,p.profilpicture, p.streetname,p.zipcode,p.city,p.complement ,a.id AS appointmentId,t.id AS therapistId,t.firstname AS therapistFirstname,
-            t.lastname AS therapistName,a.beginninghour AS appointmentBegin, a.endtime AS appointmentEnd
+            t.lastname AS therapistName,a.beginninghour AS appointmentBegin, a.endtime AS appointmentEnd, a.videosession, a.audiosession, a.chatsession, a.sessionatoffice
             FROM patients p
             JOIN appointments a ON p.id = patients_id
             JOIN therapists t ON t.id = therapists_id

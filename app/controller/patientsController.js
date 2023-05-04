@@ -186,7 +186,7 @@ const patientsController = {
         }, function (err) {
             console.log('File created');
         });
-        }
+        
         /**
          * retrieve body data
          */
@@ -222,6 +222,45 @@ const patientsController = {
             city,
             role: 'patient',
             quizz_id
+        }
+        } else {
+            /**
+         * retrieve body data
+         */
+        const {
+            email,
+            lastname,
+            firstname,
+            password,
+            confirmPassword,
+            phonenumber,
+            streetname,
+            zipcode,
+            city,
+            quizz_id,
+        } = req.body;
+        /**
+         * Encrypt password
+         */
+        const passwordCrypted = await bcrypt.hash(password, 10);
+
+        /**
+         * add the patient in db
+         */
+        const patientsInfo = {
+            email,
+            lastname,
+            firstname,
+            password: passwordCrypted,
+            phonenumber,
+            profilpicture: 'public/images/profil-default.png',
+            streetname,
+            zipcode,
+            city,
+            role: 'patient',
+            quizz_id
+
+        }
         }
     
         /**

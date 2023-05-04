@@ -107,8 +107,8 @@ class Patients extends CoreDatamapper {
             text:`INSERT INTO appointments
             (beginninghour, endtime, patients_id, therapists_id, videosession, audiosession, chatsession, sessionatoffice)
             VALUES (
-                to_timestamp($1, 'DD-MM-YYYY HH24:MI')+ interval '1 hour',
-                to_timestamp($2, 'DD-MM-YYYY HH24:MI')+ interval '1 hour',
+                to_timestamp($1, 'DD-MM-YYYY HH24:MI'),
+                to_timestamp($2, 'DD-MM-YYYY HH24:MI'),
                 $3,
                 $4,
                 $5,

@@ -157,37 +157,6 @@ const patientsController = {
             next(new APIError("Paramètres manquants", 400));
         }
         
-
-
-        // update profilpicture
-        let base64String = req.body.profilpicture;
-        console.log(base64String)
-        // Remove header
-        let base64Image = base64String.split(';base64,');
-        const fileType = base64Image[0].split('/').pop();
-
-        const findPatient = await patientsDatamapper.findByPk(id);
-        //check a image already exists
-        if (req.body.profilpicture && findPatient.profilpicture) {
-            const imagePath = `public/images/Patients profile picture/${req.body.firstname}.${fileType}`
-            //Delete old image
-            fs.unlink(imagePath, (err) => {
-                if (err) {
-                    console.error(err);
-                } else {
-                    console.log(`L'image précédent a été supprimée ${imagePath}`)
-                }
-            })
-        }
-        // Create the path for the image using the patient's first name and file type
-        const imagePath = `public/images/Patients profile picture/${req.body.firstname}.${fileType}`;
-        // Write the image as a file to the server using fs.writeFile()
-        fs.writeFile(imagePath, base64Image[1], {
-            encoding: 'base64'
-        }, function (err) {
-            console.log('File created');
-        });
-        
         /**
          * retrieve body data
          */
@@ -217,7 +186,7 @@ const patientsController = {
             firstname,
             password: passwordCrypted,
             phonenumber,
-            profilepicture: imagePath,
+            profilepicture,
             streetname,
             zipcode,
             city,

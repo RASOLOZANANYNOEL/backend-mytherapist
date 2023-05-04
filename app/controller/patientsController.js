@@ -155,7 +155,7 @@ const patientsController = {
         if (!id) {
             next(new APIError("Paramètres manquants", 400));
         }
-
+        try {
         // update profilpicture
         let base64String = req.body.profilpicture;
         // Remove header
@@ -251,6 +251,10 @@ const patientsController = {
             next(new APIError("Erreur lors de la mise à jour du patient", 500));
             console.log(err)
         }
+    } catch (err) {
+            next(new APIError("Erreur lors de la mise à jour du patient", 500));
+            console.log(err)
+    }
     },
     /**
      * Delete a patient

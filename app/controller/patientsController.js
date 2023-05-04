@@ -151,7 +151,8 @@ const patientsController = {
      */
     async updatePatients(req, res, next) {
         const id = req.params.id
-
+        
+        let patientsInfo = {};
         if (!id) {
             next(new APIError("Paramètres manquants", 400));
         }

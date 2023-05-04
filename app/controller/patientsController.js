@@ -156,6 +156,8 @@ const patientsController = {
             next(new APIError("Paramètres manquants", 400));
         }
         try {
+
+            if (req.body.profilpicture) {
         // update profilpicture
         let base64String = req.body.profilpicture;
         console.log(base64String)
@@ -184,7 +186,7 @@ const patientsController = {
         }, function (err) {
             console.log('File created');
         });
-
+        }
         /**
          * retrieve body data
          */

@@ -158,6 +158,7 @@ const patientsController = {
         try {
         // update profilpicture
         let base64String = req.body.profilpicture;
+        console.log(base64String)
         // Remove header
         let base64Image = base64String.split(';base64,');
         const fileType = base64Image[0].split('/').pop();

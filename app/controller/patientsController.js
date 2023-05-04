@@ -156,37 +156,37 @@ const patientsController = {
         if (!id) {
             next(new APIError("Paramètres manquants", 400));
         }
-        // try {
+        
 
-        //     if (req.body.profilpicture) {
-        // // update profilpicture
-        // let base64String = req.body.profilpicture;
-        // console.log(base64String)
-        // // Remove header
-        // let base64Image = base64String.split(';base64,');
-        // const fileType = base64Image[0].split('/').pop();
 
-        // const findPatient = await patientsDatamapper.findByPk(id);
-        // //check a image already exists
-        // if (req.body.profilpicture && findPatient.profilpicture) {
-        //     const imagePath = `public/images/Patients profile picture/${req.body.firstname}.${fileType}`
-        //     //Delete old image
-        //     fs.unlink(imagePath, (err) => {
-        //         if (err) {
-        //             console.error(err);
-        //         } else {
-        //             console.log(`L'image précédent a été supprimée ${imagePath}`)
-        //         }
-        //     })
-        // }
-        // // Create the path for the image using the patient's first name and file type
-        // const imagePath = `public/images/Patients profile picture/${req.body.firstname}.${fileType}`;
-        // // Write the image as a file to the server using fs.writeFile()
-        // fs.writeFile(imagePath, base64Image[1], {
-        //     encoding: 'base64'
-        // }, function (err) {
-        //     console.log('File created');
-        // });
+        // update profilpicture
+        let base64String = req.body.profilpicture;
+        console.log(base64String)
+        // Remove header
+        let base64Image = base64String.split(';base64,');
+        const fileType = base64Image[0].split('/').pop();
+
+        const findPatient = await patientsDatamapper.findByPk(id);
+        //check a image already exists
+        if (req.body.profilpicture && findPatient.profilpicture) {
+            const imagePath = `public/images/Patients profile picture/${req.body.firstname}.${fileType}`
+            //Delete old image
+            fs.unlink(imagePath, (err) => {
+                if (err) {
+                    console.error(err);
+                } else {
+                    console.log(`L'image précédent a été supprimée ${imagePath}`)
+                }
+            })
+        }
+        // Create the path for the image using the patient's first name and file type
+        const imagePath = `public/images/Patients profile picture/${req.body.firstname}.${fileType}`;
+        // Write the image as a file to the server using fs.writeFile()
+        fs.writeFile(imagePath, base64Image[1], {
+            encoding: 'base64'
+        }, function (err) {
+            console.log('File created');
+        });
         
         /**
          * retrieve body data
@@ -217,6 +217,7 @@ const patientsController = {
             firstname,
             password: passwordCrypted,
             phonenumber,
+            profilepicture: imagePath,
             streetname,
             zipcode,
             city,
@@ -224,46 +225,8 @@ const patientsController = {
             quizz_id
         }
         console.log(patientsInfo)
-        // } else {
-        //     /**
-        //  * retrieve body data
-        //  */
-        // const {
-        //     email,
-        //     lastname,
-        //     firstname,
-        //     password,
-        //     confirmPassword,
-        //     phonenumber,
-        //     streetname,
-        //     zipcode,
-        //     city,
-        //     quizz_id,
-        // } = req.body;
-        /**
-         * Encrypt password
-         */
-        // const passwordCrypted = await bcrypt.hash(password, 10);
-
-        // /**
-        //  * add the patient in db
-        //  */
-        // const patientsInfo = {
-        //     email,
-        //     lastname,
-        //     firstname,
-        //     password: passwordCrypted,
-        //     phonenumber,
-        //     profilpicture: 'public/images/profil-default.png',
-        //     streetname,
-        //     zipcode,
-        //     city,
-        //     role: 'patient',
-        //     quizz_id
-
-        // }
-        // }
-    
+        
+       
         /**
          * Make sure the phone number is 10 digits
          */
@@ -294,11 +257,9 @@ const patientsController = {
             next(new APIError("Erreur lors de la mise à jour du patient", 500));
             console.log(err)
         }
-    // } catch (err) {
-    //         next(new APIError("Erreur lors de la mise à jour du patient", 500));
-    //         console.log(err)
-    // }
-    },
+    }, 
+    
+
     /**
      * Delete a patient
      * @param {*} req request Express

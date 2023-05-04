@@ -167,7 +167,7 @@ const patientsController = {
 
         const findPatient = await patientsDatamapper.findByPk(id);
         //check a image already exists
-        if (findPatient.profilpicture) {
+        if (req.body.profilpicture && findPatient.profilpicture) {
             const imagePath = `public/images/Patients profile picture/${req.body.firstname}.${fileType}`
             //Delete old image
             fs.unlink(imagePath, (err) => {

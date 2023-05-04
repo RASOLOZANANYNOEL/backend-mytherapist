@@ -186,7 +186,6 @@ const patientsController = {
             firstname,
             password: passwordCrypted,
             phonenumber,
-            profilepicture,
             streetname,
             zipcode,
             city,
